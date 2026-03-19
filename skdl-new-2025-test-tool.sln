@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skdl-new-2025-test-tool", "skdl-new-2025-test-tool.csproj", "{2D4D874F-8238-4926-A019-6DB6491FED1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoCapture_uvc", "..\..\..\SSY0517\VideoCapture\VideoCapture_uvc.csproj", "{A80DE893-1110-4CBF-B5C4-07890B11CCD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D4D874F-8238-4926-A019-6DB6491FED1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D4D874F-8238-4926-A019-6DB6491FED1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D4D874F-8238-4926-A019-6DB6491FED1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D4D874F-8238-4926-A019-6DB6491FED1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80DE893-1110-4CBF-B5C4-07890B11CCD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80DE893-1110-4CBF-B5C4-07890B11CCD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80DE893-1110-4CBF-B5C4-07890B11CCD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80DE893-1110-4CBF-B5C4-07890B11CCD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD152F63-D840-4B14-80C1-4F1523149630}
+	EndGlobalSection
+EndGlobal

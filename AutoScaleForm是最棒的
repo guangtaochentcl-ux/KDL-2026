@@ -1,0 +1,176 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace skdl_new_2025_test_tool
+{
+    public partial class AutoScaleForm : Form
+    {
+        private struct ControlRect
+        {
+            public int Left;
+            public int Top;
+            public int Width;
+            public int Height;
+            public float FontSize;
+        }
+
+        private Dictionary<Control, ControlRect> _controlCache = new Dictionary<Control, ControlRect>();
+        private float _originalFormWidth;
+        private float _originalFormHeight;
+        private bool _isLoaded = false;
+
+        // === 优化1：定义需要进行文字自适应计算的控件类型 ===
+        // 只有这些控件才需要防止文字截断，其他控件（如Panel）不需要耗时的测量
+        private readonly HashSet<Type> _textControlTypes = new HashSet<Type>
+        {
+            typeof(Label),
+            typeof(Button),
+            typeof(CheckBox),
+            typeof(RadioButton),
+            typeof(LinkLabel)
+        };
+
+        public AutoScaleForm()
+        {
+            this.SetStyle(ControlStyles.UserPaint |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            _originalFormWidth = this.Width;
+            _originalFormHeight = this.Height;
+            RecordOriginalControlInfo(this);
+            _isLoaded = true;
+        }
+
+        private void RecordOriginalControlInfo(Control parent)
+        {
+            foreach (Control con in parent.Controls)
+            {
+                if (!_controlCache.ContainsKey(con))
+                {
+                    _controlCache.Add(con, new ControlRect
+                    {
+                        Left = con.Left,
+                        Top = con.Top,
+                        Width = con.Width,
+                        Height = con.Height,
+                        FontSize = con.Font.Size
+                    });
+                }
+
+                if (con.Controls.Count > 0)
+                {
+                    RecordOriginalControlInfo(con);
+                }
+            }
+        }
+
+        // === 优化2：缩放逻辑 ===
+        private void ScaleControls(Control parent, float scaleX, float scaleY)
+        {
+            // 预计算缩放因子，避免循环内重复计算
+            float scaleFactor = Math.Min(scaleX, scaleY);
+
+            foreach (Control con in parent.Controls)
+            {
+                if (_controlCache.TryGetValue(con, out ControlRect rect))
+                {
+                    // 1. 设置边界 (整数运算很快)
+                    int newLeft = (int)(rect.Left * scaleX);
+                    int newTop = (int)(rect.Top * scaleY);
+                    int newWidth = (int)(rect.Width * scaleX);
+                    int newHeight = (int)(rect.Height * scaleY);
+
+                    con.SetBounds(newLeft, newTop, newWidth, newHeight);
+
+                    // 2. 计算目标字体大小
+                    float targetSize = rect.FontSize * scaleFactor;
+
+                    // === 优化3：高性能筛选 ===
+                    // 只有当：目标字号有效 AND 控件是文本类控件 AND 有文字内容时，才进行昂贵的测量
+                    if (targetSize > 5 && _textControlTypes.Contains(con.GetType()) && !string.IsNullOrEmpty(con.Text))
+                    {
+                        // 进行耗时的自适应计算
+                        targetSize = GetBestFitFontSize(con, targetSize, newWidth);
+                    }
+
+                    // 3. 应用字体 (仅当差异较大时才应用，减少重绘)
+                    if (targetSize > 0 && Math.Abs(con.Font.Size - targetSize) > 0.25f) // 容差设为0.25
+                    {
+                        // 避免释放旧字体，让 GC 处理，防止 resize 过程中的资源竞争异常
+                        con.Font = new Font(con.Font.FontFamily, targetSize, con.Font.Style, con.Font.Unit);
+                    }
+                }
+
+                if (con.Controls.Count > 0)
+                {
+                    ScaleControls(con, scaleX, scaleY);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 快速计算最佳字号
+        /// </summary>
+        private float GetBestFitFontSize(Control con, float targetSize, int ctrlWidth)
+        {
+            int safeWidth = ctrlWidth - 6; // 稍微减小 Padding，提升一点计算速度
+            if (safeWidth <= 0) return targetSize;
+
+            try
+            {
+                // 创建临时字体进行测量 (这是最耗时的步骤)
+                using (Font testFont = new Font(con.Font.FontFamily, targetSize, con.Font.Style))
+                {
+                    // 使用 TextFormatFlags 优化测量性能 (比默认 MeasureText 快一点点)
+                    Size textSize = TextRenderer.MeasureText(con.Text, testFont, Size.Empty, TextFormatFlags.NoPadding);
+
+                    if (textSize.Width > safeWidth)
+                    {
+                        float ratio = (float)safeWidth / (float)textSize.Width;
+                        return Math.Max(targetSize * ratio, 6.0f); // 限制最小字号为 6
+                    }
+                }
+            }
+            catch
+            {
+                // 忽略测量异常，返回原值
+            }
+
+            return targetSize;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            if (!_isLoaded || _originalFormWidth == 0 || _originalFormHeight == 0) return;
+
+            // 最小化时不计算
+            if (WindowState == FormWindowState.Minimized) return;
+
+            float scaleX = (float)this.Width / _originalFormWidth;
+            float scaleY = (float)this.Height / _originalFormHeight;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.SuspendLayout();
+            try
+            {
+                ScaleControls(this, scaleX, scaleY);
+            }
+            finally
+            {
+                this.ResumeLayout(false);
+                // 仅在最大化或还原操作结束时强制重绘，减少拖动时的闪烁
+                if (WindowState == FormWindowState.Maximized || WindowState == FormWindowState.Normal)
+                {
+                    this.PerformLayout();
+                }
+            }
+        }
+    }
+}

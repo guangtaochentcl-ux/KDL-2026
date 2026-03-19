@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>skdl_new_2025_test_tool</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>seevi_64.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="seevi_64.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
+    <PackageReference Include="AntdUI" Version="2.2.3" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="Emgu.CV" Version="4.12.0.5764" />
+    <PackageReference Include="Emgu.CV.runtime.windows" Version="4.12.0.5764" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.8.0" />
+    <PackageReference Include="Selenium.Support" Version="4.8.0" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.1" />
+    <PackageReference Include="System.Management" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SSY0517\VideoCapture\VideoCapture_uvc.csproj" />
+  </ItemGroup>
+
+</Project>
