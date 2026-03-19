@@ -1,33 +1,37 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\",
+  "WorkspaceRootPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\c-workrepository\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\c-workrepository\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:skdl-new-2025-test-tool.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\c-workrepository\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\opencvrtspplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:opencvrtspplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A80DE893-1110-4CBF-B5C4-07890B11CCD1}|..\\..\\..\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj|d:\\gitwork\\ssy0517\\videocapture\\videocapturer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\c-workrepository\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\windowsfunc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\skdl-new-2025-test-tool.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:skdl-new-2025-test-tool.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\skdl-new-2025-test-tool.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:skdl-new-2025-test-tool.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\opencvrtspplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:opencvrtspplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\windowsfunc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:windowsfunc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\c-workrepository\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\httpapi_stu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\httpapi_stu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:httpapi_stu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A80DE893-1110-4CBF-B5C4-07890B11CCD1}|..\\..\\..\\..\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj|D:\\GitWork\\ssy0517\\videocapture\\videocapturer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -37,15 +41,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 190,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "HttpApi_stu.cs",
-              "DocumentMoniker": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\HttpApi_stu.cs",
+              "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\HttpApi_stu.cs",
               "RelativeDocumentMoniker": "HttpApi_stu.cs",
-              "ToolTip": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\HttpApi_stu.cs",
+              "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\HttpApi_stu.cs",
               "RelativeToolTip": "HttpApi_stu.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAmwBgAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -56,14 +60,26 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "WindowsFunc.cs",
-              "DocumentMoniker": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\WindowsFunc.cs",
+              "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\WindowsFunc.cs",
               "RelativeDocumentMoniker": "WindowsFunc.cs",
-              "ToolTip": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\WindowsFunc.cs",
+              "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\WindowsFunc.cs",
               "RelativeToolTip": "WindowsFunc.cs",
               "ViewState": "AgIAAMYCAAAAAAAAAAAzwNICAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-16T03:18:37.662Z",
               "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs [\u8BBE\u8BA1]",
+              "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\Form1.cs [\u8BBE\u8BA1]",
+              "RelativeToolTip": "Form1.cs [\u8BBE\u8BA1]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-19T11:36:19.204Z",
+              "EditorCaption": " [\u8BBE\u8BA1]"
             },
             {
               "$type": "Bookmark",
@@ -75,51 +91,37 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "skdl-new-2025-test-tool.csproj",
+              "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+              "RelativeDocumentMoniker": "skdl-new-2025-test-tool.csproj",
+              "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+              "RelativeToolTip": "skdl-new-2025-test-tool.csproj",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAADUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-19T11:33:08.09Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "VideoCapturer.cs",
-              "DocumentMoniker": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapturer.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\SSY0517\\VideoCapture\\VideoCapturer.cs",
-              "ToolTip": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapturer.cs",
-              "RelativeToolTip": "..\\..\\..\\SSY0517\\VideoCapture\\VideoCapturer.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAAAzwEgAAABlAAAAAAAAAA==",
+              "Title": "OpenCvRtspPlayer.cs",
+              "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\OpenCvRtspPlayer.cs",
+              "RelativeDocumentMoniker": "OpenCvRtspPlayer.cs",
+              "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\OpenCvRtspPlayer.cs",
+              "RelativeToolTip": "OpenCvRtspPlayer.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAoAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T10:30:04.655Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-19T06:46:37.319Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "skdl-new-2025-test-tool",
-              "DocumentMoniker": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
-              "RelativeDocumentMoniker": "skdl-new-2025-test-tool.csproj",
-              "ToolTip": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
-              "RelativeToolTip": "skdl-new-2025-test-tool.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-19T07:51:21.71Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OpenCvRtspPlayer.cs",
-              "DocumentMoniker": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\OpenCvRtspPlayer.cs",
-              "RelativeDocumentMoniker": "OpenCvRtspPlayer.cs",
-              "ToolTip": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\OpenCvRtspPlayer.cs",
-              "RelativeToolTip": "OpenCvRtspPlayer.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAoAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-19T06:46:37.319Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "Form1.cs",
-              "DocumentMoniker": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\Form1.cs",
+              "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\Form1.cs",
+              "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAANxAAAAAAAAAAAAQwORAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAEkAAAAAAAAAAAA2wE4AAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-07T02:53:54.318Z",
               "EditorCaption": ""
@@ -127,14 +129,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Form1.cs [\u8BBE\u8BA1]",
-              "DocumentMoniker": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\Form1.cs",
-              "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\Form1.cs [\u8BBE\u8BA1]",
-              "RelativeToolTip": "Form1.cs [\u8BBE\u8BA1]",
+              "Title": "skdl-new-2025-test-tool",
+              "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+              "RelativeDocumentMoniker": "skdl-new-2025-test-tool.csproj",
+              "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+              "RelativeToolTip": "skdl-new-2025-test-tool.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-19T07:51:21.71Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "VideoCapturer.cs",
+              "DocumentMoniker": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapturer.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\SSY0517\\VideoCapture\\VideoCapturer.cs",
+              "ToolTip": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapturer.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\SSY0517\\VideoCapture\\VideoCapturer.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAzwEgAAABlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T02:53:52.025Z",
-              "EditorCaption": " [\u8BBE\u8BA1]"
+              "WhenOpened": "2026-03-19T10:30:04.655Z"
             }
           ]
         },

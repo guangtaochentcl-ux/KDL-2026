@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SSY0517\VideoCapture\VideoCapture_uvc.csproj" />
+    <ProjectReference Include="..\..\..\..\SSY0517\VideoCapture\VideoCapture_uvc.csproj" />
   </ItemGroup>
 
 </Project>

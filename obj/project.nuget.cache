@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qcb0K19RcF0=",
+  "dgSpecHash": "5+pOl7euiTc=",
   "success": true,
-  "projectFilePath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+  "projectFilePath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\aforge\\2.2.5\\aforge.2.2.5.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\aforge.video\\2.2.5\\aforge.video.2.2.5.nupkg.sha512",
@@ -77,9 +77,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0-windows7.0”还原包“AForge 2.2.5”。此包可能与项目不完全兼容。",
-      "projectPath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "filePath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "libraryId": "AForge",
       "targetGraphs": [
         "net8.0-windows7.0"
@@ -89,9 +89,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0-windows7.0”还原包“AForge.Video 2.2.5”。此包可能与项目不完全兼容。",
-      "projectPath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "filePath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "libraryId": "AForge.Video",
       "targetGraphs": [
         "net8.0-windows7.0"
@@ -101,9 +101,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0-windows7.0”还原包“AForge.Video.DirectShow 2.2.5”。此包可能与项目不完全兼容。",
-      "projectPath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "filePath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "libraryId": "AForge.Video.DirectShow",
       "targetGraphs": [
         "net8.0-windows7.0"

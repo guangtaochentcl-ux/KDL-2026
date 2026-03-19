@@ -4328,8 +4328,8 @@
     },
     "VideoCapture_uvc/1.0.0": {
       "type": "project",
-      "path": "../../../SSY0517/VideoCapture/VideoCapture_uvc.csproj",
-      "msbuildProject": "../../../SSY0517/VideoCapture/VideoCapture_uvc.csproj"
+      "path": "../../../../SSY0517/VideoCapture/VideoCapture_uvc.csproj",
+      "msbuildProject": "../../../../SSY0517/VideoCapture/VideoCapture_uvc.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4357,11 +4357,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "projectUniqueName": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "projectName": "skdl-new-2025-test-tool",
-      "projectPath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\skdl-new-2025-test-tool.csproj",
+      "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\GitWork\\C-WorkRepository\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\obj\\",
+      "outputPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\MicrosoftVisualStudioBufferShared\\NuGetPackages"
