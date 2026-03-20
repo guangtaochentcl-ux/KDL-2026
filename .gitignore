@@ -79,3 +79,9 @@ coverage/
 # docs/
 # *.md
 # *.pdf
+*.v2
+*.v2
+*.json
+*.bin
+*.dll
+*.exe
