@@ -2,6 +2,7 @@ using AForge.Video.DirectShow;
 using AntdUI;
 using BaseProjejct;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Emgu.CV.Cuda;
 using Emgu.CV.Dnn;
@@ -27,6 +28,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Xml.Linq;
 using VideoCapture_uvc;
+using Path = System.IO.Path;
 
 namespace skdl_new_2025_test_tool
 {
@@ -55,7 +57,9 @@ namespace skdl_new_2025_test_tool
         private int checkVideoConfigTestStreamStatusWaitingTime = 5000; // 视频配置测试拉流状态检查间隔，单位毫秒
         private int checkRtmpStreamStatusWaitingTime = 10000; // RTMP拉流状态检查间隔，适当放宽一些
 
+        private static readonly object _failFileLock = new object(); //用于记录UVC失败类型,方便查看
 
+        bool Stop_uvc = true;//用于UVC停止拉流的标志位
         public Form1()
         {
             InitializeComponent();
@@ -81,7 +85,7 @@ namespace skdl_new_2025_test_tool
             tabControl3.ItemSize = new System.Drawing.Size(350, 60);
             tabControl3.DrawItem += (s, e) =>
             {
-                Rectangle bounds = tabControl3.GetTabRect(e.Index);
+                System.Drawing.Rectangle bounds = tabControl3.GetTabRect(e.Index);
                 bool isSelected = e.Index == tabControl3.SelectedIndex;
                 using (Font tabFont = new Font("Microsoft YaHei UI", 10f, FontStyle.Regular))
                 using (SolidBrush brush = new SolidBrush(isSelected ? Color.FromArgb(100, 215, 234) : Color.FromArgb(240, 240, 240)))
@@ -2098,28 +2102,37 @@ namespace skdl_new_2025_test_tool
                         setUvcCloseUpBtn_Click(null, null);
                         await Task.Delay(100);
                         // uvc 拉流4K 0 3840x2160
-                        input1_uvc_x.Text = "3840";
-                        input2_uvc_y.Text = "2160";
+                        int width = 3840;
+                        int height = 2160;
+                        input1_uvc_x.Text = width.ToString();
+                        input2_uvc_y.Text = height.ToString();
+                        string format = "H264";
+                        string devicePath = null;
+
 
                         // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                         if (GetCameras("Seewo Lubo").Count > 1)
                         {
-                            uvcStreamOnSpecificDevicePathBtn_Click(null, null);
+                            devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
                         }
-                        else
+                        //如果devicepath是空,会运行默认摄像头
+                        bool uvcStarted = await StartUVC(width, height, format, devicePath);
+                        if (!uvcStarted)
                         {
-                            uvc_streamOnBtn_Click(null, null);
+                            LogSaveOutput("UVC 启动失败，停止测试");
+                            break;
                         }
-                        await Task.Delay(5000);
-                        LogSaveOutput("预览10秒，请稍等……");
-                        await Task.Delay(10000);
+                        //等待12秒,预览
+                        await Task.Delay(12000);
+                        LogSaveOutput($"预览高分辨率模式教师UVC特写[{width}x{height}],格式{format} 12秒");
 
-                        string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC特写[{3840}x{2160}]");
+
+                        string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC特写[{width}x{height}]");
                         LogSaveOutput(uvc_pic);
                         await Task.Delay(100);
 
                         bool highResolutionTeacherResult = checkPICValid(uvc_pic, uvc_pic);
-                        LogSaveOutput($"Logic1 -- uvc 特写主流[{3840}x{2160}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
+                        LogSaveOutput($"Logic1 -- uvc 特写[{width}x{height}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
 
                         if (!highResolutionTeacherResult)
                         {
@@ -2177,6 +2190,7 @@ namespace skdl_new_2025_test_tool
                             // logic 2 uvc 拉流1080P  1920x1080
                             input1_uvc_x.Text = "1920";
                             input2_uvc_y.Text = "1080";
+                            input_Uvctype.Text = "H264";
 
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
@@ -2319,6 +2333,7 @@ namespace skdl_new_2025_test_tool
             // 获取token
             buttonGetToken_Click(null, null);
             await Task.Delay(1000);
+            
 
             // 切到对应测试模式
             hiResModeBtn_Click(null, null);
@@ -2352,29 +2367,35 @@ namespace skdl_new_2025_test_tool
                         // 设置到uvc出全景模式
                         setUvcPanoramicBtn_Click(null, null);
                         await Task.Delay(100);
-                        // uvc 拉流4K 0 3840x2160
-                        input1_uvc_x.Text = "3840";
-                        input2_uvc_y.Text = "2160";
-
+                        int width = 3840;
+                        int height = 2160;
+                        input1_uvc_x.Text = width.ToString();
+                        input2_uvc_y.Text = height.ToString();
+                        string format = "H264";
+                        string devicePath = null;
                         // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                         if (GetCameras("Seewo Lubo").Count > 1)
                         {
-                            uvcStreamOnSpecificDevicePathBtn_Click(null, null);
+                            devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
                         }
-                        else
+                        //没有输入path,默认null,会自动使用默认摄像头
+                        bool uvcStarted = await StartUVC(width, height, format, devicePath);
+                        if (!uvcStarted)
                         {
-                            uvc_streamOnBtn_Click(null, null);
+                            LogSaveOutput("UVC 启动失败，停止测试");
+                            break;
                         }
-                        await Task.Delay(5000);
-                        LogSaveOutput("预览10秒，请稍等……");
-                        await Task.Delay(10000);
+                        
+                        await Task.Delay(10000);//等待12秒使流稳定
+                        LogSaveOutput($"预览高分辨率模式教师UVC全景[{width}x{height}] {format} - 10s");
 
-                        string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{3840}x{2160}]");
+
+                        string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{width}x{height}]");
                         LogSaveOutput(uvc_pic);
                         await Task.Delay(100);
 
                         bool highResolutionTeacherResult = checkPICValid(uvc_pic, uvc_pic);
-                        LogSaveOutput($"Logic1 -- uvc 全景主流[{3840}x{2160}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
+                        LogSaveOutput($"Logic1 -- uvc 全景主流[{width}x{height}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
 
                         if (!highResolutionTeacherResult)
                         {
@@ -2432,6 +2453,7 @@ namespace skdl_new_2025_test_tool
                             // logic 2 uvc 拉流1080P  1920x1080
                             input1_uvc_x.Text = "1920";
                             input2_uvc_y.Text = "1080";
+                            input_Uvctype.Text = "H264";
 
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
@@ -5369,6 +5391,8 @@ namespace skdl_new_2025_test_tool
 
             // 获取当前uvc支持的分辨率
             List<string> uvcSupportResolutionList = getUVCCameraSupportResolution("Seewo Lubo");
+            // 定义要测试的编码格式
+            string[] formats = { "MJPG", "H264", "NV12" };
 
             this.BeginInvoke(async () =>
             {
@@ -5384,78 +5408,75 @@ namespace skdl_new_2025_test_tool
                             input1_uvc_x.Text = uvc_x;
                             input2_uvc_y.Text = uvc_y;
 
-                            // 获取token
-                            buttonGetToken_Click(null, null);
-                            await Task.Delay(1000);
-
-                            // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                            if (GetCameras("Seewo Lubo").Count > 1)
+                            foreach (string format in formats)
                             {
-                                uvcStreamOnSpecificDevicePathBtn_Click(null, null);
-                            }
-                            else
-                            {
-                                uvc_streamOnBtn_Click(null, null);
-                            }
-                            await Task.Delay(5000);
-                            LogSaveOutput("预览10秒，请稍等……");
-                            await Task.Delay(10000);
+                                // 更新 UI 显示的格式
+                                input_Uvctype.Text = format;
 
-                            string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高帧率模式教师特写[{uvc_x}x{uvc_y}]");
-                            LogSaveOutput(uvc_pic);
-                            await Task.Delay(100);
+                                // 启动 UVC 流
+                                bool startOk;
+                                if (GetCameras("Seewo Lubo").Count > 1)
+                                {
+                                    // 多设备情况下，使用当前选中的设备路径（如果有）
+                                    string devicePath = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                }
+                                else
+                                {
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format);
+                                }
 
-                            if (item.TestCount == 1)
-                            {
-                                ori_uvc_pic = uvc_pic; next_uvc_pic = uvc_pic;
-                            }
-                            else
-                            {
-                                ori_uvc_pic = next_uvc_pic; next_uvc_pic = uvc_pic;
+                                if (!startOk)
+                                {
+                                    LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
+                                    continue; // 跳过当前格式，继续下一个
+                                }
+
+                                // 预览 10 秒
+                                await Task.Delay(10000);
+
+                                // 截图
+                                string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"教师特写[{uvc_x}x{uvc_y} {format}]");
+                                LogSaveOutput(uvc_pic);
+                                await Task.Delay(100);
+
+                                // 判断图片有效性（自对比，只要图片正常即可）
+                                bool picValid = checkPICValid(uvc_pic, uvc_pic);
+                                LogSaveOutput($"分辨率 {uvcResolution} 格式 {format} 测试结果：{(picValid ? "PASS" : "FAIL")}");
+
+                                // 关闭流
+                                uvc_streamOffBtn_Click(null, null);
+                                await Task.Delay(2000); // 等待关闭
+
+                                if (!picValid)
+                                {
+                                    item.TestResult = "FAIL";
+                                    stopTest = true;
+                                    break; // 跳出格式循环
+                                }
                             }
 
-                            bool highResolutionTeacherResult = checkPICValid(ori_uvc_pic, next_uvc_pic);
-                            LogSaveOutput($"当前高帧模式后 -- 教师特写[{uvc_x}x{uvc_y}]测试结果：{highResolutionTeacherResult} -- {ori_uvc_pic} : {next_uvc_pic}");
-
-                            // 结果呈现次数增加
-                            bool isSuccess = highResolutionTeacherResult;
-
-                            if (isSuccess)
-                            {
-                                item.TestCount++;
-                                item.TestResult = "PASS";
-                            }
-                            else
-                            {
-                                item.TestResult = "FAIL";
-                                stopTest = true;
-                                break;
-                            }
-
-                            // 所有流关流
-                            uvc_streamOffBtn_Click(null, null);
-                            await Task.Delay(100);
-                            LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
-                            await Task.Delay(circleTestDelayTime * 1000);
-                            if (stopTest)
-                            {
-                                LogSaveOutput("手动停止测试！");
-                                break;
-                            }
+                            if (stopTest) break;
                         }
 
                         if (stopTest)
                         {
-                            LogSaveOutput("手动停止测试！");
+                            LogSaveOutput("手动停止测试或测试失败，结束测试");
                             break;
+                        }
+                        else
+                        {
+                            // 所有分辨率和格式都通过，继续下一轮
+                            item.TestCount++;
+                            item.TestResult = "PASS";
+                            LogSaveOutput($"第{item.TestCount}轮测试完成，继续下一轮...");
+                            await Task.Delay(circleTestDelayTime * 1000);
                         }
                     }
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
                     }
-
-
                 }
             });
         }
@@ -5494,6 +5515,9 @@ namespace skdl_new_2025_test_tool
             // 获取当前uvc支持的分辨率
             List<string> uvcSupportResolutionList = getUVCCameraSupportResolution("Seewo Lubo");
 
+            // 定义要测试的编码格式
+            string[] formats = { "MJPG", "H264", "NV12" };
+
             this.BeginInvoke(async () =>
             {
                 while (true)
@@ -5508,78 +5532,75 @@ namespace skdl_new_2025_test_tool
                             input1_uvc_x.Text = uvc_x;
                             input2_uvc_y.Text = uvc_y;
 
-                            // 获取token
-                            buttonGetToken_Click(null, null);
-                            await Task.Delay(1000);
-
-                            // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                            if (GetCameras("Seewo Lubo").Count > 1)
+                            foreach (string format in formats)
                             {
-                                uvcStreamOnSpecificDevicePathBtn_Click(null, null);
-                            }
-                            else
-                            {
-                                uvc_streamOnBtn_Click(null, null);
-                            }
-                            await Task.Delay(5000);
-                            LogSaveOutput("预览10秒，请稍等……");
-                            await Task.Delay(10000);
+                                // 更新 UI 显示的格式
+                                input_Uvctype.Text = format;
 
-                            string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师特写[{uvc_x}x{uvc_y}]");
-                            LogSaveOutput(uvc_pic);
-                            await Task.Delay(100);
+                                // 启动 UVC 流
+                                bool startOk;
+                                if (GetCameras("Seewo Lubo").Count > 1)
+                                {
+                                    // 多设备情况下，使用当前选中的设备路径（如果有）
+                                    string devicePath = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                }
+                                else
+                                {
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format);
+                                }
 
-                            if (item.TestCount == 1)
-                            {
-                                ori_uvc_pic = uvc_pic; next_uvc_pic = uvc_pic;
-                            }
-                            else
-                            {
-                                ori_uvc_pic = next_uvc_pic; next_uvc_pic = uvc_pic;
+                                if (!startOk)
+                                {
+                                    LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
+                                    continue; // 跳过当前格式，继续下一个
+                                }
+
+                                // 预览 10 秒
+                                await Task.Delay(10000);
+
+                                // 截图
+                                string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"教师特写[{uvc_x}x{uvc_y} {format}]");
+                                LogSaveOutput(uvc_pic);
+                                await Task.Delay(100);
+
+                                // 判断图片有效性（自对比，只要图片正常即可）
+                                bool picValid = checkPICValid(uvc_pic, uvc_pic);
+                                LogSaveOutput($"分辨率 {uvcResolution} 格式 {format} 测试结果：{(picValid ? "PASS" : "FAIL")}");
+
+                                // 关闭流
+                                uvc_streamOffBtn_Click(null, null);
+                                await Task.Delay(2000); // 等待关闭
+
+                                if (!picValid)
+                                {
+                                    item.TestResult = "FAIL";
+                                    stopTest = true;
+                                    break; // 跳出格式循环
+                                }
                             }
 
-                            bool highResolutionTeacherResult = checkPICValid(ori_uvc_pic, next_uvc_pic);
-                            LogSaveOutput($"当前高分辨率模式后 -- 教师特写[{uvc_x}x{uvc_y}]测试结果：{highResolutionTeacherResult} -- {ori_uvc_pic} : {next_uvc_pic}");
-
-                            // 结果呈现次数增加
-                            bool isSuccess = highResolutionTeacherResult;
-
-                            if (isSuccess)
-                            {
-                                item.TestCount++;
-                                item.TestResult = "PASS";
-                            }
-                            else
-                            {
-                                item.TestResult = "FAIL";
-                                stopTest = true;
-                                break;
-                            }
-
-                            // 所有流关流
-                            uvc_streamOffBtn_Click(null, null);
-                            await Task.Delay(100);
-                            LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
-                            await Task.Delay(circleTestDelayTime * 1000);
-                            if (stopTest)
-                            {
-                                LogSaveOutput("手动停止测试！");
-                                break;
-                            }
+                            if (stopTest) break;
                         }
 
                         if (stopTest)
                         {
-                            LogSaveOutput("手动停止测试！");
+                            LogSaveOutput("手动停止测试或测试失败，结束测试");
                             break;
+                        }
+                        else
+                        {
+                            // 所有分辨率和格式都通过，继续下一轮
+                            item.TestCount++;
+                            item.TestResult = "PASS";
+                            LogSaveOutput($"第{item.TestCount}轮测试完成，继续下一轮...");
+                            await Task.Delay(circleTestDelayTime * 1000);
                         }
                     }
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
                     }
-
-
                 }
             });
         }
@@ -5617,6 +5638,9 @@ namespace skdl_new_2025_test_tool
             // 获取当前uvc支持的分辨率
             List<string> uvcSupportResolutionList = getUVCCameraSupportResolution("Seewo Lubo");
 
+            // 定义要测试的编码格式
+            string[] formats = { "MJPG", "H264", "NV12" };
+
             this.BeginInvoke(async () =>
             {
                 while (true)
@@ -5631,79 +5655,77 @@ namespace skdl_new_2025_test_tool
                             input1_uvc_x.Text = uvc_x;
                             input2_uvc_y.Text = uvc_y;
 
-                            // 获取token
-                            buttonGetToken_Click(null, null);
-                            await Task.Delay(1000);
-
-                            // 每一路拉流，并比对结果
-                            // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                            if (GetCameras("Seewo Lubo").Count > 1)
+                            foreach (string format in formats)
                             {
-                                uvcStreamOnSpecificDevicePathBtn_Click(null, null);
-                            }
-                            else
-                            {
-                                uvc_streamOnBtn_Click(null, null);
-                            }
-                            await Task.Delay(5000);
-                            LogSaveOutput("预览10秒，请稍等……");
-                            await Task.Delay(10000);
+                                // 更新 UI 显示的格式
+                                input_Uvctype.Text = format;
 
-                            string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高帧率模式教师全景[{uvc_x}x{uvc_y}]");
-                            LogSaveOutput(uvc_pic);
-                            await Task.Delay(100);
+                                // 启动 UVC 流
+                                bool startOk;
+                                if (GetCameras("Seewo Lubo").Count > 1)
+                                {
+                                    // 多设备情况下，使用当前选中的设备路径（如果有）
+                                    string devicePath = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                }
+                                else
+                                {
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format);
+                                }
 
-                            if (item.TestCount == 1)
-                            {
-                                ori_uvc_pic = uvc_pic; next_uvc_pic = uvc_pic;
-                            }
-                            else
-                            {
-                                ori_uvc_pic = next_uvc_pic; next_uvc_pic = uvc_pic;
+                                if (!startOk)
+                                {
+                                    LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
+                                    LogFailType(uvcResolution, format); // 记录失败信息
+                                    continue; // 跳过当前格式，继续下一个
+                                }
+
+                                // 预览 10 秒
+                                await Task.Delay(10000);
+                                LogSaveOutput($"预览教师全景[{uvc_x}x{uvc_y} {format}]  10秒");
+
+                                // 截图
+                                string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"教师全景[{uvc_x}x{uvc_y} {format}]");
+                                LogSaveOutput(uvc_pic);
+                                await Task.Delay(100);
+
+                                // 判断图片有效性（自对比，只要图片正常即可）
+                                bool picValid = checkPICValid(uvc_pic, uvc_pic);
+                                LogSaveOutput($"分辨率 {uvcResolution} 格式 {format} 测试结果：{(picValid ? "PASS" : "FAIL")}");
+
+                                // 关闭流
+                                uvc_streamOffBtn_Click(null, null);
+                                await Task.Delay(2000); // 等待关闭
+
+                                if (!picValid)
+                                {
+                                    item.TestResult = "FAIL";
+                                    stopTest = true;
+                                    break; // 跳出格式循环
+                                }
                             }
 
-                            bool highResolutionTeacherResult = checkPICValid(ori_uvc_pic, next_uvc_pic);
-                            LogSaveOutput($"当前高帧模式后 -- 教师全景[{uvc_x}x{uvc_y}]测试结果：{highResolutionTeacherResult} -- {ori_uvc_pic} : {next_uvc_pic}");
-
-                            // 结果呈现次数增加
-                            bool isSuccess = highResolutionTeacherResult;
-
-                            if (isSuccess)
-                            {
-                                item.TestCount++;
-                                item.TestResult = "PASS";
-                            }
-                            else
-                            {
-                                item.TestResult = "FAIL";
-                                stopTest = true;
-                                break;
-                            }
-
-                            // 所有流关流
-                            uvc_streamOffBtn_Click(null, null);
-                            await Task.Delay(100);
-                            LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
-                            await Task.Delay(circleTestDelayTime * 1000);
-                            if (stopTest)
-                            {
-                                LogSaveOutput("手动停止测试！");
-                                break;
-                            }
+                            if (stopTest) break;
                         }
 
                         if (stopTest)
                         {
-                            LogSaveOutput("手动停止测试！");
+                            LogSaveOutput("手动停止测试或测试失败，结束测试");
                             break;
+                        }
+                        else
+                        {
+                            // 所有分辨率和格式都通过，继续下一轮
+                            item.TestCount++;
+                            item.TestResult = "PASS";
+                            LogSaveOutput($"第{item.TestCount}轮测试完成，继续下一轮...");
+                            await Task.Delay(circleTestDelayTime * 1000);
                         }
                     }
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
                     }
-
-
                 }
             });
         }
@@ -5712,7 +5734,6 @@ namespace skdl_new_2025_test_tool
         private async void TestCase13(TestCases item)
         {
             LogSaveOutput($"测试用例：【{item.Name}】运行中");
-            // 3. 更新测试结果
             item.TestCount++; // 次数+1
 
             string testFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testData", _currentIp.Replace(".", "_").Replace(":", "_"), item.Name);
@@ -5722,23 +5743,29 @@ namespace skdl_new_2025_test_tool
                 Directory.Delete(testFolder, true);
             }
 
-            string ori_uvc_pic, next_uvc_pic = "";
-
-            // 获取token
+            // 获取 token
             buttonGetToken_Click(null, null);
             await Task.Delay(1000);
 
-            // 设置到uvc出全景模式
+            // 设置 UVC 输出为全景流
             setUvcPanoramicBtn_Click(null, null);
             await Task.Delay(100);
 
-            // 切到对应测试模式
+            // 切换到高分辨率模式
             hiResModeBtn_Click(null, null);
             LogSaveOutput("请稍等，模式切换完成，大概50秒，等待50秒切换完成！");
             await Task.Delay(50000);
 
-            // 获取当前uvc支持的分辨率
+            // 获取当前 UVC 支持的分辨率列表
             List<string> uvcSupportResolutionList = getUVCCameraSupportResolution("Seewo Lubo");
+            if (uvcSupportResolutionList == null || uvcSupportResolutionList.Count == 0)
+            {
+                LogSaveOutput("未获取到支持的分辨率，测试终止");
+                return;
+            }
+
+            // 定义要测试的编码格式
+            string[] formats = { "MJPG", "H264", "NV12" };
 
             this.BeginInvoke(async () =>
             {
@@ -5754,81 +5781,81 @@ namespace skdl_new_2025_test_tool
                             input1_uvc_x.Text = uvc_x;
                             input2_uvc_y.Text = uvc_y;
 
-                            // 获取token
-                            buttonGetToken_Click(null, null);
-                            await Task.Delay(1000);
-
-                            // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                            if (GetCameras("Seewo Lubo").Count > 1)
+                            foreach (string format in formats)
                             {
-                                uvcStreamOnSpecificDevicePathBtn_Click(null, null);
-                            }
-                            else
-                            {
-                                uvc_streamOnBtn_Click(null, null);
-                            }
-                            await Task.Delay(5000);
-                            LogSaveOutput("预览10秒，请稍等……");
-                            await Task.Delay(10000);
+                                // 更新 UI 显示的格式
+                                input_Uvctype.Text = format;
 
-                            string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师全景[{uvc_x}x{uvc_y}]");
-                            LogSaveOutput(uvc_pic);
-                            await Task.Delay(100);
+                                // 启动 UVC 流
+                                bool startOk;
+                                if (GetCameras("Seewo Lubo").Count > 1)
+                                {
+                                    // 多设备情况下，使用当前选中的设备路径（如果有）
+                                    string devicePath = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                }
+                                else
+                                {
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format);
+                                }
 
-                            if (item.TestCount == 1)
-                            {
-                                ori_uvc_pic = uvc_pic; next_uvc_pic = uvc_pic;
-                            }
-                            else
-                            {
-                                ori_uvc_pic = next_uvc_pic; next_uvc_pic = uvc_pic;
+                                if (!startOk)
+                                {
+                                    LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
+                                    LogFailType(uvcResolution, format); // 记录失败信息
+                                    continue; // 跳过当前格式，继续下一个
+                                }
+
+                                // 预览 15 秒
+                                await Task.Delay(10000);
+
+                                // 截图
+                                string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"教师全景[{uvc_x}x{uvc_y} {format}]");
+                                LogSaveOutput(uvc_pic);
+                                await Task.Delay(100);
+
+                                // 判断图片有效性（自对比，只要图片正常即可）
+                                bool picValid = checkPICValid(uvc_pic, uvc_pic);
+                                LogSaveOutput($"分辨率 {uvcResolution} 格式 {format} 测试结果：{(picValid ? "PASS" : "FAIL")}");
+
+                                // 关闭流
+                                uvc_streamOffBtn_Click(null, null);
+                                await Task.Delay(2000); // 等待关闭
+
+                                if (!picValid)
+                                {
+                                    item.TestResult = "FAIL";
+                                    stopTest = true;
+                                    break; // 跳出格式循环
+                                }
                             }
 
-                            bool highResolutionTeacherResult = checkPICValid(ori_uvc_pic, next_uvc_pic);
-                            LogSaveOutput($"当前高分辨率模式后 -- 教师全景[{uvc_x}x{uvc_y}]测试结果：{highResolutionTeacherResult} -- {ori_uvc_pic} : {next_uvc_pic}");
-
-                            // 结果呈现次数增加
-                            bool isSuccess = highResolutionTeacherResult;
-
-                            if (isSuccess)
-                            {
-                                item.TestCount++;
-                                item.TestResult = "PASS";
-                            }
-                            else
-                            {
-                                item.TestResult = "FAIL";
-                                stopTest = true;
-                                break;
-                            }
-
-                            // 所有流关流
-                            uvc_streamOffBtn_Click(null, null);
-                            await Task.Delay(100);
-                            LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
-                            await Task.Delay(circleTestDelayTime * 1000);
-                            if (stopTest)
-                            {
-                                LogSaveOutput("手动停止测试！");
-                                break;
-                            }
+                            if (stopTest) break;
                         }
 
                         if (stopTest)
                         {
-                            LogSaveOutput("手动停止测试！");
+                            LogSaveOutput("手动停止测试或测试失败，结束测试");
                             break;
+                        }
+                        else
+                        {
+                            // 所有分辨率和格式都通过，继续下一轮
+                            item.TestCount++;
+                            item.TestResult = "PASS";
+                            LogSaveOutput($"第{item.TestCount}轮测试完成，继续下一轮...");
+                            await Task.Delay(circleTestDelayTime * 1000);
                         }
                     }
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
                     }
-
-
                 }
             });
         }
+
+        
 
 
 
@@ -8787,59 +8814,88 @@ namespace skdl_new_2025_test_tool
             }
             return cameras;
         }
+        //重新改动,暂时不需要,指定拉流默认从StartUVC
+        //private async void uvcStreamON_byDevicePath(string cameraDevicePath)
+        //{
+        //    pictureBox_uvcStream.Invalidate();
+        //    pictureBox_uvcStream.Refresh();
+        //    await Task.Delay(100);
 
-        private async void uvcStreamON_byDevicePath(string cameraDevicePath)
-        {
-            pictureBox_uvcStream.Invalidate();
-            pictureBox_uvcStream.Refresh();
-            await Task.Delay(100);
+        //    int uvc_x = int.Parse(input1_uvc_x.Text);
+        //    int uvc_y = int.Parse(input2_uvc_y.Text);
 
-            int uvc_x = int.Parse(input1_uvc_x.Text);
-            int uvc_y = int.Parse(input2_uvc_y.Text);
+        //    PreviewSize previewSize = new PreviewSize(uvc_x, uvc_y);
 
-            PreviewSize previewSize = new PreviewSize(uvc_x, uvc_y);
+        //    camera1 = new VideoCapturer();
+        //    camera1.SetPreviewSize(previewSize.Width, previewSize.Height);
+        //    camera1.SetDisplayWindow(this.pictureBox_uvcStream.Handle);
+        //    camera1.SetDisplaySize(this.pictureBox_uvcStream.Width, this.pictureBox_uvcStream.Height);
 
-            camera1 = new VideoCapturer();
-            camera1.SetPreviewSize(previewSize.Width, previewSize.Height);
-            camera1.SetDisplayWindow(this.pictureBox_uvcStream.Handle);
-            camera1.SetDisplaySize(this.pictureBox_uvcStream.Width, this.pictureBox_uvcStream.Height);
+        //    List<CameraInfo> cameras = GetCameras("Seewo Lubo");
+        //    int uvcCameraIndex = 0;
+        //    for (int i = 0; i < cameras.Count; i++)
+        //    {
+        //        Console.WriteLine($"GET: -- {cameraDevicePath} -- {cameras[i].DevicePath}");
+        //        if (cameraDevicePath == cameras[i].DevicePath)
+        //        {
+        //            Console.WriteLine($"OK: -- {cameraDevicePath} -- {cameras[i].DevicePath}");
+        //            uvcCameraIndex = i; break;
+        //        }
 
-            List<CameraInfo> cameras = GetCameras("Seewo Lubo");
-            int uvcCameraIndex = 0;
-            for (int i = 0; i < cameras.Count; i++)
-            {
-                Console.WriteLine($"GET: -- {cameraDevicePath} -- {cameras[i].DevicePath}");
-                if (cameraDevicePath == cameras[i].DevicePath)
-                {
-                    Console.WriteLine($"OK: -- {cameraDevicePath} -- {cameras[i].DevicePath}");
-                    uvcCameraIndex = i; break;
-                }
+        //    }
+        //    if(uvc_x == 3840 && uvc_y ==2160)
+        //    {
+        //        await camera1.StartupCapture(cameras[uvcCameraIndex], uvcCameraIndex, "H264", checkBoxDecodeTest.Checked);
+        //        LogSaveOutput($"正在拉取H264{uvc_x}x{uvc_y}");
+        //        await Task.Delay(10000);
+        //    }
+        //    else
+        //    {
+        //        //先关闭拉流
+        //        uvc_streamOffBtn_Click(null, null);
+        //        await Task.Delay(1000);
 
-            }
-            await camera1.StartupCapture(cameras[uvcCameraIndex], uvcCameraIndex, "MJPG", checkBoxDecodeTest.Checked);
-        }
+        //        LogSaveOutput($"正在拉取MJPG {uvc_x}x{uvc_y},预览10s");
+        //        input_Uvctype.Text = "MJPG";
+        //        await camera1.StartupCapture(cameras[uvcCameraIndex], uvcCameraIndex, "MJPG", checkBoxDecodeTest.Checked);
+        //        await Task.Delay(10000);
+        //        LogSaveOutput($"拉流完成,等待切换编码协议!");
+        //        uvc_streamOffBtn_Click(null, null);
+        //        await Task.Delay(1000);
+
+        //        LogSaveOutput($"正在拉取H264 {uvc_x}x{uvc_y},预览10s");
+        //        await camera1.StartupCapture(cameras[uvcCameraIndex], uvcCameraIndex, "H264", checkBoxDecodeTest.Checked);
+        //        await Task.Delay(10000);
+        //        LogSaveOutput($"拉流完成,等待切换编码协议!");
+        //        uvc_streamOffBtn_Click(null, null);
+        //        await Task.Delay(1000);
+
+        //        LogSaveOutput($"正在拉取NV12 {uvc_x}x{uvc_y},预览10s");
+        //        await camera1.StartupCapture(cameras[uvcCameraIndex], uvcCameraIndex, "NV12", checkBoxDecodeTest.Checked);
+        //        await Task.Delay(10000);
+        //        LogSaveOutput($"拉流完成,等待切换编码协议!");
+        //        uvc_streamOffBtn_Click(null, null);
+        //        await Task.Delay(1000);
+        //    }
+        //}
 
         private async void uvc_streamOnBtn_Click(object sender, EventArgs e)
         {
-            pictureBox_uvcStream.Invalidate();
-            pictureBox_uvcStream.Refresh();
-            await Task.Delay(100);
+            try
+            {
+                int w = int.Parse(input1_uvc_x.Text);
+                int h = int.Parse(input2_uvc_y.Text);
+                string format = input_Uvctype.Text; // 从界面获取格式
+                await StartUVC(w, h, format);
+            }
+            catch(Exception ex)
+            {
 
-            int uvc_x = int.Parse(input1_uvc_x.Text);
-            int uvc_y = int.Parse(input2_uvc_y.Text);
-
-            PreviewSize previewSize = new PreviewSize(uvc_x, uvc_y);
-
-            camera1 = new VideoCapturer();
-            camera1.SetPreviewSize(previewSize.Width, previewSize.Height);
-            camera1.SetDisplayWindow(this.pictureBox_uvcStream.Handle);
-            camera1.SetDisplaySize(this.pictureBox_uvcStream.Width, this.pictureBox_uvcStream.Height);
-
-            List<CameraInfo> cameras = GetCameras("Seewo Lubo");
-            await camera1.StartupCapture(cameras[0], 0, "MJPG", checkBoxDecodeTest.Checked);
+            }
+            
 
         }
-
+      
         private void uvc_streamOffBtn_Click(object sender, EventArgs e)
         {
             int width = pictureBox_uvcStream.Width;
@@ -11226,32 +11282,40 @@ namespace skdl_new_2025_test_tool
                         setUvcPanoramicBtn_Click(null, null);
                         await Task.Delay(100);
                         // uvc 拉流4K 0 3840x2160
-                        input1_uvc_x.Text = "3840";
-                        input2_uvc_y.Text = "2160";
+                        int width = 3840;
+                        int height = 2160;
+                        input1_uvc_x.Text = width.ToString();
+                        input2_uvc_y.Text = height.ToString();
+                        string format = "H264";
 
                         // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
+                        string devicePath = null;
                         if (GetCameras("Seewo Lubo").Count > 1)
                         {
-                            uvcStreamOnSpecificDevicePathBtn_Click(null, null);
+                            devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
                         }
-                        else
-                        {
-                            uvc_streamOnBtn_Click(null, null);
-                        }
-                        await Task.Delay(5000);
-                        LogSaveOutput("预览10秒，请稍等……");
-                        await Task.Delay(10000);
 
-                        string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{3840}x{2160}]");
+                        bool uvcStarted = await StartUVC(width, height, format, devicePath);
+                        if (!uvcStarted)
+                        {
+                            LogSaveOutput("UVC 启动失败，停止测试");
+                            break;
+                        }
+                        //等待预览12s
+                        await Task.Delay(12000);
+                        LogSaveOutput($"预览教师全景[{width}x{height} {format}]  12秒");
+
+
+                        string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{width}x{height}]");
                         LogSaveOutput(uvc_pic);
                         await Task.Delay(100);
 
                         bool highResolutionTeacherResult = checkPICValid(uvc_pic, uvc_pic);
-                        LogSaveOutput($"Logic1 -- uvc 全景主流[{3840}x{2160}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
+                        LogSaveOutput($"Logic1 -- uvc 全景[{width}x{height}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
+
                         if (!highResolutionTeacherResult)
                         {
                             LogSaveOutput($"UVC异常，停止测试");
-                            break;
                         }
 
                         // 先读取当前配置
@@ -11302,6 +11366,7 @@ namespace skdl_new_2025_test_tool
                             // logic 2 uvc 拉流1080P  1920x1080
                             input1_uvc_x.Text = "1920";
                             input2_uvc_y.Text = "1080";
+                            input_Uvctype.Text = "H264";
 
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
@@ -13531,6 +13596,9 @@ namespace skdl_new_2025_test_tool
             // 获取当前uvc支持的分辨率
             List<string> uvcSupportResolutionList = getUVCCameraSupportResolution("Seewo Lubo");
 
+            // 定义要测试的编码格式
+            string[] formats = { "MJPG", "H264", "NV12" };
+
             this.BeginInvoke(async () =>
             {
                 while (true)
@@ -13545,78 +13613,75 @@ namespace skdl_new_2025_test_tool
                             input1_uvc_x.Text = uvc_x;
                             input2_uvc_y.Text = uvc_y;
 
-                            // 获取token
-                            buttonGetToken_Click(null, null);
-                            await Task.Delay(1000);
-
-                            // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                            if (GetCameras("Seewo Lubo").Count > 1)
+                            foreach (string format in formats)
                             {
-                                uvcStreamOnSpecificDevicePathBtn_Click(null, null);
-                            }
-                            else
-                            {
-                                uvc_streamOnBtn_Click(null, null);
-                            }
-                            await Task.Delay(5000);
-                            LogSaveOutput("预览10秒，请稍等……");
-                            await Task.Delay(10000);
+                                // 更新 UI 显示的格式
+                                input_Uvctype.Text = format;
+                                // 启动 UVC 流
+                                bool startOk;
+                                if (GetCameras("Seewo Lubo").Count > 1)
+                                {
+                                    // 多设备情况下，使用当前选中的设备路径（如果有）
+                                    string devicePath = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                }
+                                else
+                                {
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format);
+                                }
 
-                            string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高帧率模式教师特写[{uvc_x}x{uvc_y}]");
-                            LogSaveOutput(uvc_pic);
-                            await Task.Delay(100);
+                                if (!startOk)
+                                {
+                                    LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
+                                    continue; // 跳过当前格式，继续下一个
+                                }
 
-                            if (item.TestCount == 1)
-                            {
-                                ori_uvc_pic = uvc_pic; next_uvc_pic = uvc_pic;
-                            }
-                            else
-                            {
-                                ori_uvc_pic = next_uvc_pic; next_uvc_pic = uvc_pic;
+                                // 预览 10 秒
+                                await Task.Delay(10000);
+                                LogSaveOutput($"预览教师全景[{uvc_x}x{uvc_y} {format}] - 10秒");
+
+                                // 截图
+                                string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"教师全景[{uvc_x}x{uvc_y} {format}]");
+                                LogSaveOutput(uvc_pic);
+                                await Task.Delay(100);
+
+                                // 判断图片有效性（自对比，只要图片正常即可）
+                                bool picValid = checkPICValid(uvc_pic, uvc_pic);
+                                LogSaveOutput($"分辨率 {uvcResolution} 格式 {format} 测试结果：{(picValid ? "PASS" : "FAIL")}");
+
+                                // 关闭流
+                                uvc_streamOffBtn_Click(null, null);
+                                await Task.Delay(2000); // 等待关闭
+
+                                if (!picValid)
+                                {
+                                    item.TestResult = "FAIL";
+                                    stopTest = true;
+                                    break; // 跳出格式循环
+                                }
                             }
 
-                            bool highResolutionTeacherResult = checkPICValid(ori_uvc_pic, next_uvc_pic);
-                            LogSaveOutput($"当前高帧模式后 -- 教师特写[{uvc_x}x{uvc_y}]测试结果：{highResolutionTeacherResult} -- {ori_uvc_pic} : {next_uvc_pic}");
-
-                            // 结果呈现次数增加
-                            bool isSuccess = highResolutionTeacherResult;
-
-                            if (isSuccess)
-                            {
-                                item.TestCount++;
-                                item.TestResult = "PASS";
-                            }
-                            else
-                            {
-                                item.TestResult = "FAIL";
-                                stopTest = true;
-                                break;
-                            }
-
-                            // 所有流关流
-                            uvc_streamOffBtn_Click(null, null);
-                            await Task.Delay(100);
-                            LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
-                            await Task.Delay(circleTestDelayTime * 1000);
-                            if (stopTest)
-                            {
-                                LogSaveOutput("手动停止测试！");
-                                break;
-                            }
+                            if (stopTest) break;
                         }
 
                         if (stopTest)
                         {
-                            LogSaveOutput("手动停止测试！");
+                            LogSaveOutput("手动停止测试或测试失败，结束测试");
                             break;
+                        }
+                        else
+                        {
+                            // 所有分辨率和格式都通过，继续下一轮
+                            item.TestCount++;
+                            item.TestResult = "PASS";
+                            LogSaveOutput($"第{item.TestCount}轮测试完成，继续下一轮...");
+                            await Task.Delay(circleTestDelayTime * 1000);
                         }
                     }
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
                     }
-
-
                 }
             });
         }
@@ -13652,6 +13717,9 @@ namespace skdl_new_2025_test_tool
             // 获取当前uvc支持的分辨率
             List<string> uvcSupportResolutionList = getUVCCameraSupportResolution("Seewo Lubo");
 
+            // 定义要测试的编码格式
+            string[] formats = { "MJPG", "H264", "NV12" };
+
             this.BeginInvoke(async () =>
             {
                 while (true)
@@ -13666,78 +13734,78 @@ namespace skdl_new_2025_test_tool
                             input1_uvc_x.Text = uvc_x;
                             input2_uvc_y.Text = uvc_y;
 
-                            // 获取token
-                            buttonGetToken_Click(null, null);
-                            await Task.Delay(1000);
-
-                            // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                            if (GetCameras("Seewo Lubo").Count > 1)
+                            foreach (string format in formats)
                             {
-                                uvcStreamOnSpecificDevicePathBtn_Click(null, null);
-                            }
-                            else
-                            {
-                                uvc_streamOnBtn_Click(null, null);
-                            }
-                            await Task.Delay(5000);
-                            LogSaveOutput("预览10秒，请稍等……");
-                            await Task.Delay(10000);
+                                // 更新 UI 显示的格式
+                                input_Uvctype.Text = format;
 
-                            string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师特写[{uvc_x}x{uvc_y}]");
-                            LogSaveOutput(uvc_pic);
-                            await Task.Delay(100);
 
-                            if (item.TestCount == 1)
-                            {
-                                ori_uvc_pic = uvc_pic; next_uvc_pic = uvc_pic;
-                            }
-                            else
-                            {
-                                ori_uvc_pic = next_uvc_pic; next_uvc_pic = uvc_pic;
+                                // 启动 UVC 流
+                                bool startOk;
+                                if (GetCameras("Seewo Lubo").Count > 1)
+                                {
+                                    // 多设备情况下，使用当前选中的设备路径（如果有）
+                                    string devicePath = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                }
+                                else
+                                {
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format);
+                                }
+
+                                if (!startOk)
+                                {
+                                    LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
+                                    LogFailType(uvcResolution, format); // 记录失败信息
+                                    continue; // 跳过当前格式，继续下一个
+                                }
+
+                                // 预览 12 秒
+                                await Task.Delay(10000);
+                                LogSaveOutput($"预览教师全景[{uvc_x}x{uvc_y} {format}] - 10秒");
+
+                                // 截图
+                                string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"教师全景[{uvc_x}x{uvc_y} {format}]");
+                                LogSaveOutput(uvc_pic);
+                                await Task.Delay(100);
+
+                                // 判断图片有效性（自对比，只要图片正常即可）
+                                bool picValid = checkPICValid(uvc_pic, uvc_pic);
+                                LogSaveOutput($"分辨率 {uvcResolution} 格式 {format} 测试结果：{(picValid ? "PASS" : "FAIL")}");
+
+                                // 关闭流
+                                uvc_streamOffBtn_Click(null, null);
+                                await Task.Delay(2000); // 等待关闭
+
+                                if (!picValid)
+                                {
+                                    item.TestResult = "FAIL";
+                                    stopTest = true;
+                                    break; // 跳出格式循环
+                                }
                             }
 
-                            bool highResolutionTeacherResult = checkPICValid(ori_uvc_pic, next_uvc_pic);
-                            LogSaveOutput($"当前高分辨率模式后 -- 教师特写[{uvc_x}x{uvc_y}]测试结果：{highResolutionTeacherResult} -- {ori_uvc_pic} : {next_uvc_pic}");
-
-                            // 结果呈现次数增加
-                            bool isSuccess = highResolutionTeacherResult;
-
-                            if (isSuccess)
-                            {
-                                item.TestCount++;
-                                item.TestResult = "PASS";
-                            }
-                            else
-                            {
-                                item.TestResult = "FAIL";
-                                stopTest = true;
-                                break;
-                            }
-
-                            // 所有流关流
-                            uvc_streamOffBtn_Click(null, null);
-                            await Task.Delay(100);
-                            LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
-                            await Task.Delay(circleTestDelayTime * 1000);
-                            if (stopTest)
-                            {
-                                LogSaveOutput("手动停止测试！");
-                                break;
-                            }
+                            if (stopTest) break;
                         }
 
                         if (stopTest)
                         {
-                            LogSaveOutput("手动停止测试！");
+                            LogSaveOutput("手动停止测试或测试失败，结束测试");
                             break;
+                        }
+                        else
+                        {
+                            // 所有分辨率和格式都通过，继续下一轮
+                            item.TestCount++;
+                            item.TestResult = "PASS";
+                            LogSaveOutput($"第{item.TestCount}轮测试完成，继续下一轮...");
+                            await Task.Delay(circleTestDelayTime * 1000);
                         }
                     }
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
                     }
-
-
                 }
             });
         }
@@ -14747,7 +14815,7 @@ namespace skdl_new_2025_test_tool
             // 3. 更新测试结果
             item.TestCount++; // 次数+1
 
-            string testFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testData", _currentIp.Replace(".", "_").Replace(":", "_"), item.Name);
+            string testFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testData", _currentIp.Replace(".", "_").Replace(":", "_"), item.Name);
             LogSaveOutput($"测试文件夹：{testFolder}");
             if (Directory.Exists(testFolder))
             {
@@ -16119,12 +16187,96 @@ namespace skdl_new_2025_test_tool
             }
 
         }
-
-        private void uvcStreamOnSpecificDevicePathBtn_Click(object sender, EventArgs e)
+        
+        
+        //添加UVC失败拉流的类型,保存成日志
+        private void LogFailType(string resolution, string format)
         {
             try
             {
-                uvcStreamON_byDevicePath(input_curUvcDevicePath.Text);
+                string ipSafe = _currentIp?.Replace(".", "_") ?? "unknown";
+                string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testData", ipSafe);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                string failFilePath = Path.Combine(dir, "Failtype.txt");
+                string line = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - 分辨率: {resolution}, 格式: {format} 启动失败";
+                lock (_failFileLock)
+                {
+                    File.AppendAllText(failFilePath, line + Environment.NewLine);
+                }
+            }
+            catch { /* 忽略写入错误 */ }
+        }
+        // 改动 :添加的私有方法,启动 UVC 流,适用手动拉流和指定path拉流
+        private async Task<bool> StartUVC(int width, int height, string format, string devicePath = null)
+        {
+            // 如果已有摄像头实例，先释放
+            if (camera1 != null)
+            {
+                camera1.Dispose();
+                camera1 = null;
+            }
+
+            // 刷新 PictureBox
+            pictureBox_uvcStream.Invalidate();
+            pictureBox_uvcStream.Refresh();
+            await Task.Delay(100);
+
+            // 创建新实例并设置参数
+            camera1 = new VideoCapturer();
+            camera1.SetPreviewSize(width, height);
+            camera1.SetDisplayWindow(pictureBox_uvcStream.Handle);
+            camera1.SetDisplaySize(pictureBox_uvcStream.Width, pictureBox_uvcStream.Height);
+
+            // 获取设备列表
+            List<CameraInfo> cameras = GetCameras("Seewo Lubo");
+            if (cameras.Count == 0)
+            {
+                LogSaveOutput("未找到名称为 'Seewo Lubo' 的摄像头");
+                return false;
+            }
+
+            int index = 0;
+            if (!string.IsNullOrEmpty(devicePath))
+            {
+                for (int i = 0; i < cameras.Count; i++)
+                {
+                    if (cameras[i].DevicePath == devicePath)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+
+            // 启动捕获
+            bool success = await camera1.StartupCapture(cameras[index], index, format, checkBoxDecodeTest.Checked);
+            if (success)
+            {
+                LogSaveOutput($"拉流成功: {width}x{height} 格式 {format}");
+            }
+            else
+            {
+                LogSaveOutput($"拉流失败: {width}x{height} 格式 {format}");
+                camera1?.Dispose();
+                camera1 = null;
+            }
+            return success;
+        }
+
+        private async void uvcStreamOnSpecificDevicePathBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //改动:使用私有方法
+                //uvcStreamON_byDevicePath(input_curUvcDevicePath.Text);
+                int w = int.Parse(input1_uvc_x.Text);
+                int h = int.Parse(input2_uvc_y.Text);
+                string format = input_Uvctype.Text;
+                string devicePath = input_curUvcDevicePath.Text;
+                await StartUVC(w, h, format, devicePath);
+
             }
             catch (Exception ex)
             {
