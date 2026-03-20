@@ -715,7 +715,7 @@ namespace skdl_new_2025_test_tool
             }
         }
 
-        // 判断图片是否正常 （是否损坏、是否能被正确解码等） ---- CGT
+        // 判断图片是否正常 （是否损坏、是否能被正确解码等） ---- CGT change this
         public static bool IsImageValid(string filePath)
         {
             if (!File.Exists(filePath))
