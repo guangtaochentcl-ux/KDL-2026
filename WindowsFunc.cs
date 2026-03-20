@@ -714,7 +714,7 @@ namespace skdl_new_2025_test_tool
                 }
             }
         }
-        //Kd1111111
+        //KD123456789
 
         // 判断图片是否正常 （是否损坏、是否能被正确解码等） ---- CGT 0000000000000
         public static bool IsImageValid(string filePath)
