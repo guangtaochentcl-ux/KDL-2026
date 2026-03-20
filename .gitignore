@@ -85,3 +85,5 @@ coverage/
 *.bin
 *.dll
 *.exe
+*.v2
+*.v2
