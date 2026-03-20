@@ -1985,15 +1985,6 @@
             "related": ".xml"
           }
         }
-      },
-      "VideoCapture_uvc/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/VideoCapture_uvc.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/VideoCapture_uvc.dll": {}
-        }
       }
     }
   },
@@ -4325,11 +4316,6 @@
         "system.threading.tasks.4.3.0.nupkg.sha512",
         "system.threading.tasks.nuspec"
       ]
-    },
-    "VideoCapture_uvc/1.0.0": {
-      "type": "project",
-      "path": "../../SKDL-new-2025-0402/VideoCapture/VideoCapture_uvc.csproj",
-      "msbuildProject": "../../SKDL-new-2025-0402/VideoCapture/VideoCapture_uvc.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4337,6 +4323,7 @@
       "AForge.Video.DirectShow >= 2.2.5",
       "AntdUI >= 2.2.3",
       "ClosedXML >= 0.105.0",
+      "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj",
       "Emgu.CV >= 4.12.0.5764",
       "Emgu.CV.runtime.windows >= 4.12.0.5764",
       "Newtonsoft.Json >= 13.0.4",
@@ -4346,24 +4333,28 @@
       "Selenium.Support >= 4.8.0",
       "Selenium.WebDriver >= 4.8.0",
       "System.IO.Ports >= 10.0.1",
-      "System.Management >= 10.0.1",
-      "VideoCapture_uvc >= 1.0.0"
+      "System.Management >= 10.0.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\KUANGDI\\.nuget\\packages\\": {}
+    "C:\\Users\\Administrator\\.nuget\\packages\\": {},
+    "D:\\MicrosoftVisualStudioBufferShared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\forgit\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+      "projectUniqueName": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
       "projectName": "skdl-new-2025-test-tool",
-      "projectPath": "D:\\forgit\\KDL-2026\\skdl-new-2025-test-tool.csproj",
-      "packagesPath": "C:\\Users\\KUANGDI\\.nuget\\packages\\",
-      "outputPath": "D:\\forgit\\KDL-2026\\obj\\",
+      "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+      "outputPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "D:\\MicrosoftVisualStudioBufferShared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\KUANGDI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4377,8 +4368,8 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "D:\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj": {
-              "projectPath": "D:\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj"
+            "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj": {
+              "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj"
             }
           }
         }
@@ -4393,7 +4384,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -4463,24 +4454,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.23, 8.0.23]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.23, 8.0.23]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.23, 8.0.23]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.23, 8.0.23]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -4489,11 +4462,20 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
   "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "找不到项目“D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj”。请检查项目引用是否有效以及项目文件是否存在。",
+      "libraryId": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj",
+      "targetGraphs": [
+        "net8.0-windows7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",
