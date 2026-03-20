@@ -5,7 +5,11 @@
 *.userosscache
 *.sln.docstates
 *.sln.startup
-
+# 忽略编译输出目录
+[Oo]bj/
+[Bb]in/
+# 忽略缓存/临时文件
+*.cache
 # VS 工作区/缓存目录
 .vs/
 .vscode/
