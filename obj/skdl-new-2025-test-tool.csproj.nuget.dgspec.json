@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj": {}
+    "D:\\forgit\\KDL-2026\\skdl-new-2025-test-tool.csproj": {}
   },
   "projects": {
-    "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj": {
+    "D:\\forgit\\KDL-2026\\skdl-new-2025-test-tool.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+        "projectUniqueName": "D:\\forgit\\KDL-2026\\skdl-new-2025-test-tool.csproj",
         "projectName": "skdl-new-2025-test-tool",
-        "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\skdl-new-2025-test-tool.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\obj\\",
+        "projectPath": "D:\\forgit\\KDL-2026\\skdl-new-2025-test-tool.csproj",
+        "packagesPath": "C:\\Users\\KUANGDI\\.nuget\\packages\\",
+        "outputPath": "D:\\forgit\\KDL-2026\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\MicrosoftVisualStudioBufferShared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\KUANGDI\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -32,8 +28,8 @@
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj": {
-                "projectPath": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj"
+              "D:\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj": {
+                "projectPath": "D:\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj"
               }
             }
           }
@@ -48,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -118,6 +114,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.23, 8.0.23]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.23, 8.0.23]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.23, 8.0.23]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.23, 8.0.23]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -126,15 +140,15 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj": {
+    "D:\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj": {
       "restore": {
-        "projectUniqueName": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj",
+        "projectUniqueName": "D:\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj",
         "projectName": "VideoCapture_uvc",
-        "projectPath": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj",
+        "projectPath": "D:\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj",
         "UsingMicrosoftNETSdk": false,
         "frameworks": {
           "net48": {
