@@ -1,1 +1,81 @@
-*.vsidx
+# ==================== Visual Studio 核心忽略 ====================
+# VS 解决方案/项目配置文件（用户自定义配置）
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln.startup
+
+# VS 工作区/缓存目录
+.vs/
+.vscode/
+.idea/
+
+# ==================== 编译产物 ====================
+# 输出目录（Debug/Release）
+bin/
+obj/
+# 发布目录
+publish/
+dist/
+# 临时编译文件
+*.tmp
+*.temp
+*.bak
+*.cache
+*.pdb
+*.idb
+*.ilk
+*.log
+*.manifest
+*.resources
+*.pdp
+*.vspscc
+*.vssscc
+*.scc
+
+# ==================== WinForm 专属忽略 ====================
+# 资源文件临时产物
+*.resx~
+*.Designer.cs~
+# 本地化文件
+*.xlf
+*.xlf.config
+# 窗体布局缓存
+*.layout
+
+# ==================== 其他环境文件 ====================
+# NuGet 缓存
+packages/
+# 测试报告
+TestResults/
+# 代码覆盖率报告
+coverage/
+# 二进制文件
+*.bin
+*.dll
+*.exe
+*.lib
+*.so
+*.dylib
+# 元数据/缓存
+*.metadata
+*.sdf
+*.opensdf
+# 日志文件
+*.log
+*.txt.log
+# 压缩包
+*.zip
+*.7z
+*.rar
+
+# ==================== 可选忽略（根据需求调整） ====================
+# 如果不需要上传测试文件，可取消注释
+# Tests/
+# *.Tests.cs
+
+# 如果不需要上传文档，可取消注释
+# docs/
+# *.md
+# *.pdf

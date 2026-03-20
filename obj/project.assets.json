@@ -1985,15 +1985,6 @@
             "related": ".xml"
           }
         }
-      },
-      "VideoCapture_uvc/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/VideoCapture_uvc.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/VideoCapture_uvc.dll": {}
-        }
       }
     }
   },
@@ -4325,11 +4316,6 @@
         "system.threading.tasks.4.3.0.nupkg.sha512",
         "system.threading.tasks.nuspec"
       ]
-    },
-    "VideoCapture_uvc/1.0.0": {
-      "type": "project",
-      "path": "../../../../SSY0517/VideoCapture/VideoCapture_uvc.csproj",
-      "msbuildProject": "../../../../SSY0517/VideoCapture/VideoCapture_uvc.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4337,6 +4323,7 @@
       "AForge.Video.DirectShow >= 2.2.5",
       "AntdUI >= 2.2.3",
       "ClosedXML >= 0.105.0",
+      "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj",
       "Emgu.CV >= 4.12.0.5764",
       "Emgu.CV.runtime.windows >= 4.12.0.5764",
       "Newtonsoft.Json >= 13.0.4",
@@ -4346,8 +4333,7 @@
       "Selenium.Support >= 4.8.0",
       "Selenium.WebDriver >= 4.8.0",
       "System.IO.Ports >= 10.0.1",
-      "System.Management >= 10.0.1",
-      "VideoCapture_uvc >= 1.0.0"
+      "System.Management >= 10.0.1"
     ]
   },
   "packageFolders": {
@@ -4382,8 +4368,8 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj": {
-              "projectPath": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj"
+            "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj": {
+              "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj"
             }
           }
         }
@@ -4481,6 +4467,15 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "找不到项目“D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj”。请检查项目引用是否有效以及项目文件是否存在。",
+      "libraryId": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj",
+      "targetGraphs": [
+        "net8.0-windows7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

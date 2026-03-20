@@ -290,6 +290,7 @@
             divider2 = new AntdUI.Divider();
             txtBoxRcv = new AntdUI.Chat.ChatList();
             divider1 = new AntdUI.Divider();
+            input_Uvctype = new AntdUI.Input();
             pageHeader1.SuspendLayout();
             panel1.SuspendLayout();
             tabControl3.SuspendLayout();
@@ -357,11 +358,11 @@
             pageHeader1.Icon = (Image)resources.GetObject("pageHeader1.Icon");
             pageHeader1.IconRatio = 4F;
             pageHeader1.Location = new Point(0, 0);
-            pageHeader1.Margin = new Padding(4);
+            pageHeader1.Margin = new Padding(2, 2, 2, 2);
             pageHeader1.Name = "pageHeader1";
             pageHeader1.ShowButton = true;
             pageHeader1.ShowIcon = true;
-            pageHeader1.Size = new Size(1921, 52);
+            pageHeader1.Size = new Size(960, 29);
             pageHeader1.SubFont = new Font("等线", 8F);
             pageHeader1.SubText = "珠海视熙科技";
             pageHeader1.TabIndex = 75;
@@ -376,9 +377,10 @@
             openCurFolderBtn.Ghost = true;
             openCurFolderBtn.Icon = Properties.Resources.folder;
             openCurFolderBtn.IconRatio = 1.1F;
-            openCurFolderBtn.Location = new Point(1566, 0);
+            openCurFolderBtn.Location = new Point(782, 0);
+            openCurFolderBtn.Margin = new Padding(2, 2, 2, 2);
             openCurFolderBtn.Name = "openCurFolderBtn";
-            openCurFolderBtn.Size = new Size(67, 52);
+            openCurFolderBtn.Size = new Size(34, 29);
             openCurFolderBtn.TabIndex = 11;
             openCurFolderBtn.Click += openCurFolderBtn_Click;
             // 
@@ -386,10 +388,10 @@
             // 
             labelTime1.Font = new Font("等线", 10F);
             labelTime1.ForeColor = Color.Red;
-            labelTime1.Location = new Point(766, 4);
-            labelTime1.Margin = new Padding(4);
+            labelTime1.Location = new Point(383, 2);
+            labelTime1.Margin = new Padding(2, 2, 2, 2);
             labelTime1.Name = "labelTime1";
-            labelTime1.Size = new Size(196, 44);
+            labelTime1.Size = new Size(98, 24);
             labelTime1.TabIndex = 10;
             labelTime1.Text = "labelTime1";
             // 
@@ -409,9 +411,10 @@
             panel1.Controls.Add(divider1);
             panel1.Dock = DockStyle.Fill;
             panel1.Font = new Font("等线", 7F);
-            panel1.Location = new Point(0, 52);
+            panel1.Location = new Point(0, 29);
+            panel1.Margin = new Padding(2, 2, 2, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1921, 1028);
+            panel1.Size = new Size(960, 563);
             panel1.TabIndex = 76;
             panel1.Text = "panel1";
             // 
@@ -424,10 +427,11 @@
             tabControl3.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl3.Font = new Font("等线", 8F);
             tabControl3.ItemSize = new Size(800, 36);
-            tabControl3.Location = new Point(11, 601);
+            tabControl3.Location = new Point(6, 330);
+            tabControl3.Margin = new Padding(2, 2, 2, 2);
             tabControl3.Name = "tabControl3";
             tabControl3.SelectedIndex = 0;
-            tabControl3.Size = new Size(1896, 415);
+            tabControl3.Size = new Size(948, 228);
             tabControl3.TabIndex = 159;
             // 
             // tabPage7
@@ -446,18 +450,19 @@
             tabPage7.Controls.Add(groupBox7);
             tabPage7.Controls.Add(groupBox6);
             tabPage7.Location = new Point(4, 40);
+            tabPage7.Margin = new Padding(2, 2, 2, 2);
             tabPage7.Name = "tabPage7";
-            tabPage7.Size = new Size(1888, 371);
+            tabPage7.Size = new Size(940, 184);
             tabPage7.TabIndex = 2;
             tabPage7.Text = "视频配置组合测试";
             // 
             // input_gb2818_4
             // 
-            input_gb2818_4.Location = new Point(9, 510);
-            input_gb2818_4.Margin = new Padding(2);
+            input_gb2818_4.Location = new Point(4, 280);
+            input_gb2818_4.Margin = new Padding(1, 1, 1, 1);
             input_gb2818_4.Name = "input_gb2818_4";
             input_gb2818_4.PlaceholderText = "填入待测gbs地址";
-            input_gb2818_4.Size = new Size(528, 53);
+            input_gb2818_4.Size = new Size(264, 29);
             input_gb2818_4.SuffixFore = Color.FromArgb(77, 177, 77);
             input_gb2818_4.SuffixText = "全景辅码流";
             input_gb2818_4.TabIndex = 201;
@@ -465,11 +470,11 @@
             // 
             // input_gb2818_3
             // 
-            input_gb2818_3.Location = new Point(9, 463);
-            input_gb2818_3.Margin = new Padding(2);
+            input_gb2818_3.Location = new Point(4, 254);
+            input_gb2818_3.Margin = new Padding(1, 1, 1, 1);
             input_gb2818_3.Name = "input_gb2818_3";
             input_gb2818_3.PlaceholderText = "填入待测gbs地址";
-            input_gb2818_3.Size = new Size(528, 53);
+            input_gb2818_3.Size = new Size(264, 29);
             input_gb2818_3.SuffixFore = Color.FromArgb(77, 177, 77);
             input_gb2818_3.SuffixText = "特写辅码流";
             input_gb2818_3.TabIndex = 200;
@@ -477,11 +482,11 @@
             // 
             // input_gb2818_2
             // 
-            input_gb2818_2.Location = new Point(9, 416);
-            input_gb2818_2.Margin = new Padding(2);
+            input_gb2818_2.Location = new Point(4, 228);
+            input_gb2818_2.Margin = new Padding(1, 1, 1, 1);
             input_gb2818_2.Name = "input_gb2818_2";
             input_gb2818_2.PlaceholderText = "填入待测gbs地址";
-            input_gb2818_2.Size = new Size(528, 53);
+            input_gb2818_2.Size = new Size(264, 29);
             input_gb2818_2.SuffixFore = Color.FromArgb(77, 177, 77);
             input_gb2818_2.SuffixText = "辅码流/全景主码流地址";
             input_gb2818_2.TabIndex = 199;
@@ -489,11 +494,11 @@
             // 
             // input_gb2818_1
             // 
-            input_gb2818_1.Location = new Point(9, 367);
-            input_gb2818_1.Margin = new Padding(2);
+            input_gb2818_1.Location = new Point(4, 201);
+            input_gb2818_1.Margin = new Padding(1, 1, 1, 1);
             input_gb2818_1.Name = "input_gb2818_1";
             input_gb2818_1.PlaceholderText = "填入待测gbs地址";
-            input_gb2818_1.Size = new Size(528, 53);
+            input_gb2818_1.Size = new Size(264, 29);
             input_gb2818_1.SuffixFore = Color.FromArgb(77, 177, 77);
             input_gb2818_1.SuffixText = "主码流/特写主码流地址";
             input_gb2818_1.TabIndex = 198;
@@ -501,9 +506,10 @@
             // 
             // recoverDefaultRTMPConfigBtn
             // 
-            recoverDefaultRTMPConfigBtn.Location = new Point(554, 431);
+            recoverDefaultRTMPConfigBtn.Location = new Point(277, 236);
+            recoverDefaultRTMPConfigBtn.Margin = new Padding(2, 2, 2, 2);
             recoverDefaultRTMPConfigBtn.Name = "recoverDefaultRTMPConfigBtn";
-            recoverDefaultRTMPConfigBtn.Size = new Size(234, 51);
+            recoverDefaultRTMPConfigBtn.Size = new Size(117, 28);
             recoverDefaultRTMPConfigBtn.TabIndex = 197;
             recoverDefaultRTMPConfigBtn.Text = "恢复默认RTMP配置";
             recoverDefaultRTMPConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -511,9 +517,10 @@
             // 
             // changeRTMPConfigBtn
             // 
-            changeRTMPConfigBtn.Location = new Point(794, 374);
+            changeRTMPConfigBtn.Location = new Point(397, 205);
+            changeRTMPConfigBtn.Margin = new Padding(2, 2, 2, 2);
             changeRTMPConfigBtn.Name = "changeRTMPConfigBtn";
-            changeRTMPConfigBtn.Size = new Size(234, 51);
+            changeRTMPConfigBtn.Size = new Size(117, 28);
             changeRTMPConfigBtn.TabIndex = 196;
             changeRTMPConfigBtn.Text = "修改RTMP配置";
             changeRTMPConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -521,9 +528,10 @@
             // 
             // getCurrentRTMPConfigBtn
             // 
-            getCurrentRTMPConfigBtn.Location = new Point(554, 374);
+            getCurrentRTMPConfigBtn.Location = new Point(277, 205);
+            getCurrentRTMPConfigBtn.Margin = new Padding(2, 2, 2, 2);
             getCurrentRTMPConfigBtn.Name = "getCurrentRTMPConfigBtn";
-            getCurrentRTMPConfigBtn.Size = new Size(234, 51);
+            getCurrentRTMPConfigBtn.Size = new Size(117, 28);
             getCurrentRTMPConfigBtn.TabIndex = 195;
             getCurrentRTMPConfigBtn.Text = "获取当前RTMP配置";
             getCurrentRTMPConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -531,11 +539,11 @@
             // 
             // input_Rtmp1
             // 
-            input_Rtmp1.Location = new Point(545, 316);
-            input_Rtmp1.Margin = new Padding(2);
+            input_Rtmp1.Location = new Point(272, 173);
+            input_Rtmp1.Margin = new Padding(1, 1, 1, 1);
             input_Rtmp1.Name = "input_Rtmp1";
             input_Rtmp1.PlaceholderText = "填入待测rtmp地址";
-            input_Rtmp1.Size = new Size(458, 53);
+            input_Rtmp1.Size = new Size(229, 29);
             input_Rtmp1.SuffixFore = Color.FromArgb(77, 177, 77);
             input_Rtmp1.SuffixText = "rtmp";
             input_Rtmp1.TabIndex = 194;
@@ -563,26 +571,30 @@
             groupBox1.Controls.Add(testResolutionXInput);
             groupBox1.Controls.Add(testProtocolInput);
             groupBox1.Controls.Add(testStreamInput);
-            groupBox1.Location = new Point(1224, 7);
+            groupBox1.Location = new Point(612, 4);
+            groupBox1.Margin = new Padding(2, 2, 2, 2);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(619, 556);
+            groupBox1.Padding = new Padding(2, 2, 2, 2);
+            groupBox1.Size = new Size(310, 305);
             groupBox1.TabIndex = 180;
             groupBox1.TabStop = false;
             groupBox1.Text = "测试配置";
             // 
             // skipTestContentCheckBox
             // 
-            skipTestContentCheckBox.Location = new Point(327, 351);
+            skipTestContentCheckBox.Location = new Point(164, 192);
+            skipTestContentCheckBox.Margin = new Padding(2, 2, 2, 2);
             skipTestContentCheckBox.Name = "skipTestContentCheckBox";
-            skipTestContentCheckBox.Size = new Size(187, 39);
+            skipTestContentCheckBox.Size = new Size(94, 21);
             skipTestContentCheckBox.TabIndex = 203;
             skipTestContentCheckBox.Text = "跳过已测内容";
             // 
             // checkWebPreviewSuccessBtn
             // 
-            checkWebPreviewSuccessBtn.Location = new Point(9, 488);
+            checkWebPreviewSuccessBtn.Location = new Point(4, 268);
+            checkWebPreviewSuccessBtn.Margin = new Padding(2, 2, 2, 2);
             checkWebPreviewSuccessBtn.Name = "checkWebPreviewSuccessBtn";
-            checkWebPreviewSuccessBtn.Size = new Size(541, 51);
+            checkWebPreviewSuccessBtn.Size = new Size(270, 28);
             checkWebPreviewSuccessBtn.TabIndex = 202;
             checkWebPreviewSuccessBtn.Text = "检测web端是否正常预览";
             checkWebPreviewSuccessBtn.Type = AntdUI.TTypeMini.Primary;
@@ -592,18 +604,20 @@
             // 
             failLabel.AutoSize = true;
             failLabel.ForeColor = Color.Red;
-            failLabel.Location = new Point(432, 287);
+            failLabel.Location = new Point(216, 157);
+            failLabel.Margin = new Padding(2, 0, 2, 0);
             failLabel.Name = "failLabel";
-            failLabel.Size = new Size(22, 23);
+            failLabel.Size = new Size(11, 12);
             failLabel.TabIndex = 199;
             failLabel.Text = "0";
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(323, 287);
+            label9.Location = new Point(162, 157);
+            label9.Margin = new Padding(2, 0, 2, 0);
             label9.Name = "label9";
-            label9.Size = new Size(93, 23);
+            label9.Size = new Size(47, 12);
             label9.TabIndex = 198;
             label9.Text = "FAIL数：";
             // 
@@ -611,46 +625,50 @@
             // 
             passLabel.AutoSize = true;
             passLabel.ForeColor = Color.FromArgb(0, 192, 0);
-            passLabel.Location = new Point(432, 257);
+            passLabel.Location = new Point(216, 141);
+            passLabel.Margin = new Padding(2, 0, 2, 0);
             passLabel.Name = "passLabel";
-            passLabel.Size = new Size(22, 23);
+            passLabel.Size = new Size(11, 12);
             passLabel.TabIndex = 197;
             passLabel.Text = "0";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(323, 257);
+            label7.Location = new Point(162, 141);
+            label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
-            label7.Size = new Size(102, 23);
+            label7.Size = new Size(52, 12);
             label7.TabIndex = 196;
             label7.Text = "PASS数：";
             // 
             // testCountLabel
             // 
             testCountLabel.AutoSize = true;
-            testCountLabel.Location = new Point(474, 225);
+            testCountLabel.Location = new Point(237, 123);
+            testCountLabel.Margin = new Padding(2, 0, 2, 0);
             testCountLabel.Name = "testCountLabel";
-            testCountLabel.Size = new Size(22, 23);
+            testCountLabel.Size = new Size(11, 12);
             testCountLabel.TabIndex = 195;
             testCountLabel.Text = "0";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(323, 225);
+            label5.Location = new Point(162, 123);
+            label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(142, 23);
+            label5.Size = new Size(71, 12);
             label5.TabIndex = 194;
             label5.Text = "测试总行数：";
             // 
             // videoReachTestBtn
             // 
             videoReachTestBtn.Font = new Font("Microsoft YaHei UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            videoReachTestBtn.Location = new Point(304, 75);
-            videoReachTestBtn.Margin = new Padding(4);
+            videoReachTestBtn.Location = new Point(152, 41);
+            videoReachTestBtn.Margin = new Padding(2, 2, 2, 2);
             videoReachTestBtn.Name = "videoReachTestBtn";
-            videoReachTestBtn.Size = new Size(308, 146);
+            videoReachTestBtn.Size = new Size(154, 80);
             videoReachTestBtn.TabIndex = 193;
             videoReachTestBtn.Text = "开始测试";
             videoReachTestBtn.Type = AntdUI.TTypeMini.Success;
@@ -658,11 +676,11 @@
             // 
             // testBRControlInput
             // 
-            testBRControlInput.Location = new Point(5, 218);
-            testBRControlInput.Margin = new Padding(2);
+            testBRControlInput.Location = new Point(2, 120);
+            testBRControlInput.Margin = new Padding(1, 1, 1, 1);
             testBRControlInput.Name = "testBRControlInput";
             testBRControlInput.PlaceholderText = "rowNumber";
-            testBRControlInput.Size = new Size(293, 50);
+            testBRControlInput.Size = new Size(146, 27);
             testBRControlInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testBRControlInput.SuffixText = "码率控制";
             testBRControlInput.TabIndex = 192;
@@ -674,55 +692,60 @@
             stackPanel9.Controls.Add(checkbox_GB2818);
             stackPanel9.Controls.Add(checkbox_RTMP);
             stackPanel9.Controls.Add(checkbox_RTSP);
-            stackPanel9.Location = new Point(6, 416);
+            stackPanel9.Location = new Point(3, 228);
+            stackPanel9.Margin = new Padding(2, 2, 2, 2);
             stackPanel9.Name = "stackPanel9";
-            stackPanel9.Size = new Size(544, 46);
+            stackPanel9.Size = new Size(272, 25);
             stackPanel9.TabIndex = 181;
             stackPanel9.Text = "stackPanel9";
             // 
             // checkbox_Web
             // 
             checkbox_Web.Checked = true;
-            checkbox_Web.Location = new Point(408, 3);
+            checkbox_Web.Location = new Point(206, 2);
+            checkbox_Web.Margin = new Padding(2, 2, 2, 2);
             checkbox_Web.Name = "checkbox_Web";
-            checkbox_Web.Size = new Size(129, 40);
+            checkbox_Web.Size = new Size(64, 21);
             checkbox_Web.TabIndex = 195;
             checkbox_Web.Text = "Web";
             // 
             // checkbox_GB2818
             // 
             checkbox_GB2818.Checked = true;
-            checkbox_GB2818.Location = new Point(273, 3);
+            checkbox_GB2818.Location = new Point(138, 2);
+            checkbox_GB2818.Margin = new Padding(2, 2, 2, 2);
             checkbox_GB2818.Name = "checkbox_GB2818";
-            checkbox_GB2818.Size = new Size(129, 40);
+            checkbox_GB2818.Size = new Size(64, 21);
             checkbox_GB2818.TabIndex = 194;
             checkbox_GB2818.Text = "GB2818";
             // 
             // checkbox_RTMP
             // 
             checkbox_RTMP.Checked = true;
-            checkbox_RTMP.Location = new Point(138, 3);
+            checkbox_RTMP.Location = new Point(70, 2);
+            checkbox_RTMP.Margin = new Padding(2, 2, 2, 2);
             checkbox_RTMP.Name = "checkbox_RTMP";
-            checkbox_RTMP.Size = new Size(129, 40);
+            checkbox_RTMP.Size = new Size(64, 21);
             checkbox_RTMP.TabIndex = 193;
             checkbox_RTMP.Text = "RTMP";
             // 
             // checkbox_RTSP
             // 
             checkbox_RTSP.Checked = true;
-            checkbox_RTSP.Location = new Point(3, 3);
+            checkbox_RTSP.Location = new Point(2, 2);
+            checkbox_RTSP.Margin = new Padding(2, 2, 2, 2);
             checkbox_RTSP.Name = "checkbox_RTSP";
-            checkbox_RTSP.Size = new Size(129, 40);
+            checkbox_RTSP.Size = new Size(64, 21);
             checkbox_RTSP.TabIndex = 192;
             checkbox_RTSP.Text = "RTSP";
             // 
             // testiGopInput
             // 
-            testiGopInput.Location = new Point(5, 360);
-            testiGopInput.Margin = new Padding(2);
+            testiGopInput.Location = new Point(2, 197);
+            testiGopInput.Margin = new Padding(1, 1, 1, 1);
             testiGopInput.Name = "testiGopInput";
             testiGopInput.PlaceholderText = "rowNumber";
-            testiGopInput.Size = new Size(293, 50);
+            testiGopInput.Size = new Size(146, 27);
             testiGopInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testiGopInput.SuffixText = "I帧间隔";
             testiGopInput.TabIndex = 191;
@@ -731,10 +754,10 @@
             // modifiedTestConfigBtn
             // 
             modifiedTestConfigBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            modifiedTestConfigBtn.Location = new Point(432, 18);
-            modifiedTestConfigBtn.Margin = new Padding(4);
+            modifiedTestConfigBtn.Location = new Point(216, 10);
+            modifiedTestConfigBtn.Margin = new Padding(2, 2, 2, 2);
             modifiedTestConfigBtn.Name = "modifiedTestConfigBtn";
-            modifiedTestConfigBtn.Size = new Size(129, 63);
+            modifiedTestConfigBtn.Size = new Size(64, 35);
             modifiedTestConfigBtn.TabIndex = 190;
             modifiedTestConfigBtn.Text = "修改配置";
             modifiedTestConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -743,10 +766,10 @@
             // recoverDefaultConfigBtn
             // 
             recoverDefaultConfigBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            recoverDefaultConfigBtn.Location = new Point(304, 16);
-            recoverDefaultConfigBtn.Margin = new Padding(4);
+            recoverDefaultConfigBtn.Location = new Point(152, 9);
+            recoverDefaultConfigBtn.Margin = new Padding(2, 2, 2, 2);
             recoverDefaultConfigBtn.Name = "recoverDefaultConfigBtn";
-            recoverDefaultConfigBtn.Size = new Size(129, 63);
+            recoverDefaultConfigBtn.Size = new Size(64, 35);
             recoverDefaultConfigBtn.TabIndex = 189;
             recoverDefaultConfigBtn.Text = "恢复配置";
             recoverDefaultConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -754,11 +777,11 @@
             // 
             // testFPSInput
             // 
-            testFPSInput.Location = new Point(5, 312);
-            testFPSInput.Margin = new Padding(2);
+            testFPSInput.Location = new Point(2, 171);
+            testFPSInput.Margin = new Padding(1, 1, 1, 1);
             testFPSInput.Name = "testFPSInput";
             testFPSInput.PlaceholderText = "rowNumber";
-            testFPSInput.Size = new Size(293, 50);
+            testFPSInput.Size = new Size(146, 27);
             testFPSInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testFPSInput.SuffixText = "测试帧率";
             testFPSInput.TabIndex = 188;
@@ -766,11 +789,11 @@
             // 
             // testBitRateInput
             // 
-            testBitRateInput.Location = new Point(5, 267);
-            testBitRateInput.Margin = new Padding(2);
+            testBitRateInput.Location = new Point(2, 146);
+            testBitRateInput.Margin = new Padding(1, 1, 1, 1);
             testBitRateInput.Name = "testBitRateInput";
             testBitRateInput.PlaceholderText = "rowNumber";
-            testBitRateInput.Size = new Size(293, 50);
+            testBitRateInput.Size = new Size(146, 27);
             testBitRateInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testBitRateInput.SuffixText = "测试码率";
             testBitRateInput.TabIndex = 187;
@@ -778,11 +801,11 @@
             // 
             // testResolutionYInput
             // 
-            testResolutionYInput.Location = new Point(5, 166);
-            testResolutionYInput.Margin = new Padding(2);
+            testResolutionYInput.Location = new Point(2, 91);
+            testResolutionYInput.Margin = new Padding(1, 1, 1, 1);
             testResolutionYInput.Name = "testResolutionYInput";
             testResolutionYInput.PlaceholderText = "rowNumber";
-            testResolutionYInput.Size = new Size(293, 50);
+            testResolutionYInput.Size = new Size(146, 27);
             testResolutionYInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testResolutionYInput.SuffixText = "测试分辨率y";
             testResolutionYInput.TabIndex = 186;
@@ -790,11 +813,11 @@
             // 
             // testResolutionXInput
             // 
-            testResolutionXInput.Location = new Point(5, 118);
-            testResolutionXInput.Margin = new Padding(2);
+            testResolutionXInput.Location = new Point(2, 65);
+            testResolutionXInput.Margin = new Padding(1, 1, 1, 1);
             testResolutionXInput.Name = "testResolutionXInput";
             testResolutionXInput.PlaceholderText = "rowNumber";
-            testResolutionXInput.Size = new Size(293, 50);
+            testResolutionXInput.Size = new Size(146, 27);
             testResolutionXInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testResolutionXInput.SuffixText = "测试分辨率x";
             testResolutionXInput.TabIndex = 185;
@@ -802,11 +825,11 @@
             // 
             // testProtocolInput
             // 
-            testProtocolInput.Location = new Point(5, 69);
-            testProtocolInput.Margin = new Padding(2);
+            testProtocolInput.Location = new Point(2, 38);
+            testProtocolInput.Margin = new Padding(1, 1, 1, 1);
             testProtocolInput.Name = "testProtocolInput";
             testProtocolInput.PlaceholderText = "rowNumber";
-            testProtocolInput.Size = new Size(293, 50);
+            testProtocolInput.Size = new Size(146, 27);
             testProtocolInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testProtocolInput.SuffixText = "编码协议";
             testProtocolInput.TabIndex = 184;
@@ -814,11 +837,11 @@
             // 
             // testStreamInput
             // 
-            testStreamInput.Location = new Point(5, 24);
-            testStreamInput.Margin = new Padding(2);
+            testStreamInput.Location = new Point(2, 13);
+            testStreamInput.Margin = new Padding(1, 1, 1, 1);
             testStreamInput.Name = "testStreamInput";
             testStreamInput.PlaceholderText = "rowNumber";
-            testStreamInput.Size = new Size(293, 50);
+            testStreamInput.Size = new Size(146, 27);
             testStreamInput.SuffixFore = Color.FromArgb(77, 177, 77);
             testStreamInput.SuffixText = "测试码流";
             testStreamInput.TabIndex = 183;
@@ -836,9 +859,11 @@
             groupBox7.Controls.Add(chooseExcelBtn);
             groupBox7.Controls.Add(readExcelBtn);
             groupBox7.Controls.Add(writeExcelBtn);
-            groupBox7.Location = new Point(546, 7);
+            groupBox7.Location = new Point(273, 4);
+            groupBox7.Margin = new Padding(2, 2, 2, 2);
             groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(673, 304);
+            groupBox7.Padding = new Padding(2, 2, 2, 2);
+            groupBox7.Size = new Size(336, 167);
             groupBox7.TabIndex = 179;
             groupBox7.TabStop = false;
             groupBox7.Text = "excel操作";
@@ -846,10 +871,10 @@
             // lockTestSheetNameBtn
             // 
             lockTestSheetNameBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            lockTestSheetNameBtn.Location = new Point(7, 87);
-            lockTestSheetNameBtn.Margin = new Padding(4);
+            lockTestSheetNameBtn.Location = new Point(4, 48);
+            lockTestSheetNameBtn.Margin = new Padding(2, 2, 2, 2);
             lockTestSheetNameBtn.Name = "lockTestSheetNameBtn";
-            lockTestSheetNameBtn.Size = new Size(278, 49);
+            lockTestSheetNameBtn.Size = new Size(139, 27);
             lockTestSheetNameBtn.TabIndex = 184;
             lockTestSheetNameBtn.Text = "锁定测试表名";
             lockTestSheetNameBtn.Type = AntdUI.TTypeMini.Primary;
@@ -857,11 +882,11 @@
             // 
             // excelSheetInput
             // 
-            excelSheetInput.Location = new Point(291, 85);
-            excelSheetInput.Margin = new Padding(2);
+            excelSheetInput.Location = new Point(146, 47);
+            excelSheetInput.Margin = new Padding(1, 1, 1, 1);
             excelSheetInput.Name = "excelSheetInput";
             excelSheetInput.PlaceholderText = "请输入表名";
-            excelSheetInput.Size = new Size(382, 108);
+            excelSheetInput.Size = new Size(191, 59);
             excelSheetInput.SuffixFore = Color.FromArgb(77, 177, 77);
             excelSheetInput.SuffixText = "excel读取表名";
             excelSheetInput.TabIndex = 183;
@@ -869,11 +894,11 @@
             // 
             // rowNumberInput
             // 
-            rowNumberInput.Location = new Point(7, 197);
-            rowNumberInput.Margin = new Padding(2);
+            rowNumberInput.Location = new Point(4, 108);
+            rowNumberInput.Margin = new Padding(1, 1, 1, 1);
             rowNumberInput.Name = "rowNumberInput";
             rowNumberInput.PlaceholderText = "rowNumber";
-            rowNumberInput.Size = new Size(193, 53);
+            rowNumberInput.Size = new Size(96, 29);
             rowNumberInput.SuffixFore = Color.FromArgb(77, 177, 77);
             rowNumberInput.SuffixText = "行数";
             rowNumberInput.TabIndex = 182;
@@ -881,11 +906,11 @@
             // 
             // columnContentInput
             // 
-            columnContentInput.Location = new Point(5, 150);
-            columnContentInput.Margin = new Padding(2);
+            columnContentInput.Location = new Point(2, 82);
+            columnContentInput.Margin = new Padding(1, 1, 1, 1);
             columnContentInput.Name = "columnContentInput";
             columnContentInput.PlaceholderText = "columnContent";
-            columnContentInput.Size = new Size(282, 53);
+            columnContentInput.Size = new Size(141, 29);
             columnContentInput.SuffixFore = Color.FromArgb(77, 177, 77);
             columnContentInput.SuffixText = "列名";
             columnContentInput.TabIndex = 181;
@@ -893,22 +918,22 @@
             // 
             // readWriteContentInput
             // 
-            readWriteContentInput.Location = new Point(210, 197);
-            readWriteContentInput.Margin = new Padding(2);
+            readWriteContentInput.Location = new Point(105, 108);
+            readWriteContentInput.Margin = new Padding(1, 1, 1, 1);
             readWriteContentInput.Name = "readWriteContentInput";
             readWriteContentInput.PlaceholderText = "读写内容";
-            readWriteContentInput.Size = new Size(458, 53);
+            readWriteContentInput.Size = new Size(229, 29);
             readWriteContentInput.SuffixFore = Color.FromArgb(77, 177, 77);
             readWriteContentInput.SuffixText = "表格内容";
             readWriteContentInput.TabIndex = 180;
             // 
             // excelInput
             // 
-            excelInput.Location = new Point(189, 28);
-            excelInput.Margin = new Padding(2);
+            excelInput.Location = new Point(94, 15);
+            excelInput.Margin = new Padding(1, 1, 1, 1);
             excelInput.Name = "excelInput";
             excelInput.PlaceholderText = "请选择文件";
-            excelInput.Size = new Size(484, 53);
+            excelInput.Size = new Size(242, 29);
             excelInput.SuffixFore = Color.FromArgb(77, 177, 77);
             excelInput.SuffixText = "excel文件地址";
             excelInput.TabIndex = 179;
@@ -916,10 +941,10 @@
             // chooseExcelBtn
             // 
             chooseExcelBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            chooseExcelBtn.Location = new Point(7, 30);
-            chooseExcelBtn.Margin = new Padding(4);
+            chooseExcelBtn.Location = new Point(4, 16);
+            chooseExcelBtn.Margin = new Padding(2, 2, 2, 2);
             chooseExcelBtn.Name = "chooseExcelBtn";
-            chooseExcelBtn.Size = new Size(176, 49);
+            chooseExcelBtn.Size = new Size(88, 27);
             chooseExcelBtn.TabIndex = 178;
             chooseExcelBtn.Text = "选择读写表格";
             chooseExcelBtn.Type = AntdUI.TTypeMini.Primary;
@@ -928,10 +953,10 @@
             // readExcelBtn
             // 
             readExcelBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            readExcelBtn.Location = new Point(8, 250);
-            readExcelBtn.Margin = new Padding(4);
+            readExcelBtn.Location = new Point(4, 137);
+            readExcelBtn.Margin = new Padding(2, 2, 2, 2);
             readExcelBtn.Name = "readExcelBtn";
-            readExcelBtn.Size = new Size(315, 44);
+            readExcelBtn.Size = new Size(158, 24);
             readExcelBtn.TabIndex = 176;
             readExcelBtn.Text = "读取";
             readExcelBtn.Type = AntdUI.TTypeMini.Primary;
@@ -940,10 +965,10 @@
             // writeExcelBtn
             // 
             writeExcelBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            writeExcelBtn.Location = new Point(339, 250);
-            writeExcelBtn.Margin = new Padding(4);
+            writeExcelBtn.Location = new Point(170, 137);
+            writeExcelBtn.Margin = new Padding(2, 2, 2, 2);
             writeExcelBtn.Name = "writeExcelBtn";
-            writeExcelBtn.Size = new Size(320, 44);
+            writeExcelBtn.Size = new Size(160, 24);
             writeExcelBtn.TabIndex = 177;
             writeExcelBtn.Text = "写入";
             writeExcelBtn.Type = AntdUI.TTypeMini.Primary;
@@ -959,11 +984,9 @@
             groupBox6.Controls.Add(networkStreamSnapshotBtn);
             groupBox6.Controls.Add(networkStreamOnBtn);
             groupBox6.Controls.Add(networkStreamOffBtn);
-            groupBox6.Location = new Point(9, 5);
-            groupBox6.Margin = new Padding(6, 5, 6, 5);
+            groupBox6.Location = new Point(4, 3);
             groupBox6.Name = "groupBox6";
-            groupBox6.Padding = new Padding(6, 5, 6, 5);
-            groupBox6.Size = new Size(528, 353);
+            groupBox6.Size = new Size(264, 194);
             groupBox6.TabIndex = 176;
             groupBox6.TabStop = false;
             groupBox6.Text = "rtsp\\rtmp拉流";
@@ -971,11 +994,11 @@
             // debugBtn
             // 
             debugBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            debugBtn.Location = new Point(411, 146);
-            debugBtn.Margin = new Padding(4);
+            debugBtn.Location = new Point(206, 80);
+            debugBtn.Margin = new Padding(2, 2, 2, 2);
             debugBtn.Name = "debugBtn";
             debugBtn.OriginalBackColor = Color.Black;
-            debugBtn.Size = new Size(92, 49);
+            debugBtn.Size = new Size(46, 27);
             debugBtn.TabIndex = 176;
             debugBtn.Text = "debug";
             debugBtn.Type = AntdUI.TTypeMini.Primary;
@@ -983,10 +1006,10 @@
             // 
             // getActualFPSAndBitRateBtn
             // 
-            getActualFPSAndBitRateBtn.Location = new Point(306, 23);
-            getActualFPSAndBitRateBtn.Margin = new Padding(2);
+            getActualFPSAndBitRateBtn.Location = new Point(153, 13);
+            getActualFPSAndBitRateBtn.Margin = new Padding(1, 1, 1, 1);
             getActualFPSAndBitRateBtn.Name = "getActualFPSAndBitRateBtn";
-            getActualFPSAndBitRateBtn.Size = new Size(222, 52);
+            getActualFPSAndBitRateBtn.Size = new Size(111, 29);
             getActualFPSAndBitRateBtn.TabIndex = 171;
             getActualFPSAndBitRateBtn.Text = "实时打印帧率和码率";
             getActualFPSAndBitRateBtn.Type = AntdUI.TTypeMini.Primary;
@@ -994,11 +1017,11 @@
             // 
             // networkUrlInput
             // 
-            networkUrlInput.Location = new Point(6, 21);
-            networkUrlInput.Margin = new Padding(2);
+            networkUrlInput.Location = new Point(3, 12);
+            networkUrlInput.Margin = new Padding(1, 1, 1, 1);
             networkUrlInput.Name = "networkUrlInput";
             networkUrlInput.PlaceholderText = "test differ";
-            networkUrlInput.Size = new Size(308, 53);
+            networkUrlInput.Size = new Size(154, 29);
             networkUrlInput.SuffixFore = Color.FromArgb(77, 177, 77);
             networkUrlInput.SuffixText = "拉流地址";
             networkUrlInput.TabIndex = 175;
@@ -1007,20 +1030,20 @@
             // netWorkStreamPB
             // 
             netWorkStreamPB.BackColor = Color.Black;
-            netWorkStreamPB.Location = new Point(6, 126);
-            netWorkStreamPB.Margin = new Padding(4);
+            netWorkStreamPB.Location = new Point(3, 69);
+            netWorkStreamPB.Margin = new Padding(2, 2, 2, 2);
             netWorkStreamPB.Name = "netWorkStreamPB";
-            netWorkStreamPB.Size = new Size(512, 218);
+            netWorkStreamPB.Size = new Size(256, 120);
             netWorkStreamPB.TabIndex = 174;
             netWorkStreamPB.TabStop = false;
             // 
             // networkStreamSnapshotBtn
             // 
             networkStreamSnapshotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            networkStreamSnapshotBtn.Location = new Point(411, 77);
-            networkStreamSnapshotBtn.Margin = new Padding(4);
+            networkStreamSnapshotBtn.Location = new Point(206, 42);
+            networkStreamSnapshotBtn.Margin = new Padding(2, 2, 2, 2);
             networkStreamSnapshotBtn.Name = "networkStreamSnapshotBtn";
-            networkStreamSnapshotBtn.Size = new Size(92, 49);
+            networkStreamSnapshotBtn.Size = new Size(46, 27);
             networkStreamSnapshotBtn.TabIndex = 173;
             networkStreamSnapshotBtn.Text = "截图";
             networkStreamSnapshotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1032,10 +1055,10 @@
             networkStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             networkStreamOnBtn.IconHoverSvg = "";
             networkStreamOnBtn.IconSvg = "PlayCircleFilled";
-            networkStreamOnBtn.Location = new Point(10, 77);
-            networkStreamOnBtn.Margin = new Padding(4);
+            networkStreamOnBtn.Location = new Point(5, 42);
+            networkStreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             networkStreamOnBtn.Name = "networkStreamOnBtn";
-            networkStreamOnBtn.Size = new Size(319, 49);
+            networkStreamOnBtn.Size = new Size(160, 27);
             networkStreamOnBtn.TabIndex = 171;
             networkStreamOnBtn.Text = "拉流";
             networkStreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1044,10 +1067,10 @@
             // networkStreamOffBtn
             // 
             networkStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            networkStreamOffBtn.Location = new Point(329, 77);
-            networkStreamOffBtn.Margin = new Padding(4);
+            networkStreamOffBtn.Location = new Point(164, 42);
+            networkStreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             networkStreamOffBtn.Name = "networkStreamOffBtn";
-            networkStreamOffBtn.Size = new Size(92, 49);
+            networkStreamOffBtn.Size = new Size(46, 27);
             networkStreamOffBtn.TabIndex = 172;
             networkStreamOffBtn.Text = "关流";
             networkStreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1058,9 +1081,10 @@
             tabPage5.BackColor = Color.White;
             tabPage5.Controls.Add(table1_testCase);
             tabPage5.Location = new Point(4, 40);
+            tabPage5.Margin = new Padding(2, 2, 2, 2);
             tabPage5.Name = "tabPage5";
-            tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(1888, 371);
+            tabPage5.Padding = new Padding(2, 2, 2, 2);
+            tabPage5.Size = new Size(940, 184);
             tabPage5.TabIndex = 0;
             tabPage5.Text = "SKDL0402(VC16S)&SKDL0503(VC35P)";
             // 
@@ -1070,9 +1094,10 @@
             table1_testCase.Dock = DockStyle.Fill;
             table1_testCase.Font = new Font("等线", 6F);
             table1_testCase.Gap = 12;
-            table1_testCase.Location = new Point(3, 3);
+            table1_testCase.Location = new Point(2, 2);
+            table1_testCase.Margin = new Padding(2, 2, 2, 2);
             table1_testCase.Name = "table1_testCase";
-            table1_testCase.Size = new Size(1882, 365);
+            table1_testCase.Size = new Size(936, 180);
             table1_testCase.TabIndex = 128;
             table1_testCase.Text = "table1";
             // 
@@ -1081,9 +1106,10 @@
             tabPage6.BackColor = Color.White;
             tabPage6.Controls.Add(table2_testCase);
             tabPage6.Location = new Point(4, 40);
+            tabPage6.Margin = new Padding(2, 2, 2, 2);
             tabPage6.Name = "tabPage6";
-            tabPage6.Padding = new Padding(3);
-            tabPage6.Size = new Size(1888, 371);
+            tabPage6.Padding = new Padding(2, 2, 2, 2);
+            tabPage6.Size = new Size(940, 184);
             tabPage6.TabIndex = 1;
             tabPage6.Text = "SKDL0104(VC35)&SKDL0105(VC51)";
             // 
@@ -1093,9 +1119,10 @@
             table2_testCase.Dock = DockStyle.Fill;
             table2_testCase.Font = new Font("等线", 6F);
             table2_testCase.Gap = 12;
-            table2_testCase.Location = new Point(3, 3);
+            table2_testCase.Location = new Point(2, 2);
+            table2_testCase.Margin = new Padding(2, 2, 2, 2);
             table2_testCase.Name = "table2_testCase";
-            table2_testCase.Size = new Size(1882, 365);
+            table2_testCase.Size = new Size(936, 180);
             table2_testCase.TabIndex = 129;
             table2_testCase.Text = "table1";
             table2_testCase.CellClick += table2_testCase_CellClick;
@@ -1114,8 +1141,9 @@
             tabPage8.Controls.Add(vc51_1StreamOnBtn);
             tabPage8.Controls.Add(vc51_1StreamOffBtn);
             tabPage8.Location = new Point(4, 40);
+            tabPage8.Margin = new Padding(2, 2, 2, 2);
             tabPage8.Name = "tabPage8";
-            tabPage8.Size = new Size(1888, 371);
+            tabPage8.Size = new Size(940, 184);
             tabPage8.TabIndex = 3;
             tabPage8.Text = "VC51-续航测试";
             tabPage8.UseVisualStyleBackColor = true;
@@ -1125,9 +1153,10 @@
             VC51_CountLabel.BackColor = Color.Cyan;
             VC51_CountLabel.Font = new Font("等线", 20F);
             VC51_CountLabel.ForeColor = Color.Red;
-            VC51_CountLabel.Location = new Point(1073, 221);
+            VC51_CountLabel.Location = new Point(536, 121);
+            VC51_CountLabel.Margin = new Padding(2, 2, 2, 2);
             VC51_CountLabel.Name = "VC51_CountLabel";
-            VC51_CountLabel.Size = new Size(790, 89);
+            VC51_CountLabel.Size = new Size(395, 49);
             VC51_CountLabel.TabIndex = 186;
             VC51_CountLabel.Text = "0";
             VC51_CountLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -1138,10 +1167,10 @@
             vc51_1minutesOnlyRotate30sBtn.Font = new Font("Microsoft YaHei UI", 12F);
             vc51_1minutesOnlyRotate30sBtn.IconHoverSvg = "";
             vc51_1minutesOnlyRotate30sBtn.IconSvg = "PlayCircleFilled";
-            vc51_1minutesOnlyRotate30sBtn.Location = new Point(1071, 71);
-            vc51_1minutesOnlyRotate30sBtn.Margin = new Padding(4);
+            vc51_1minutesOnlyRotate30sBtn.Location = new Point(536, 39);
+            vc51_1minutesOnlyRotate30sBtn.Margin = new Padding(2, 2, 2, 2);
             vc51_1minutesOnlyRotate30sBtn.Name = "vc51_1minutesOnlyRotate30sBtn";
-            vc51_1minutesOnlyRotate30sBtn.Size = new Size(552, 143);
+            vc51_1minutesOnlyRotate30sBtn.Size = new Size(276, 78);
             vc51_1minutesOnlyRotate30sBtn.TabIndex = 185;
             vc51_1minutesOnlyRotate30sBtn.Text = "开始测试";
             vc51_1minutesOnlyRotate30sBtn.Type = AntdUI.TTypeMini.Success;
@@ -1153,10 +1182,10 @@
             vc51_changeConfigBtn.Font = new Font("Microsoft YaHei UI", 7F);
             vc51_changeConfigBtn.IconHoverSvg = "";
             vc51_changeConfigBtn.IconSvg = "";
-            vc51_changeConfigBtn.Location = new Point(1071, 19);
-            vc51_changeConfigBtn.Margin = new Padding(4);
+            vc51_changeConfigBtn.Location = new Point(536, 10);
+            vc51_changeConfigBtn.Margin = new Padding(2, 2, 2, 2);
             vc51_changeConfigBtn.Name = "vc51_changeConfigBtn";
-            vc51_changeConfigBtn.Size = new Size(552, 58);
+            vc51_changeConfigBtn.Size = new Size(276, 32);
             vc51_changeConfigBtn.TabIndex = 184;
             vc51_changeConfigBtn.Text = "主辅配置改为4k-30fps - 云台1分钟内转30秒";
             vc51_changeConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1164,11 +1193,11 @@
             // 
             // vc51_2InputStream
             // 
-            vc51_2InputStream.Location = new Point(529, 15);
-            vc51_2InputStream.Margin = new Padding(2);
+            vc51_2InputStream.Location = new Point(264, 8);
+            vc51_2InputStream.Margin = new Padding(1, 1, 1, 1);
             vc51_2InputStream.Name = "vc51_2InputStream";
             vc51_2InputStream.PlaceholderText = "test differ";
-            vc51_2InputStream.Size = new Size(308, 53);
+            vc51_2InputStream.Size = new Size(154, 29);
             vc51_2InputStream.SuffixFore = Color.FromArgb(77, 177, 77);
             vc51_2InputStream.SuffixText = "辅码流地址";
             vc51_2InputStream.TabIndex = 183;
@@ -1176,10 +1205,10 @@
             // pictureBox_VC51_2
             // 
             pictureBox_VC51_2.BackColor = Color.Black;
-            pictureBox_VC51_2.Location = new Point(529, 120);
-            pictureBox_VC51_2.Margin = new Padding(4);
+            pictureBox_VC51_2.Location = new Point(264, 66);
+            pictureBox_VC51_2.Margin = new Padding(2, 2, 2, 2);
             pictureBox_VC51_2.Name = "pictureBox_VC51_2";
-            pictureBox_VC51_2.Size = new Size(512, 218);
+            pictureBox_VC51_2.Size = new Size(256, 120);
             pictureBox_VC51_2.TabIndex = 182;
             pictureBox_VC51_2.TabStop = false;
             // 
@@ -1189,10 +1218,10 @@
             vc51_2StreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             vc51_2StreamOnBtn.IconHoverSvg = "";
             vc51_2StreamOnBtn.IconSvg = "PlayCircleFilled";
-            vc51_2StreamOnBtn.Location = new Point(533, 71);
-            vc51_2StreamOnBtn.Margin = new Padding(4);
+            vc51_2StreamOnBtn.Location = new Point(266, 39);
+            vc51_2StreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             vc51_2StreamOnBtn.Name = "vc51_2StreamOnBtn";
-            vc51_2StreamOnBtn.Size = new Size(319, 49);
+            vc51_2StreamOnBtn.Size = new Size(160, 27);
             vc51_2StreamOnBtn.TabIndex = 180;
             vc51_2StreamOnBtn.Text = "拉流";
             vc51_2StreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1201,10 +1230,10 @@
             // vc51_2StreamOffBtn
             // 
             vc51_2StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            vc51_2StreamOffBtn.Location = new Point(852, 71);
-            vc51_2StreamOffBtn.Margin = new Padding(4);
+            vc51_2StreamOffBtn.Location = new Point(426, 39);
+            vc51_2StreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             vc51_2StreamOffBtn.Name = "vc51_2StreamOffBtn";
-            vc51_2StreamOffBtn.Size = new Size(92, 49);
+            vc51_2StreamOffBtn.Size = new Size(46, 27);
             vc51_2StreamOffBtn.TabIndex = 181;
             vc51_2StreamOffBtn.Text = "关流";
             vc51_2StreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1212,11 +1241,11 @@
             // 
             // vc51_1InputStream
             // 
-            vc51_1InputStream.Location = new Point(13, 15);
-            vc51_1InputStream.Margin = new Padding(2);
+            vc51_1InputStream.Location = new Point(6, 8);
+            vc51_1InputStream.Margin = new Padding(1, 1, 1, 1);
             vc51_1InputStream.Name = "vc51_1InputStream";
             vc51_1InputStream.PlaceholderText = "test differ";
-            vc51_1InputStream.Size = new Size(308, 53);
+            vc51_1InputStream.Size = new Size(154, 29);
             vc51_1InputStream.SuffixFore = Color.FromArgb(77, 177, 77);
             vc51_1InputStream.SuffixText = "主码流地址";
             vc51_1InputStream.TabIndex = 179;
@@ -1224,10 +1253,10 @@
             // pictureBox_VC51_1
             // 
             pictureBox_VC51_1.BackColor = Color.Black;
-            pictureBox_VC51_1.Location = new Point(13, 120);
-            pictureBox_VC51_1.Margin = new Padding(4);
+            pictureBox_VC51_1.Location = new Point(6, 66);
+            pictureBox_VC51_1.Margin = new Padding(2, 2, 2, 2);
             pictureBox_VC51_1.Name = "pictureBox_VC51_1";
-            pictureBox_VC51_1.Size = new Size(512, 218);
+            pictureBox_VC51_1.Size = new Size(256, 120);
             pictureBox_VC51_1.TabIndex = 178;
             pictureBox_VC51_1.TabStop = false;
             // 
@@ -1237,10 +1266,10 @@
             vc51_1StreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             vc51_1StreamOnBtn.IconHoverSvg = "";
             vc51_1StreamOnBtn.IconSvg = "PlayCircleFilled";
-            vc51_1StreamOnBtn.Location = new Point(17, 71);
-            vc51_1StreamOnBtn.Margin = new Padding(4);
+            vc51_1StreamOnBtn.Location = new Point(8, 39);
+            vc51_1StreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             vc51_1StreamOnBtn.Name = "vc51_1StreamOnBtn";
-            vc51_1StreamOnBtn.Size = new Size(319, 49);
+            vc51_1StreamOnBtn.Size = new Size(160, 27);
             vc51_1StreamOnBtn.TabIndex = 176;
             vc51_1StreamOnBtn.Text = "拉流";
             vc51_1StreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1249,10 +1278,10 @@
             // vc51_1StreamOffBtn
             // 
             vc51_1StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            vc51_1StreamOffBtn.Location = new Point(336, 71);
-            vc51_1StreamOffBtn.Margin = new Padding(4);
+            vc51_1StreamOffBtn.Location = new Point(168, 39);
+            vc51_1StreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             vc51_1StreamOffBtn.Name = "vc51_1StreamOffBtn";
-            vc51_1StreamOffBtn.Size = new Size(92, 49);
+            vc51_1StreamOffBtn.Size = new Size(46, 27);
             vc51_1StreamOffBtn.TabIndex = 177;
             vc51_1StreamOffBtn.Text = "关流";
             vc51_1StreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1262,10 +1291,11 @@
             // 
             tabControl2.Controls.Add(tabPage3);
             tabControl2.Controls.Add(tabPage4);
-            tabControl2.Location = new Point(699, 371);
+            tabControl2.Location = new Point(350, 203);
+            tabControl2.Margin = new Padding(2, 2, 2, 2);
             tabControl2.Name = "tabControl2";
             tabControl2.SelectedIndex = 0;
-            tabControl2.Size = new Size(720, 223);
+            tabControl2.Size = new Size(360, 122);
             tabControl2.SizeMode = TabSizeMode.Fixed;
             tabControl2.TabIndex = 161;
             // 
@@ -1301,21 +1331,23 @@
             tabPage3.Controls.Add(switch1RelayOnBtn);
             tabPage3.Controls.Add(connectRelayBtn);
             tabPage3.Controls.Add(testSwitchGroup);
-            tabPage3.Location = new Point(8, 34);
+            tabPage3.Location = new Point(4, 19);
+            tabPage3.Margin = new Padding(2, 2, 2, 2);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(704, 181);
+            tabPage3.Padding = new Padding(2, 2, 2, 2);
+            tabPage3.Size = new Size(352, 99);
             tabPage3.TabIndex = 0;
             tabPage3.Text = "继电器控制";
             // 
             // newSwitch5
             // 
             newSwitch5.Font = new Font("Microsoft YaHei UI", 7F);
-            newSwitch5.Location = new Point(318, 232);
+            newSwitch5.Location = new Point(159, 127);
+            newSwitch5.Margin = new Padding(2, 2, 2, 2);
             newSwitch5.Name = "newSwitch5";
             newSwitch5.PlaceholderText = "";
             newSwitch5.PrefixText = "";
-            newSwitch5.Size = new Size(79, 50);
+            newSwitch5.Size = new Size(40, 27);
             newSwitch5.SuffixFore = Color.FromArgb(77, 177, 77);
             newSwitch5.SuffixText = "s5";
             newSwitch5.TabIndex = 144;
@@ -1324,11 +1356,12 @@
             // newSwitch4
             // 
             newSwitch4.Font = new Font("Microsoft YaHei UI", 7F);
-            newSwitch4.Location = new Point(236, 232);
+            newSwitch4.Location = new Point(118, 127);
+            newSwitch4.Margin = new Padding(2, 2, 2, 2);
             newSwitch4.Name = "newSwitch4";
             newSwitch4.PlaceholderText = "";
             newSwitch4.PrefixText = "";
-            newSwitch4.Size = new Size(79, 50);
+            newSwitch4.Size = new Size(40, 27);
             newSwitch4.SuffixFore = Color.FromArgb(77, 177, 77);
             newSwitch4.SuffixText = "s4";
             newSwitch4.TabIndex = 143;
@@ -1337,11 +1370,12 @@
             // newSwitch3
             // 
             newSwitch3.Font = new Font("Microsoft YaHei UI", 7F);
-            newSwitch3.Location = new Point(158, 232);
+            newSwitch3.Location = new Point(79, 127);
+            newSwitch3.Margin = new Padding(2, 2, 2, 2);
             newSwitch3.Name = "newSwitch3";
             newSwitch3.PlaceholderText = "";
             newSwitch3.PrefixText = "";
-            newSwitch3.Size = new Size(79, 50);
+            newSwitch3.Size = new Size(40, 27);
             newSwitch3.SuffixFore = Color.FromArgb(77, 177, 77);
             newSwitch3.SuffixText = "s3";
             newSwitch3.TabIndex = 142;
@@ -1350,11 +1384,12 @@
             // newSwitch2
             // 
             newSwitch2.Font = new Font("Microsoft YaHei UI", 7F);
-            newSwitch2.Location = new Point(81, 232);
+            newSwitch2.Location = new Point(40, 127);
+            newSwitch2.Margin = new Padding(2, 2, 2, 2);
             newSwitch2.Name = "newSwitch2";
             newSwitch2.PlaceholderText = "";
             newSwitch2.PrefixText = "";
-            newSwitch2.Size = new Size(79, 50);
+            newSwitch2.Size = new Size(40, 27);
             newSwitch2.SuffixFore = Color.FromArgb(77, 177, 77);
             newSwitch2.SuffixText = "s2";
             newSwitch2.TabIndex = 141;
@@ -1363,11 +1398,12 @@
             // newSwitch1
             // 
             newSwitch1.Font = new Font("Microsoft YaHei UI", 7F);
-            newSwitch1.Location = new Point(9, 232);
+            newSwitch1.Location = new Point(4, 127);
+            newSwitch1.Margin = new Padding(2, 2, 2, 2);
             newSwitch1.Name = "newSwitch1";
             newSwitch1.PlaceholderText = "";
             newSwitch1.PrefixText = "";
-            newSwitch1.Size = new Size(79, 50);
+            newSwitch1.Size = new Size(40, 27);
             newSwitch1.SuffixFore = Color.FromArgb(77, 177, 77);
             newSwitch1.SuffixText = "s1";
             newSwitch1.TabIndex = 140;
@@ -1375,9 +1411,10 @@
             // 
             // pushBackwardBtn
             // 
-            pushBackwardBtn.Location = new Point(403, 232);
+            pushBackwardBtn.Location = new Point(202, 127);
+            pushBackwardBtn.Margin = new Padding(2, 2, 2, 2);
             pushBackwardBtn.Name = "pushBackwardBtn";
-            pushBackwardBtn.Size = new Size(269, 50);
+            pushBackwardBtn.Size = new Size(134, 27);
             pushBackwardBtn.TabIndex = 139;
             pushBackwardBtn.Text = "推杆后退（松开Power键）";
             pushBackwardBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1385,9 +1422,10 @@
             // 
             // pushForwardBtn
             // 
-            pushForwardBtn.Location = new Point(403, 180);
+            pushForwardBtn.Location = new Point(202, 99);
+            pushForwardBtn.Margin = new Padding(2, 2, 2, 2);
             pushForwardBtn.Name = "pushForwardBtn";
-            pushForwardBtn.Size = new Size(269, 50);
+            pushForwardBtn.Size = new Size(134, 27);
             pushForwardBtn.TabIndex = 138;
             pushForwardBtn.Text = "推杆前进（按压Power键）";
             pushForwardBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1395,10 +1433,11 @@
             // 
             // input_ToBeReadRelayStatus
             // 
-            input_ToBeReadRelayStatus.Location = new Point(177, 180);
+            input_ToBeReadRelayStatus.Location = new Point(88, 99);
+            input_ToBeReadRelayStatus.Margin = new Padding(2, 2, 2, 2);
             input_ToBeReadRelayStatus.Name = "input_ToBeReadRelayStatus";
             input_ToBeReadRelayStatus.PlaceholderText = "test differ";
-            input_ToBeReadRelayStatus.Size = new Size(220, 50);
+            input_ToBeReadRelayStatus.Size = new Size(110, 27);
             input_ToBeReadRelayStatus.SuffixFore = Color.FromArgb(77, 177, 77);
             input_ToBeReadRelayStatus.SuffixText = "开关index（0~）";
             input_ToBeReadRelayStatus.TabIndex = 137;
@@ -1406,9 +1445,10 @@
             // 
             // readRelaySwitchSpecificStatusBtn
             // 
-            readRelaySwitchSpecificStatusBtn.Location = new Point(8, 180);
+            readRelaySwitchSpecificStatusBtn.Location = new Point(4, 99);
+            readRelaySwitchSpecificStatusBtn.Margin = new Padding(2, 2, 2, 2);
             readRelaySwitchSpecificStatusBtn.Name = "readRelaySwitchSpecificStatusBtn";
-            readRelaySwitchSpecificStatusBtn.Size = new Size(173, 50);
+            readRelaySwitchSpecificStatusBtn.Size = new Size(86, 27);
             readRelaySwitchSpecificStatusBtn.TabIndex = 95;
             readRelaySwitchSpecificStatusBtn.Text = "读取开关状态";
             readRelaySwitchSpecificStatusBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1417,10 +1457,11 @@
             // input_elecIP5
             // 
             input_elecIP5.Font = new Font("Microsoft YaHei UI", 7F);
-            input_elecIP5.Location = new Point(484, 130);
+            input_elecIP5.Location = new Point(242, 71);
+            input_elecIP5.Margin = new Padding(2, 2, 2, 2);
             input_elecIP5.Name = "input_elecIP5";
             input_elecIP5.PlaceholderText = "请输入测试设备IP地址：";
-            input_elecIP5.Size = new Size(118, 50);
+            input_elecIP5.Size = new Size(59, 27);
             input_elecIP5.SuffixFore = Color.FromArgb(77, 177, 77);
             input_elecIP5.SuffixText = "";
             input_elecIP5.TabIndex = 94;
@@ -1429,10 +1470,11 @@
             // input_elecIP4
             // 
             input_elecIP4.Font = new Font("Microsoft YaHei UI", 7F);
-            input_elecIP4.Location = new Point(361, 130);
+            input_elecIP4.Location = new Point(180, 71);
+            input_elecIP4.Margin = new Padding(2, 2, 2, 2);
             input_elecIP4.Name = "input_elecIP4";
             input_elecIP4.PlaceholderText = "请输入测试设备IP地址：";
-            input_elecIP4.Size = new Size(118, 50);
+            input_elecIP4.Size = new Size(59, 27);
             input_elecIP4.SuffixFore = Color.FromArgb(77, 177, 77);
             input_elecIP4.SuffixText = "";
             input_elecIP4.TabIndex = 93;
@@ -1441,10 +1483,11 @@
             // input_elecIP3
             // 
             input_elecIP3.Font = new Font("Microsoft YaHei UI", 7F);
-            input_elecIP3.Location = new Point(243, 130);
+            input_elecIP3.Location = new Point(122, 71);
+            input_elecIP3.Margin = new Padding(2, 2, 2, 2);
             input_elecIP3.Name = "input_elecIP3";
             input_elecIP3.PlaceholderText = "请输入测试设备IP地址：";
-            input_elecIP3.Size = new Size(118, 50);
+            input_elecIP3.Size = new Size(59, 27);
             input_elecIP3.SuffixFore = Color.FromArgb(77, 177, 77);
             input_elecIP3.SuffixText = "";
             input_elecIP3.TabIndex = 92;
@@ -1453,10 +1496,11 @@
             // input_elecIP2
             // 
             input_elecIP2.Font = new Font("Microsoft YaHei UI", 7F);
-            input_elecIP2.Location = new Point(127, 130);
+            input_elecIP2.Location = new Point(64, 71);
+            input_elecIP2.Margin = new Padding(2, 2, 2, 2);
             input_elecIP2.Name = "input_elecIP2";
             input_elecIP2.PlaceholderText = "请输入测试设备IP地址：";
-            input_elecIP2.Size = new Size(118, 50);
+            input_elecIP2.Size = new Size(59, 27);
             input_elecIP2.SuffixFore = Color.FromArgb(77, 177, 77);
             input_elecIP2.SuffixText = "";
             input_elecIP2.TabIndex = 91;
@@ -1465,10 +1509,11 @@
             // input_elecIP1
             // 
             input_elecIP1.Font = new Font("Microsoft YaHei UI", 7F);
-            input_elecIP1.Location = new Point(6, 130);
+            input_elecIP1.Location = new Point(3, 71);
+            input_elecIP1.Margin = new Padding(2, 2, 2, 2);
             input_elecIP1.Name = "input_elecIP1";
             input_elecIP1.PlaceholderText = "请输入测试设备IP地址：";
-            input_elecIP1.Size = new Size(118, 50);
+            input_elecIP1.Size = new Size(59, 27);
             input_elecIP1.SuffixFore = Color.FromArgb(77, 177, 77);
             input_elecIP1.SuffixText = "";
             input_elecIP1.TabIndex = 90;
@@ -1476,9 +1521,10 @@
             // 
             // electricAllOffBtn
             // 
-            electricAllOffBtn.Location = new Point(602, 105);
+            electricAllOffBtn.Location = new Point(301, 58);
+            electricAllOffBtn.Margin = new Padding(2, 2, 2, 2);
             electricAllOffBtn.Name = "electricAllOffBtn";
-            electricAllOffBtn.Size = new Size(92, 50);
+            electricAllOffBtn.Size = new Size(46, 27);
             electricAllOffBtn.TabIndex = 89;
             electricAllOffBtn.Text = "全关";
             electricAllOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1487,9 +1533,10 @@
             // electricAllOnBtn
             // 
             electricAllOnBtn.Enabled = false;
-            electricAllOnBtn.Location = new Point(602, 59);
+            electricAllOnBtn.Location = new Point(301, 32);
+            electricAllOnBtn.Margin = new Padding(2, 2, 2, 2);
             electricAllOnBtn.Name = "electricAllOnBtn";
-            electricAllOnBtn.Size = new Size(92, 50);
+            electricAllOnBtn.Size = new Size(46, 27);
             electricAllOnBtn.TabIndex = 88;
             electricAllOnBtn.Text = "全开";
             electricAllOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1498,10 +1545,10 @@
             // switch5RelayOffBtn
             // 
             switch5RelayOffBtn.Font = new Font("等线", 5F);
-            switch5RelayOffBtn.Location = new Point(487, 94);
+            switch5RelayOffBtn.Location = new Point(244, 52);
             switch5RelayOffBtn.Margin = new Padding(0);
             switch5RelayOffBtn.Name = "switch5RelayOffBtn";
-            switch5RelayOffBtn.Size = new Size(116, 36);
+            switch5RelayOffBtn.Size = new Size(58, 20);
             switch5RelayOffBtn.TabIndex = 87;
             switch5RelayOffBtn.Text = "关闭开关5";
             switch5RelayOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1510,10 +1557,10 @@
             // switch5RelayOnBtn
             // 
             switch5RelayOnBtn.Font = new Font("等线", 5F);
-            switch5RelayOnBtn.Location = new Point(487, 59);
+            switch5RelayOnBtn.Location = new Point(244, 32);
             switch5RelayOnBtn.Margin = new Padding(0);
             switch5RelayOnBtn.Name = "switch5RelayOnBtn";
-            switch5RelayOnBtn.Size = new Size(116, 36);
+            switch5RelayOnBtn.Size = new Size(58, 20);
             switch5RelayOnBtn.TabIndex = 86;
             switch5RelayOnBtn.Text = "打开开关5";
             switch5RelayOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1522,10 +1569,10 @@
             // switch4RelayOffBtn
             // 
             switch4RelayOffBtn.Font = new Font("等线", 5F);
-            switch4RelayOffBtn.Location = new Point(365, 94);
+            switch4RelayOffBtn.Location = new Point(182, 52);
             switch4RelayOffBtn.Margin = new Padding(0);
             switch4RelayOffBtn.Name = "switch4RelayOffBtn";
-            switch4RelayOffBtn.Size = new Size(116, 36);
+            switch4RelayOffBtn.Size = new Size(58, 20);
             switch4RelayOffBtn.TabIndex = 85;
             switch4RelayOffBtn.Text = "关闭开关4";
             switch4RelayOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1534,10 +1581,10 @@
             // switch4RelayOnBtn
             // 
             switch4RelayOnBtn.Font = new Font("等线", 5F);
-            switch4RelayOnBtn.Location = new Point(365, 59);
+            switch4RelayOnBtn.Location = new Point(182, 32);
             switch4RelayOnBtn.Margin = new Padding(0);
             switch4RelayOnBtn.Name = "switch4RelayOnBtn";
-            switch4RelayOnBtn.Size = new Size(116, 36);
+            switch4RelayOnBtn.Size = new Size(58, 20);
             switch4RelayOnBtn.TabIndex = 84;
             switch4RelayOnBtn.Text = "打开开关4";
             switch4RelayOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1546,10 +1593,10 @@
             // switch3RelayOffBtn
             // 
             switch3RelayOffBtn.Font = new Font("等线", 5F);
-            switch3RelayOffBtn.Location = new Point(243, 94);
+            switch3RelayOffBtn.Location = new Point(122, 52);
             switch3RelayOffBtn.Margin = new Padding(0);
             switch3RelayOffBtn.Name = "switch3RelayOffBtn";
-            switch3RelayOffBtn.Size = new Size(116, 36);
+            switch3RelayOffBtn.Size = new Size(58, 20);
             switch3RelayOffBtn.TabIndex = 83;
             switch3RelayOffBtn.Text = "关闭开关3";
             switch3RelayOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1558,10 +1605,10 @@
             // switch3RelayOnBtn
             // 
             switch3RelayOnBtn.Font = new Font("等线", 5F);
-            switch3RelayOnBtn.Location = new Point(243, 59);
+            switch3RelayOnBtn.Location = new Point(122, 32);
             switch3RelayOnBtn.Margin = new Padding(0);
             switch3RelayOnBtn.Name = "switch3RelayOnBtn";
-            switch3RelayOnBtn.Size = new Size(116, 36);
+            switch3RelayOnBtn.Size = new Size(58, 20);
             switch3RelayOnBtn.TabIndex = 82;
             switch3RelayOnBtn.Text = "打开开关3";
             switch3RelayOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1570,10 +1617,10 @@
             // switch2RelayOffBtn
             // 
             switch2RelayOffBtn.Font = new Font("等线", 5F);
-            switch2RelayOffBtn.Location = new Point(130, 94);
+            switch2RelayOffBtn.Location = new Point(65, 52);
             switch2RelayOffBtn.Margin = new Padding(0);
             switch2RelayOffBtn.Name = "switch2RelayOffBtn";
-            switch2RelayOffBtn.Size = new Size(116, 36);
+            switch2RelayOffBtn.Size = new Size(58, 20);
             switch2RelayOffBtn.TabIndex = 81;
             switch2RelayOffBtn.Text = "关闭开关2";
             switch2RelayOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1582,10 +1629,10 @@
             // switch2RelayOnBtn
             // 
             switch2RelayOnBtn.Font = new Font("等线", 5F);
-            switch2RelayOnBtn.Location = new Point(130, 59);
+            switch2RelayOnBtn.Location = new Point(65, 32);
             switch2RelayOnBtn.Margin = new Padding(0);
             switch2RelayOnBtn.Name = "switch2RelayOnBtn";
-            switch2RelayOnBtn.Size = new Size(116, 36);
+            switch2RelayOnBtn.Size = new Size(58, 20);
             switch2RelayOnBtn.TabIndex = 80;
             switch2RelayOnBtn.Text = "打开开关2";
             switch2RelayOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1594,10 +1641,10 @@
             // switch1RelayOffBtn
             // 
             switch1RelayOffBtn.Font = new Font("等线", 5F);
-            switch1RelayOffBtn.Location = new Point(8, 94);
+            switch1RelayOffBtn.Location = new Point(4, 52);
             switch1RelayOffBtn.Margin = new Padding(0);
             switch1RelayOffBtn.Name = "switch1RelayOffBtn";
-            switch1RelayOffBtn.Size = new Size(116, 36);
+            switch1RelayOffBtn.Size = new Size(58, 20);
             switch1RelayOffBtn.TabIndex = 79;
             switch1RelayOffBtn.Text = "关闭开关1";
             switch1RelayOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1606,10 +1653,10 @@
             // switch1RelayOnBtn
             // 
             switch1RelayOnBtn.Font = new Font("等线", 5F);
-            switch1RelayOnBtn.Location = new Point(8, 59);
+            switch1RelayOnBtn.Location = new Point(4, 32);
             switch1RelayOnBtn.Margin = new Padding(0);
             switch1RelayOnBtn.Name = "switch1RelayOnBtn";
-            switch1RelayOnBtn.Size = new Size(116, 36);
+            switch1RelayOnBtn.Size = new Size(58, 20);
             switch1RelayOnBtn.TabIndex = 78;
             switch1RelayOnBtn.Text = "打开开关1";
             switch1RelayOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1617,9 +1664,10 @@
             // 
             // connectRelayBtn
             // 
-            connectRelayBtn.Location = new Point(561, 6);
+            connectRelayBtn.Location = new Point(280, 3);
+            connectRelayBtn.Margin = new Padding(2, 2, 2, 2);
             connectRelayBtn.Name = "connectRelayBtn";
-            connectRelayBtn.Size = new Size(137, 50);
+            connectRelayBtn.Size = new Size(68, 27);
             connectRelayBtn.TabIndex = 77;
             connectRelayBtn.Text = "打开串口";
             connectRelayBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1635,53 +1683,59 @@
             testSwitchGroup.Controls.Add(checkbox_switch3);
             testSwitchGroup.Controls.Add(checkbox_switch4);
             testSwitchGroup.Controls.Add(checkbox_switch5);
-            testSwitchGroup.Location = new Point(8, 10);
+            testSwitchGroup.Location = new Point(4, 5);
+            testSwitchGroup.Margin = new Padding(2, 2, 2, 2);
             testSwitchGroup.Name = "testSwitchGroup";
-            testSwitchGroup.Size = new Size(550, 43);
+            testSwitchGroup.Size = new Size(277, 25);
             testSwitchGroup.TabIndex = 2;
             // 
             // checkbox_switch1
             // 
             checkbox_switch1.Font = new Font("等线", 4F);
-            checkbox_switch1.Location = new Point(3, 3);
+            checkbox_switch1.Location = new Point(2, 2);
+            checkbox_switch1.Margin = new Padding(2, 2, 2, 2);
             checkbox_switch1.Name = "checkbox_switch1";
-            checkbox_switch1.Size = new Size(101, 30);
+            checkbox_switch1.Size = new Size(50, 16);
             checkbox_switch1.TabIndex = 5;
             checkbox_switch1.Text = "开关1";
             // 
             // checkbox_switch2
             // 
             checkbox_switch2.Font = new Font("等线", 4F);
-            checkbox_switch2.Location = new Point(110, 3);
+            checkbox_switch2.Location = new Point(56, 2);
+            checkbox_switch2.Margin = new Padding(2, 2, 2, 2);
             checkbox_switch2.Name = "checkbox_switch2";
-            checkbox_switch2.Size = new Size(101, 30);
+            checkbox_switch2.Size = new Size(50, 16);
             checkbox_switch2.TabIndex = 0;
             checkbox_switch2.Text = "开关2";
             // 
             // checkbox_switch3
             // 
             checkbox_switch3.Font = new Font("等线", 4F);
-            checkbox_switch3.Location = new Point(217, 3);
+            checkbox_switch3.Location = new Point(110, 2);
+            checkbox_switch3.Margin = new Padding(2, 2, 2, 2);
             checkbox_switch3.Name = "checkbox_switch3";
-            checkbox_switch3.Size = new Size(101, 30);
+            checkbox_switch3.Size = new Size(50, 16);
             checkbox_switch3.TabIndex = 2;
             checkbox_switch3.Text = "开关3";
             // 
             // checkbox_switch4
             // 
             checkbox_switch4.Font = new Font("等线", 4F);
-            checkbox_switch4.Location = new Point(324, 3);
+            checkbox_switch4.Location = new Point(164, 2);
+            checkbox_switch4.Margin = new Padding(2, 2, 2, 2);
             checkbox_switch4.Name = "checkbox_switch4";
-            checkbox_switch4.Size = new Size(101, 30);
+            checkbox_switch4.Size = new Size(50, 16);
             checkbox_switch4.TabIndex = 3;
             checkbox_switch4.Text = "开关4";
             // 
             // checkbox_switch5
             // 
             checkbox_switch5.Font = new Font("等线", 4F);
-            checkbox_switch5.Location = new Point(431, 3);
+            checkbox_switch5.Location = new Point(218, 2);
+            checkbox_switch5.Margin = new Padding(2, 2, 2, 2);
             checkbox_switch5.Name = "checkbox_switch5";
-            checkbox_switch5.Size = new Size(101, 30);
+            checkbox_switch5.Size = new Size(50, 16);
             checkbox_switch5.TabIndex = 4;
             checkbox_switch5.Text = "开关5";
             // 
@@ -1701,19 +1755,21 @@
             tabPage4.Controls.Add(launchPresetIdBtn);
             tabPage4.Controls.Add(setPresetIdBtn);
             tabPage4.Controls.Add(ptzGoHomeBtn);
-            tabPage4.Location = new Point(8, 34);
+            tabPage4.Location = new Point(4, 19);
+            tabPage4.Margin = new Padding(2, 2, 2, 2);
             tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(704, 181);
+            tabPage4.Padding = new Padding(2, 2, 2, 2);
+            tabPage4.Size = new Size(352, 99);
             tabPage4.TabIndex = 1;
             tabPage4.Text = "云台控制";
             // 
             // checkbox_mimimumAdjustupDownLeftRightPTZCircle
             // 
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.BackColor = Color.Lime;
-            checkbox_mimimumAdjustupDownLeftRightPTZCircle.Location = new Point(608, 71);
+            checkbox_mimimumAdjustupDownLeftRightPTZCircle.Location = new Point(304, 39);
+            checkbox_mimimumAdjustupDownLeftRightPTZCircle.Margin = new Padding(2, 2, 2, 2);
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.Name = "checkbox_mimimumAdjustupDownLeftRightPTZCircle";
-            checkbox_mimimumAdjustupDownLeftRightPTZCircle.Size = new Size(344, 46);
+            checkbox_mimimumAdjustupDownLeftRightPTZCircle.Size = new Size(172, 25);
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.TabIndex = 180;
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.Text = "启动云台最小精度水平俯仰持续压测";
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.CheckedChanged += checkbox_mimimumAdjustupDownLeftRightPTZCircle_CheckedChanged;
@@ -1721,63 +1777,70 @@
             // checkbox_upDownLeftRightPTZCircle
             // 
             checkbox_upDownLeftRightPTZCircle.BackColor = Color.Lime;
-            checkbox_upDownLeftRightPTZCircle.Location = new Point(608, 14);
+            checkbox_upDownLeftRightPTZCircle.Location = new Point(304, 8);
+            checkbox_upDownLeftRightPTZCircle.Margin = new Padding(2, 2, 2, 2);
             checkbox_upDownLeftRightPTZCircle.Name = "checkbox_upDownLeftRightPTZCircle";
-            checkbox_upDownLeftRightPTZCircle.Size = new Size(269, 46);
+            checkbox_upDownLeftRightPTZCircle.Size = new Size(134, 25);
             checkbox_upDownLeftRightPTZCircle.TabIndex = 179;
             checkbox_upDownLeftRightPTZCircle.Text = "启动云台水平俯仰持续压测";
             checkbox_upDownLeftRightPTZCircle.CheckedChanged += checkbox_upDownLeftRightPTZCircle_CheckedChanged;
             // 
             // checkbox_ptzCruiseReverse35Test
             // 
-            checkbox_ptzCruiseReverse35Test.Location = new Point(466, 118);
+            checkbox_ptzCruiseReverse35Test.Location = new Point(233, 65);
+            checkbox_ptzCruiseReverse35Test.Margin = new Padding(2, 2, 2, 2);
             checkbox_ptzCruiseReverse35Test.Name = "checkbox_ptzCruiseReverse35Test";
-            checkbox_ptzCruiseReverse35Test.Size = new Size(176, 46);
+            checkbox_ptzCruiseReverse35Test.Size = new Size(88, 25);
             checkbox_ptzCruiseReverse35Test.TabIndex = 178;
             checkbox_ptzCruiseReverse35Test.Text = "启动仰-35度压测";
             checkbox_ptzCruiseReverse35Test.CheckedChanged += checkbox_ptzCruiseReverse35Test_CheckedChanged;
             // 
             // checkbox_ptzCruise90Test
             // 
-            checkbox_ptzCruise90Test.Location = new Point(275, 118);
+            checkbox_ptzCruise90Test.Location = new Point(138, 65);
+            checkbox_ptzCruise90Test.Margin = new Padding(2, 2, 2, 2);
             checkbox_ptzCruise90Test.Name = "checkbox_ptzCruise90Test";
-            checkbox_ptzCruise90Test.Size = new Size(176, 46);
+            checkbox_ptzCruise90Test.Size = new Size(88, 25);
             checkbox_ptzCruise90Test.TabIndex = 177;
             checkbox_ptzCruise90Test.Text = "启动仰90度压测";
             checkbox_ptzCruise90Test.CheckedChanged += checkbox_ptzCruise90Test_CheckedChanged;
             // 
             // checkbox_ptzCruise170Test
             // 
-            checkbox_ptzCruise170Test.Location = new Point(199, 66);
+            checkbox_ptzCruise170Test.Location = new Point(100, 36);
+            checkbox_ptzCruise170Test.Margin = new Padding(2, 2, 2, 2);
             checkbox_ptzCruise170Test.Name = "checkbox_ptzCruise170Test";
-            checkbox_ptzCruise170Test.Size = new Size(252, 46);
+            checkbox_ptzCruise170Test.Size = new Size(126, 25);
             checkbox_ptzCruise170Test.TabIndex = 176;
             checkbox_ptzCruise170Test.Text = "启动170度反向水平压测";
             checkbox_ptzCruise170Test.CheckedChanged += checkbox_ptzCruise170Test_CheckedChanged;
             // 
             // checkbox_ptzCruiseReverse170Test
             // 
-            checkbox_ptzCruiseReverse170Test.Location = new Point(17, 118);
+            checkbox_ptzCruiseReverse170Test.Location = new Point(8, 65);
+            checkbox_ptzCruiseReverse170Test.Margin = new Padding(2, 2, 2, 2);
             checkbox_ptzCruiseReverse170Test.Name = "checkbox_ptzCruiseReverse170Test";
-            checkbox_ptzCruiseReverse170Test.Size = new Size(252, 46);
+            checkbox_ptzCruiseReverse170Test.Size = new Size(126, 25);
             checkbox_ptzCruiseReverse170Test.TabIndex = 175;
             checkbox_ptzCruiseReverse170Test.Text = "启动-170度反向水平压测";
             checkbox_ptzCruiseReverse170Test.CheckedChanged += checkbox_ptzCruiseReverse170Test_CheckedChanged;
             // 
             // checkbox_ptzCruiseTest
             // 
-            checkbox_ptzCruiseTest.Location = new Point(17, 66);
+            checkbox_ptzCruiseTest.Location = new Point(8, 36);
+            checkbox_ptzCruiseTest.Margin = new Padding(2, 2, 2, 2);
             checkbox_ptzCruiseTest.Name = "checkbox_ptzCruiseTest";
-            checkbox_ptzCruiseTest.Size = new Size(177, 46);
+            checkbox_ptzCruiseTest.Size = new Size(88, 25);
             checkbox_ptzCruiseTest.TabIndex = 174;
             checkbox_ptzCruiseTest.Text = "启动1-5巡航压测";
             checkbox_ptzCruiseTest.CheckedChanged += checkbox_ptzCruiseTest_CheckedChanged;
             // 
             // deleteAllPresetIdBtn
             // 
-            deleteAllPresetIdBtn.Location = new Point(466, 9);
+            deleteAllPresetIdBtn.Location = new Point(233, 5);
+            deleteAllPresetIdBtn.Margin = new Padding(2, 2, 2, 2);
             deleteAllPresetIdBtn.Name = "deleteAllPresetIdBtn";
-            deleteAllPresetIdBtn.Size = new Size(137, 50);
+            deleteAllPresetIdBtn.Size = new Size(68, 27);
             deleteAllPresetIdBtn.TabIndex = 173;
             deleteAllPresetIdBtn.Text = "清除预置位";
             deleteAllPresetIdBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1786,10 +1849,11 @@
             // input_presetId
             // 
             input_presetId.Font = new Font("Microsoft YaHei UI", 7F);
-            input_presetId.Location = new Point(6, 9);
+            input_presetId.Location = new Point(3, 5);
+            input_presetId.Margin = new Padding(2, 2, 2, 2);
             input_presetId.Name = "input_presetId";
             input_presetId.PlaceholderText = "请输入预置位：";
-            input_presetId.Size = new Size(168, 50);
+            input_presetId.Size = new Size(84, 27);
             input_presetId.SuffixFore = Color.FromArgb(77, 177, 77);
             input_presetId.SuffixText = "预置位设置";
             input_presetId.TabIndex = 170;
@@ -1797,9 +1861,10 @@
             // 
             // launchPresetIdBtn
             // 
-            launchPresetIdBtn.Location = new Point(323, 9);
+            launchPresetIdBtn.Location = new Point(162, 5);
+            launchPresetIdBtn.Margin = new Padding(2, 2, 2, 2);
             launchPresetIdBtn.Name = "launchPresetIdBtn";
-            launchPresetIdBtn.Size = new Size(137, 50);
+            launchPresetIdBtn.Size = new Size(68, 27);
             launchPresetIdBtn.TabIndex = 172;
             launchPresetIdBtn.Text = "调用预置位";
             launchPresetIdBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1807,9 +1872,10 @@
             // 
             // setPresetIdBtn
             // 
-            setPresetIdBtn.Location = new Point(179, 9);
+            setPresetIdBtn.Location = new Point(90, 5);
+            setPresetIdBtn.Margin = new Padding(2, 2, 2, 2);
             setPresetIdBtn.Name = "setPresetIdBtn";
-            setPresetIdBtn.Size = new Size(137, 50);
+            setPresetIdBtn.Size = new Size(68, 27);
             setPresetIdBtn.TabIndex = 171;
             setPresetIdBtn.Text = "设置预置位";
             setPresetIdBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1817,9 +1883,10 @@
             // 
             // ptzGoHomeBtn
             // 
-            ptzGoHomeBtn.Location = new Point(466, 66);
+            ptzGoHomeBtn.Location = new Point(233, 36);
+            ptzGoHomeBtn.Margin = new Padding(2, 2, 2, 2);
             ptzGoHomeBtn.Name = "ptzGoHomeBtn";
-            ptzGoHomeBtn.Size = new Size(137, 50);
+            ptzGoHomeBtn.Size = new Size(68, 27);
             ptzGoHomeBtn.TabIndex = 150;
             ptzGoHomeBtn.Text = "云台复位";
             ptzGoHomeBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1830,10 +1897,11 @@
             divider4.BackColor = Color.FromArgb(100, 215, 234);
             divider4.Controls.Add(badge2);
             divider4.ForeColor = SystemColors.ControlText;
-            divider4.Location = new Point(699, 345);
+            divider4.Location = new Point(350, 189);
+            divider4.Margin = new Padding(2, 2, 2, 2);
             divider4.Name = "divider4";
             divider4.Orientation = AntdUI.TOrientation.Left;
-            divider4.Size = new Size(720, 19);
+            divider4.Size = new Size(360, 10);
             divider4.TabIndex = 160;
             divider4.Text = "外设控制";
             divider4.Thickness = 6F;
@@ -1842,9 +1910,10 @@
             // 
             badge2.BackColor = Color.FromArgb(100, 215, 234);
             badge2.Font = new Font("等线", 6F);
-            badge2.Location = new Point(207, -4);
+            badge2.Location = new Point(104, -2);
+            badge2.Margin = new Padding(2, 2, 2, 2);
             badge2.Name = "badge2";
-            badge2.Size = new Size(454, 25);
+            badge2.Size = new Size(227, 14);
             badge2.State = AntdUI.TState.Processing;
             badge2.TabIndex = 146;
             badge2.Text = "继电器控制case只需开启一个工具同时测试5台设备";
@@ -1853,20 +1922,22 @@
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(11, 371);
+            tabControl1.Location = new Point(6, 203);
+            tabControl1.Margin = new Padding(2, 2, 2, 2);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(681, 223);
+            tabControl1.Size = new Size(340, 122);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 159;
             // 
             // tabPage1
             // 
             tabPage1.Controls.Add(panel7);
-            tabPage1.Location = new Point(8, 34);
+            tabPage1.Location = new Point(4, 19);
+            tabPage1.Margin = new Padding(2, 2, 2, 2);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(665, 181);
+            tabPage1.Padding = new Padding(2, 2, 2, 2);
+            tabPage1.Size = new Size(332, 99);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "RTSP拉流区域";
             tabPage1.UseVisualStyleBackColor = true;
@@ -1919,44 +1990,49 @@
             panel7.Controls.Add(ai2StreanOffBtn);
             panel7.Controls.Add(ai1StreamSnapShotBtn);
             panel7.Controls.Add(ai2StreanOnBtn);
-            panel7.Location = new Point(6, 6);
+            panel7.Location = new Point(3, 3);
+            panel7.Margin = new Padding(2, 2, 2, 2);
             panel7.Name = "panel7";
-            panel7.Size = new Size(653, 170);
+            panel7.Size = new Size(326, 93);
             panel7.TabIndex = 153;
             // 
             // pictureBox_rtmp_closeUpSub
             // 
             pictureBox_rtmp_closeUpSub.BackColor = Color.Black;
-            pictureBox_rtmp_closeUpSub.Location = new Point(2024, 3);
+            pictureBox_rtmp_closeUpSub.Location = new Point(1012, 2);
+            pictureBox_rtmp_closeUpSub.Margin = new Padding(2, 2, 2, 2);
             pictureBox_rtmp_closeUpSub.Name = "pictureBox_rtmp_closeUpSub";
-            pictureBox_rtmp_closeUpSub.Size = new Size(196, 124);
+            pictureBox_rtmp_closeUpSub.Size = new Size(98, 68);
             pictureBox_rtmp_closeUpSub.TabIndex = 133;
             pictureBox_rtmp_closeUpSub.TabStop = false;
             // 
             // pictureBox_rtmp_closeUpMain
             // 
             pictureBox_rtmp_closeUpMain.BackColor = Color.Black;
-            pictureBox_rtmp_closeUpMain.Location = new Point(1821, 3);
+            pictureBox_rtmp_closeUpMain.Location = new Point(910, 2);
+            pictureBox_rtmp_closeUpMain.Margin = new Padding(2, 2, 2, 2);
             pictureBox_rtmp_closeUpMain.Name = "pictureBox_rtmp_closeUpMain";
-            pictureBox_rtmp_closeUpMain.Size = new Size(196, 124);
+            pictureBox_rtmp_closeUpMain.Size = new Size(98, 68);
             pictureBox_rtmp_closeUpMain.TabIndex = 132;
             pictureBox_rtmp_closeUpMain.TabStop = false;
             // 
             // pictureBox_rtmp_panoramicSub
             // 
             pictureBox_rtmp_panoramicSub.BackColor = Color.Black;
-            pictureBox_rtmp_panoramicSub.Location = new Point(1619, 3);
+            pictureBox_rtmp_panoramicSub.Location = new Point(810, 2);
+            pictureBox_rtmp_panoramicSub.Margin = new Padding(2, 2, 2, 2);
             pictureBox_rtmp_panoramicSub.Name = "pictureBox_rtmp_panoramicSub";
-            pictureBox_rtmp_panoramicSub.Size = new Size(196, 124);
+            pictureBox_rtmp_panoramicSub.Size = new Size(98, 68);
             pictureBox_rtmp_panoramicSub.TabIndex = 131;
             pictureBox_rtmp_panoramicSub.TabStop = false;
             // 
             // pictureBox_rtmp_panoramicMain
             // 
             pictureBox_rtmp_panoramicMain.BackColor = Color.Black;
-            pictureBox_rtmp_panoramicMain.Location = new Point(1417, 3);
+            pictureBox_rtmp_panoramicMain.Location = new Point(708, 2);
+            pictureBox_rtmp_panoramicMain.Margin = new Padding(2, 2, 2, 2);
             pictureBox_rtmp_panoramicMain.Name = "pictureBox_rtmp_panoramicMain";
-            pictureBox_rtmp_panoramicMain.Size = new Size(196, 124);
+            pictureBox_rtmp_panoramicMain.Size = new Size(98, 68);
             pictureBox_rtmp_panoramicMain.TabIndex = 130;
             pictureBox_rtmp_panoramicMain.TabStop = false;
             // 
@@ -1964,9 +2040,10 @@
             // 
             panoramicMainRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             panoramicMainRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
-            panoramicMainRtmpStreanOnBtn.Location = new Point(1414, 130);
+            panoramicMainRtmpStreanOnBtn.Location = new Point(707, 71);
+            panoramicMainRtmpStreanOnBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicMainRtmpStreanOnBtn.Name = "panoramicMainRtmpStreanOnBtn";
-            panoramicMainRtmpStreanOnBtn.Size = new Size(199, 50);
+            panoramicMainRtmpStreanOnBtn.Size = new Size(100, 27);
             panoramicMainRtmpStreanOnBtn.TabIndex = 118;
             panoramicMainRtmpStreanOnBtn.Text = "全景主流RTMP拉流";
             panoramicMainRtmpStreanOnBtn.Type = AntdUI.TTypeMini.Warn;
@@ -1975,9 +2052,10 @@
             // closeUpSubRTMPStreamSnapShotBtn
             // 
             closeUpSubRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpSubRTMPStreamSnapShotBtn.Location = new Point(2117, 177);
+            closeUpSubRTMPStreamSnapShotBtn.Location = new Point(1058, 97);
+            closeUpSubRTMPStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpSubRTMPStreamSnapShotBtn.Name = "closeUpSubRTMPStreamSnapShotBtn";
-            closeUpSubRTMPStreamSnapShotBtn.Size = new Size(92, 50);
+            closeUpSubRTMPStreamSnapShotBtn.Size = new Size(46, 27);
             closeUpSubRTMPStreamSnapShotBtn.TabIndex = 129;
             closeUpSubRTMPStreamSnapShotBtn.Text = "截图";
             closeUpSubRTMPStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1986,9 +2064,10 @@
             // panoramicRtmpStreanOffBtn
             // 
             panoramicRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            panoramicRtmpStreanOffBtn.Location = new Point(1424, 177);
+            panoramicRtmpStreanOffBtn.Location = new Point(712, 97);
+            panoramicRtmpStreanOffBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicRtmpStreanOffBtn.Name = "panoramicRtmpStreanOffBtn";
-            panoramicRtmpStreanOffBtn.Size = new Size(92, 50);
+            panoramicRtmpStreanOffBtn.Size = new Size(46, 27);
             panoramicRtmpStreanOffBtn.TabIndex = 119;
             panoramicRtmpStreanOffBtn.Text = "关流";
             panoramicRtmpStreanOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -1997,9 +2076,10 @@
             // closeUpSubRtmpStreanOffBtn
             // 
             closeUpSubRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpSubRtmpStreanOffBtn.Location = new Point(2030, 177);
+            closeUpSubRtmpStreanOffBtn.Location = new Point(1015, 97);
+            closeUpSubRtmpStreanOffBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpSubRtmpStreanOffBtn.Name = "closeUpSubRtmpStreanOffBtn";
-            closeUpSubRtmpStreanOffBtn.Size = new Size(92, 50);
+            closeUpSubRtmpStreanOffBtn.Size = new Size(46, 27);
             closeUpSubRtmpStreanOffBtn.TabIndex = 128;
             closeUpSubRtmpStreanOffBtn.Text = "关流";
             closeUpSubRtmpStreanOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2008,9 +2088,10 @@
             // paranomicMainRTMPStreamSnapShotBtn
             // 
             paranomicMainRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            paranomicMainRTMPStreamSnapShotBtn.Location = new Point(1511, 177);
+            paranomicMainRTMPStreamSnapShotBtn.Location = new Point(756, 97);
+            paranomicMainRTMPStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             paranomicMainRTMPStreamSnapShotBtn.Name = "paranomicMainRTMPStreamSnapShotBtn";
-            paranomicMainRTMPStreamSnapShotBtn.Size = new Size(92, 50);
+            paranomicMainRTMPStreamSnapShotBtn.Size = new Size(46, 27);
             paranomicMainRTMPStreamSnapShotBtn.TabIndex = 120;
             paranomicMainRTMPStreamSnapShotBtn.Text = "截图";
             paranomicMainRTMPStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2020,9 +2101,10 @@
             // 
             closeUpSubRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             closeUpSubRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
-            closeUpSubRtmpStreanOnBtn.Location = new Point(2024, 130);
+            closeUpSubRtmpStreanOnBtn.Location = new Point(1012, 71);
+            closeUpSubRtmpStreanOnBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpSubRtmpStreanOnBtn.Name = "closeUpSubRtmpStreanOnBtn";
-            closeUpSubRtmpStreanOnBtn.Size = new Size(199, 50);
+            closeUpSubRtmpStreanOnBtn.Size = new Size(100, 27);
             closeUpSubRtmpStreanOnBtn.TabIndex = 127;
             closeUpSubRtmpStreanOnBtn.Text = "特写辅流RTMP拉流";
             closeUpSubRtmpStreanOnBtn.Type = AntdUI.TTypeMini.Warn;
@@ -2032,9 +2114,10 @@
             // 
             panoramicSubRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             panoramicSubRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
-            panoramicSubRtmpStreanOnBtn.Location = new Point(1616, 130);
+            panoramicSubRtmpStreanOnBtn.Location = new Point(808, 71);
+            panoramicSubRtmpStreanOnBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicSubRtmpStreanOnBtn.Name = "panoramicSubRtmpStreanOnBtn";
-            panoramicSubRtmpStreanOnBtn.Size = new Size(199, 50);
+            panoramicSubRtmpStreanOnBtn.Size = new Size(100, 27);
             panoramicSubRtmpStreanOnBtn.TabIndex = 121;
             panoramicSubRtmpStreanOnBtn.Text = "全景辅流RTMP拉流";
             panoramicSubRtmpStreanOnBtn.Type = AntdUI.TTypeMini.Warn;
@@ -2043,9 +2126,10 @@
             // closeUpMainRTMPStreamSnapShotBtn
             // 
             closeUpMainRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpMainRTMPStreamSnapShotBtn.Location = new Point(1915, 177);
+            closeUpMainRTMPStreamSnapShotBtn.Location = new Point(958, 97);
+            closeUpMainRTMPStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpMainRTMPStreamSnapShotBtn.Name = "closeUpMainRTMPStreamSnapShotBtn";
-            closeUpMainRTMPStreamSnapShotBtn.Size = new Size(92, 50);
+            closeUpMainRTMPStreamSnapShotBtn.Size = new Size(46, 27);
             closeUpMainRTMPStreamSnapShotBtn.TabIndex = 126;
             closeUpMainRTMPStreamSnapShotBtn.Text = "截图";
             closeUpMainRTMPStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2054,9 +2138,10 @@
             // panoramicSubRtmpStreanOffBtn
             // 
             panoramicSubRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            panoramicSubRtmpStreanOffBtn.Location = new Point(1627, 177);
+            panoramicSubRtmpStreanOffBtn.Location = new Point(814, 97);
+            panoramicSubRtmpStreanOffBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicSubRtmpStreanOffBtn.Name = "panoramicSubRtmpStreanOffBtn";
-            panoramicSubRtmpStreanOffBtn.Size = new Size(92, 50);
+            panoramicSubRtmpStreanOffBtn.Size = new Size(46, 27);
             panoramicSubRtmpStreanOffBtn.TabIndex = 122;
             panoramicSubRtmpStreanOffBtn.Text = "关流";
             panoramicSubRtmpStreanOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2065,9 +2150,10 @@
             // closeUpMainRtmpStreanOffBtn
             // 
             closeUpMainRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpMainRtmpStreanOffBtn.Location = new Point(1828, 177);
+            closeUpMainRtmpStreanOffBtn.Location = new Point(914, 97);
+            closeUpMainRtmpStreanOffBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpMainRtmpStreanOffBtn.Name = "closeUpMainRtmpStreanOffBtn";
-            closeUpMainRtmpStreanOffBtn.Size = new Size(92, 50);
+            closeUpMainRtmpStreanOffBtn.Size = new Size(46, 27);
             closeUpMainRtmpStreanOffBtn.TabIndex = 125;
             closeUpMainRtmpStreanOffBtn.Text = "关流";
             closeUpMainRtmpStreanOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2076,9 +2162,10 @@
             // paranomicSubRTMPStreamSnapShotBtn
             // 
             paranomicSubRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            paranomicSubRTMPStreamSnapShotBtn.Location = new Point(1713, 177);
+            paranomicSubRTMPStreamSnapShotBtn.Location = new Point(856, 97);
+            paranomicSubRTMPStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             paranomicSubRTMPStreamSnapShotBtn.Name = "paranomicSubRTMPStreamSnapShotBtn";
-            paranomicSubRTMPStreamSnapShotBtn.Size = new Size(92, 50);
+            paranomicSubRTMPStreamSnapShotBtn.Size = new Size(46, 27);
             paranomicSubRTMPStreamSnapShotBtn.TabIndex = 123;
             paranomicSubRTMPStreamSnapShotBtn.Text = "截图";
             paranomicSubRTMPStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2088,9 +2175,10 @@
             // 
             closeUpMainRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             closeUpMainRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
-            closeUpMainRtmpStreanOnBtn.Location = new Point(1823, 130);
+            closeUpMainRtmpStreanOnBtn.Location = new Point(912, 71);
+            closeUpMainRtmpStreanOnBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpMainRtmpStreanOnBtn.Name = "closeUpMainRtmpStreanOnBtn";
-            closeUpMainRtmpStreanOnBtn.Size = new Size(199, 50);
+            closeUpMainRtmpStreanOnBtn.Size = new Size(100, 27);
             closeUpMainRtmpStreanOnBtn.TabIndex = 124;
             closeUpMainRtmpStreanOnBtn.Text = "特写主流RTMP拉流";
             closeUpMainRtmpStreanOnBtn.Type = AntdUI.TTypeMini.Warn;
@@ -2099,9 +2187,10 @@
             // pictureBox1_panoramicMain
             // 
             pictureBox1_panoramicMain.BackColor = Color.Black;
-            pictureBox1_panoramicMain.Location = new Point(3, 3);
+            pictureBox1_panoramicMain.Location = new Point(2, 2);
+            pictureBox1_panoramicMain.Margin = new Padding(2, 2, 2, 2);
             pictureBox1_panoramicMain.Name = "pictureBox1_panoramicMain";
-            pictureBox1_panoramicMain.Size = new Size(196, 124);
+            pictureBox1_panoramicMain.Size = new Size(98, 68);
             pictureBox1_panoramicMain.TabIndex = 111;
             pictureBox1_panoramicMain.TabStop = false;
             // 
@@ -2111,9 +2200,10 @@
             panoramicMainStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicMainStreamOnBtn.IconHoverSvg = "";
             panoramicMainStreamOnBtn.IconSvg = "PlayCircleFilled";
-            panoramicMainStreamOnBtn.Location = new Point(10, 130);
+            panoramicMainStreamOnBtn.Location = new Point(5, 71);
+            panoramicMainStreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicMainStreamOnBtn.Name = "panoramicMainStreamOnBtn";
-            panoramicMainStreamOnBtn.Size = new Size(178, 50);
+            panoramicMainStreamOnBtn.Size = new Size(89, 27);
             panoramicMainStreamOnBtn.TabIndex = 84;
             panoramicMainStreamOnBtn.Text = "全景主流拉流";
             panoramicMainStreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2122,9 +2212,10 @@
             // panoramicMainStreamOffBtn
             // 
             panoramicMainStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            panoramicMainStreamOffBtn.Location = new Point(10, 177);
+            panoramicMainStreamOffBtn.Location = new Point(5, 97);
+            panoramicMainStreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicMainStreamOffBtn.Name = "panoramicMainStreamOffBtn";
-            panoramicMainStreamOffBtn.Size = new Size(92, 50);
+            panoramicMainStreamOffBtn.Size = new Size(46, 27);
             panoramicMainStreamOffBtn.TabIndex = 85;
             panoramicMainStreamOffBtn.Text = "关流";
             panoramicMainStreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2133,9 +2224,10 @@
             // panoramicMainStreamSnapShotBtn
             // 
             panoramicMainStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            panoramicMainStreamSnapShotBtn.Location = new Point(97, 177);
+            panoramicMainStreamSnapShotBtn.Location = new Point(48, 97);
+            panoramicMainStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicMainStreamSnapShotBtn.Name = "panoramicMainStreamSnapShotBtn";
-            panoramicMainStreamSnapShotBtn.Size = new Size(92, 50);
+            panoramicMainStreamSnapShotBtn.Size = new Size(46, 27);
             panoramicMainStreamSnapShotBtn.TabIndex = 86;
             panoramicMainStreamSnapShotBtn.Text = "截图";
             panoramicMainStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2144,9 +2236,10 @@
             // pictureBox1_ai3
             // 
             pictureBox1_ai3.BackColor = Color.Black;
-            pictureBox1_ai3.Location = new Point(1215, 3);
+            pictureBox1_ai3.Location = new Point(608, 2);
+            pictureBox1_ai3.Margin = new Padding(2, 2, 2, 2);
             pictureBox1_ai3.Name = "pictureBox1_ai3";
-            pictureBox1_ai3.Size = new Size(196, 124);
+            pictureBox1_ai3.Size = new Size(98, 68);
             pictureBox1_ai3.TabIndex = 117;
             pictureBox1_ai3.TabStop = false;
             // 
@@ -2154,9 +2247,10 @@
             // 
             panoramicSubStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicSubStreamOnBtn.IconSvg = "PlayCircleFilled";
-            panoramicSubStreamOnBtn.Location = new Point(213, 130);
+            panoramicSubStreamOnBtn.Location = new Point(106, 71);
+            panoramicSubStreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicSubStreamOnBtn.Name = "panoramicSubStreamOnBtn";
-            panoramicSubStreamOnBtn.Size = new Size(178, 50);
+            panoramicSubStreamOnBtn.Size = new Size(89, 27);
             panoramicSubStreamOnBtn.TabIndex = 88;
             panoramicSubStreamOnBtn.Text = "全景辅流拉流";
             panoramicSubStreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2165,18 +2259,20 @@
             // pictureBox1_ai2
             // 
             pictureBox1_ai2.BackColor = Color.Black;
-            pictureBox1_ai2.Location = new Point(1013, 3);
+            pictureBox1_ai2.Location = new Point(506, 2);
+            pictureBox1_ai2.Margin = new Padding(2, 2, 2, 2);
             pictureBox1_ai2.Name = "pictureBox1_ai2";
-            pictureBox1_ai2.Size = new Size(196, 124);
+            pictureBox1_ai2.Size = new Size(98, 68);
             pictureBox1_ai2.TabIndex = 116;
             pictureBox1_ai2.TabStop = false;
             // 
             // panoramicSubStreamOffBtn
             // 
             panoramicSubStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            panoramicSubStreamOffBtn.Location = new Point(213, 177);
+            panoramicSubStreamOffBtn.Location = new Point(106, 97);
+            panoramicSubStreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicSubStreamOffBtn.Name = "panoramicSubStreamOffBtn";
-            panoramicSubStreamOffBtn.Size = new Size(92, 50);
+            panoramicSubStreamOffBtn.Size = new Size(46, 27);
             panoramicSubStreamOffBtn.TabIndex = 89;
             panoramicSubStreamOffBtn.Text = "关流";
             panoramicSubStreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2185,18 +2281,20 @@
             // pictureBox1_ai1
             // 
             pictureBox1_ai1.BackColor = Color.Black;
-            pictureBox1_ai1.Location = new Point(811, 3);
+            pictureBox1_ai1.Location = new Point(406, 2);
+            pictureBox1_ai1.Margin = new Padding(2, 2, 2, 2);
             pictureBox1_ai1.Name = "pictureBox1_ai1";
-            pictureBox1_ai1.Size = new Size(196, 124);
+            pictureBox1_ai1.Size = new Size(98, 68);
             pictureBox1_ai1.TabIndex = 115;
             pictureBox1_ai1.TabStop = false;
             // 
             // panoramicSubStreamSnapShotBtn
             // 
             panoramicSubStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            panoramicSubStreamSnapShotBtn.Location = new Point(299, 177);
+            panoramicSubStreamSnapShotBtn.Location = new Point(150, 97);
+            panoramicSubStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             panoramicSubStreamSnapShotBtn.Name = "panoramicSubStreamSnapShotBtn";
-            panoramicSubStreamSnapShotBtn.Size = new Size(92, 50);
+            panoramicSubStreamSnapShotBtn.Size = new Size(46, 27);
             panoramicSubStreamSnapShotBtn.TabIndex = 90;
             panoramicSubStreamSnapShotBtn.Text = "截图";
             panoramicSubStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2205,9 +2303,10 @@
             // pictureBox1_CloseUpSub
             // 
             pictureBox1_CloseUpSub.BackColor = Color.Black;
-            pictureBox1_CloseUpSub.Location = new Point(608, 3);
+            pictureBox1_CloseUpSub.Location = new Point(304, 2);
+            pictureBox1_CloseUpSub.Margin = new Padding(2, 2, 2, 2);
             pictureBox1_CloseUpSub.Name = "pictureBox1_CloseUpSub";
-            pictureBox1_CloseUpSub.Size = new Size(196, 124);
+            pictureBox1_CloseUpSub.Size = new Size(98, 68);
             pictureBox1_CloseUpSub.TabIndex = 114;
             pictureBox1_CloseUpSub.TabStop = false;
             // 
@@ -2215,9 +2314,10 @@
             // 
             closeUpMainStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpMainStreamOnBtn.IconSvg = "PlayCircleFilled";
-            closeUpMainStreamOnBtn.Location = new Point(414, 130);
+            closeUpMainStreamOnBtn.Location = new Point(207, 71);
+            closeUpMainStreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpMainStreamOnBtn.Name = "closeUpMainStreamOnBtn";
-            closeUpMainStreamOnBtn.Size = new Size(178, 50);
+            closeUpMainStreamOnBtn.Size = new Size(89, 27);
             closeUpMainStreamOnBtn.TabIndex = 92;
             closeUpMainStreamOnBtn.Text = "特写主流拉流";
             closeUpMainStreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2226,18 +2326,20 @@
             // pictureBox1_CloseUpMain
             // 
             pictureBox1_CloseUpMain.BackColor = Color.Black;
-            pictureBox1_CloseUpMain.Location = new Point(407, 3);
+            pictureBox1_CloseUpMain.Location = new Point(204, 2);
+            pictureBox1_CloseUpMain.Margin = new Padding(2, 2, 2, 2);
             pictureBox1_CloseUpMain.Name = "pictureBox1_CloseUpMain";
-            pictureBox1_CloseUpMain.Size = new Size(196, 124);
+            pictureBox1_CloseUpMain.Size = new Size(98, 68);
             pictureBox1_CloseUpMain.TabIndex = 113;
             pictureBox1_CloseUpMain.TabStop = false;
             // 
             // closeUpMainStreamOffBtn
             // 
             closeUpMainStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpMainStreamOffBtn.Location = new Point(414, 177);
+            closeUpMainStreamOffBtn.Location = new Point(207, 97);
+            closeUpMainStreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpMainStreamOffBtn.Name = "closeUpMainStreamOffBtn";
-            closeUpMainStreamOffBtn.Size = new Size(92, 50);
+            closeUpMainStreamOffBtn.Size = new Size(46, 27);
             closeUpMainStreamOffBtn.TabIndex = 93;
             closeUpMainStreamOffBtn.Text = "关流";
             closeUpMainStreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2246,18 +2348,20 @@
             // pictureBox1_panoramicSub
             // 
             pictureBox1_panoramicSub.BackColor = Color.Black;
-            pictureBox1_panoramicSub.Location = new Point(205, 3);
+            pictureBox1_panoramicSub.Location = new Point(102, 2);
+            pictureBox1_panoramicSub.Margin = new Padding(2, 2, 2, 2);
             pictureBox1_panoramicSub.Name = "pictureBox1_panoramicSub";
-            pictureBox1_panoramicSub.Size = new Size(196, 124);
+            pictureBox1_panoramicSub.Size = new Size(98, 68);
             pictureBox1_panoramicSub.TabIndex = 112;
             pictureBox1_panoramicSub.TabStop = false;
             // 
             // closeUpMainStreamSnapShotBtn
             // 
             closeUpMainStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpMainStreamSnapShotBtn.Location = new Point(501, 177);
+            closeUpMainStreamSnapShotBtn.Location = new Point(250, 97);
+            closeUpMainStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpMainStreamSnapShotBtn.Name = "closeUpMainStreamSnapShotBtn";
-            closeUpMainStreamSnapShotBtn.Size = new Size(92, 50);
+            closeUpMainStreamSnapShotBtn.Size = new Size(46, 27);
             closeUpMainStreamSnapShotBtn.TabIndex = 94;
             closeUpMainStreamSnapShotBtn.Text = "截图";
             closeUpMainStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2267,9 +2371,10 @@
             // 
             closeUpSubStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpSubStreamOnBtn.IconSvg = "PlayCircleFilled";
-            closeUpSubStreamOnBtn.Location = new Point(616, 130);
+            closeUpSubStreamOnBtn.Location = new Point(308, 71);
+            closeUpSubStreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpSubStreamOnBtn.Name = "closeUpSubStreamOnBtn";
-            closeUpSubStreamOnBtn.Size = new Size(178, 50);
+            closeUpSubStreamOnBtn.Size = new Size(89, 27);
             closeUpSubStreamOnBtn.TabIndex = 96;
             closeUpSubStreamOnBtn.Text = "特写辅流拉流";
             closeUpSubStreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2278,9 +2383,10 @@
             // ai3StreamSnapShotBtn
             // 
             ai3StreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            ai3StreamSnapShotBtn.Location = new Point(1308, 177);
+            ai3StreamSnapShotBtn.Location = new Point(654, 97);
+            ai3StreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             ai3StreamSnapShotBtn.Name = "ai3StreamSnapShotBtn";
-            ai3StreamSnapShotBtn.Size = new Size(92, 50);
+            ai3StreamSnapShotBtn.Size = new Size(46, 27);
             ai3StreamSnapShotBtn.TabIndex = 110;
             ai3StreamSnapShotBtn.Text = "截图";
             ai3StreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2289,9 +2395,10 @@
             // closeUpSubStreamOffBtn
             // 
             closeUpSubStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpSubStreamOffBtn.Location = new Point(616, 177);
+            closeUpSubStreamOffBtn.Location = new Point(308, 97);
+            closeUpSubStreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpSubStreamOffBtn.Name = "closeUpSubStreamOffBtn";
-            closeUpSubStreamOffBtn.Size = new Size(92, 50);
+            closeUpSubStreamOffBtn.Size = new Size(46, 27);
             closeUpSubStreamOffBtn.TabIndex = 97;
             closeUpSubStreamOffBtn.Text = "关流";
             closeUpSubStreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2300,9 +2407,10 @@
             // ai3StreanOffBtn
             // 
             ai3StreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            ai3StreanOffBtn.Location = new Point(1222, 177);
+            ai3StreanOffBtn.Location = new Point(611, 97);
+            ai3StreanOffBtn.Margin = new Padding(2, 2, 2, 2);
             ai3StreanOffBtn.Name = "ai3StreanOffBtn";
-            ai3StreanOffBtn.Size = new Size(92, 50);
+            ai3StreanOffBtn.Size = new Size(46, 27);
             ai3StreanOffBtn.TabIndex = 109;
             ai3StreanOffBtn.Text = "关流";
             ai3StreanOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2311,9 +2419,10 @@
             // closeUpSubStreamSnapShotBtn
             // 
             closeUpSubStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            closeUpSubStreamSnapShotBtn.Location = new Point(703, 177);
+            closeUpSubStreamSnapShotBtn.Location = new Point(352, 97);
+            closeUpSubStreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpSubStreamSnapShotBtn.Name = "closeUpSubStreamSnapShotBtn";
-            closeUpSubStreamSnapShotBtn.Size = new Size(92, 50);
+            closeUpSubStreamSnapShotBtn.Size = new Size(46, 27);
             closeUpSubStreamSnapShotBtn.TabIndex = 98;
             closeUpSubStreamSnapShotBtn.Text = "截图";
             closeUpSubStreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2323,9 +2432,10 @@
             // 
             ai3StreanOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai3StreanOnBtn.IconSvg = "PlayCircleFilled";
-            ai3StreanOnBtn.Location = new Point(1215, 130);
+            ai3StreanOnBtn.Location = new Point(608, 71);
+            ai3StreanOnBtn.Margin = new Padding(2, 2, 2, 2);
             ai3StreanOnBtn.Name = "ai3StreanOnBtn";
-            ai3StreanOnBtn.Size = new Size(199, 50);
+            ai3StreanOnBtn.Size = new Size(100, 27);
             ai3StreanOnBtn.TabIndex = 108;
             ai3StreanOnBtn.Text = "ai3右后排流拉流";
             ai3StreanOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2335,9 +2445,10 @@
             // 
             ai1StreanOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai1StreanOnBtn.IconSvg = "PlayCircleFilled";
-            ai1StreanOnBtn.Location = new Point(815, 130);
+            ai1StreanOnBtn.Location = new Point(408, 71);
+            ai1StreanOnBtn.Margin = new Padding(2, 2, 2, 2);
             ai1StreanOnBtn.Name = "ai1StreanOnBtn";
-            ai1StreanOnBtn.Size = new Size(188, 50);
+            ai1StreanOnBtn.Size = new Size(94, 27);
             ai1StreanOnBtn.TabIndex = 100;
             ai1StreanOnBtn.Text = "ai1前排流拉流";
             ai1StreanOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2346,9 +2457,10 @@
             // ai2StreamSnapShotBtn
             // 
             ai2StreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            ai2StreamSnapShotBtn.Location = new Point(1107, 177);
+            ai2StreamSnapShotBtn.Location = new Point(554, 97);
+            ai2StreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             ai2StreamSnapShotBtn.Name = "ai2StreamSnapShotBtn";
-            ai2StreamSnapShotBtn.Size = new Size(92, 50);
+            ai2StreamSnapShotBtn.Size = new Size(46, 27);
             ai2StreamSnapShotBtn.TabIndex = 106;
             ai2StreamSnapShotBtn.Text = "截图";
             ai2StreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2357,9 +2469,10 @@
             // ai1StreanOffBtn
             // 
             ai1StreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            ai1StreanOffBtn.Location = new Point(818, 177);
+            ai1StreanOffBtn.Location = new Point(409, 97);
+            ai1StreanOffBtn.Margin = new Padding(2, 2, 2, 2);
             ai1StreanOffBtn.Name = "ai1StreanOffBtn";
-            ai1StreanOffBtn.Size = new Size(92, 50);
+            ai1StreanOffBtn.Size = new Size(46, 27);
             ai1StreanOffBtn.TabIndex = 101;
             ai1StreanOffBtn.Text = "关流";
             ai1StreanOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2368,9 +2481,10 @@
             // ai2StreanOffBtn
             // 
             ai2StreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            ai2StreanOffBtn.Location = new Point(1019, 177);
+            ai2StreanOffBtn.Location = new Point(510, 97);
+            ai2StreanOffBtn.Margin = new Padding(2, 2, 2, 2);
             ai2StreanOffBtn.Name = "ai2StreanOffBtn";
-            ai2StreanOffBtn.Size = new Size(92, 50);
+            ai2StreanOffBtn.Size = new Size(46, 27);
             ai2StreanOffBtn.TabIndex = 105;
             ai2StreanOffBtn.Text = "关流";
             ai2StreanOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2379,9 +2493,10 @@
             // ai1StreamSnapShotBtn
             // 
             ai1StreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            ai1StreamSnapShotBtn.Location = new Point(905, 177);
+            ai1StreamSnapShotBtn.Location = new Point(452, 97);
+            ai1StreamSnapShotBtn.Margin = new Padding(2, 2, 2, 2);
             ai1StreamSnapShotBtn.Name = "ai1StreamSnapShotBtn";
-            ai1StreamSnapShotBtn.Size = new Size(92, 50);
+            ai1StreamSnapShotBtn.Size = new Size(46, 27);
             ai1StreamSnapShotBtn.TabIndex = 102;
             ai1StreamSnapShotBtn.Text = "截图";
             ai1StreamSnapShotBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2391,9 +2506,10 @@
             // 
             ai2StreanOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai2StreanOnBtn.IconSvg = "PlayCircleFilled";
-            ai2StreanOnBtn.Location = new Point(1014, 130);
+            ai2StreanOnBtn.Location = new Point(507, 71);
+            ai2StreanOnBtn.Margin = new Padding(2, 2, 2, 2);
             ai2StreanOnBtn.Name = "ai2StreanOnBtn";
-            ai2StreanOnBtn.Size = new Size(199, 50);
+            ai2StreanOnBtn.Size = new Size(100, 27);
             ai2StreanOnBtn.TabIndex = 104;
             ai2StreanOnBtn.Text = "ai2左后排流拉流";
             ai2StreanOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2403,6 +2519,7 @@
             // 
             tabPage2.AutoScroll = true;
             tabPage2.BackColor = Color.White;
+            tabPage2.Controls.Add(input_Uvctype);
             tabPage2.Controls.Add(getCurComputerUvcDevicePathBtn);
             tabPage2.Controls.Add(input_curUvcDevicePath);
             tabPage2.Controls.Add(uvcStreamOnSpecificDevicePathBtn);
@@ -2412,18 +2529,20 @@
             tabPage2.Controls.Add(uvc_streamOnBtn);
             tabPage2.Controls.Add(input1_uvc_x);
             tabPage2.Controls.Add(uvc_streamOffBtn);
-            tabPage2.Location = new Point(8, 34);
+            tabPage2.Location = new Point(4, 19);
+            tabPage2.Margin = new Padding(2, 2, 2, 2);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(665, 181);
+            tabPage2.Padding = new Padding(2, 2, 2, 2);
+            tabPage2.Size = new Size(332, 99);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "UVC拉流区域";
             // 
             // getCurComputerUvcDevicePathBtn
             // 
-            getCurComputerUvcDevicePathBtn.Location = new Point(638, 6);
+            getCurComputerUvcDevicePathBtn.Location = new Point(319, 3);
+            getCurComputerUvcDevicePathBtn.Margin = new Padding(2, 2, 2, 2);
             getCurComputerUvcDevicePathBtn.Name = "getCurComputerUvcDevicePathBtn";
-            getCurComputerUvcDevicePathBtn.Size = new Size(372, 50);
+            getCurComputerUvcDevicePathBtn.Size = new Size(186, 27);
             getCurComputerUvcDevicePathBtn.TabIndex = 172;
             getCurComputerUvcDevicePathBtn.Text = "获取当前电脑连接UVC_DevicePath";
             getCurComputerUvcDevicePathBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2432,19 +2551,21 @@
             // input_curUvcDevicePath
             // 
             input_curUvcDevicePath.Font = new Font("Microsoft YaHei UI", 7F);
-            input_curUvcDevicePath.Location = new Point(692, 61);
+            input_curUvcDevicePath.Location = new Point(346, 33);
+            input_curUvcDevicePath.Margin = new Padding(2, 2, 2, 2);
             input_curUvcDevicePath.Name = "input_curUvcDevicePath";
             input_curUvcDevicePath.PlaceholderText = "";
-            input_curUvcDevicePath.Size = new Size(438, 50);
+            input_curUvcDevicePath.Size = new Size(219, 27);
             input_curUvcDevicePath.SuffixFore = Color.FromArgb(77, 177, 77);
             input_curUvcDevicePath.SuffixText = "DevicePath";
             input_curUvcDevicePath.TabIndex = 171;
             // 
             // uvcStreamOnSpecificDevicePathBtn
             // 
-            uvcStreamOnSpecificDevicePathBtn.Location = new Point(495, 63);
+            uvcStreamOnSpecificDevicePathBtn.Location = new Point(248, 35);
+            uvcStreamOnSpecificDevicePathBtn.Margin = new Padding(2, 2, 2, 2);
             uvcStreamOnSpecificDevicePathBtn.Name = "uvcStreamOnSpecificDevicePathBtn";
-            uvcStreamOnSpecificDevicePathBtn.Size = new Size(195, 50);
+            uvcStreamOnSpecificDevicePathBtn.Size = new Size(98, 27);
             uvcStreamOnSpecificDevicePathBtn.TabIndex = 142;
             uvcStreamOnSpecificDevicePathBtn.Text = "开始拉流_指定uvc";
             uvcStreamOnSpecificDevicePathBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2452,9 +2573,10 @@
             // 
             // uvcStreamTakePicBtn
             // 
-            uvcStreamTakePicBtn.Location = new Point(495, 6);
+            uvcStreamTakePicBtn.Location = new Point(248, 3);
+            uvcStreamTakePicBtn.Margin = new Padding(2, 2, 2, 2);
             uvcStreamTakePicBtn.Name = "uvcStreamTakePicBtn";
-            uvcStreamTakePicBtn.Size = new Size(137, 50);
+            uvcStreamTakePicBtn.Size = new Size(68, 27);
             uvcStreamTakePicBtn.TabIndex = 141;
             uvcStreamTakePicBtn.Text = "拍摄图片";
             uvcStreamTakePicBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2463,19 +2585,21 @@
             // pictureBox_uvcStream
             // 
             pictureBox_uvcStream.BackColor = Color.Black;
-            pictureBox_uvcStream.Location = new Point(9, 6);
+            pictureBox_uvcStream.Location = new Point(4, 3);
+            pictureBox_uvcStream.Margin = new Padding(2, 2, 2, 2);
             pictureBox_uvcStream.Name = "pictureBox_uvcStream";
-            pictureBox_uvcStream.Size = new Size(340, 178);
+            pictureBox_uvcStream.Size = new Size(170, 98);
             pictureBox_uvcStream.TabIndex = 0;
             pictureBox_uvcStream.TabStop = false;
             pictureBox_uvcStream.SizeChanged += pictureBox_uvcStream_SizeChanged;
             // 
             // input2_uvc_y
             // 
-            input2_uvc_y.Location = new Point(499, 123);
+            input2_uvc_y.Location = new Point(325, 66);
+            input2_uvc_y.Margin = new Padding(2, 2, 2, 2);
             input2_uvc_y.Name = "input2_uvc_y";
             input2_uvc_y.PlaceholderText = "test differ";
-            input2_uvc_y.Size = new Size(137, 50);
+            input2_uvc_y.Size = new Size(68, 27);
             input2_uvc_y.SuffixFore = Color.FromArgb(77, 177, 77);
             input2_uvc_y.SuffixText = "uvc_y";
             input2_uvc_y.TabIndex = 140;
@@ -2483,9 +2607,10 @@
             // 
             // uvc_streamOnBtn
             // 
-            uvc_streamOnBtn.Location = new Point(355, 6);
+            uvc_streamOnBtn.Location = new Point(178, 3);
+            uvc_streamOnBtn.Margin = new Padding(2, 2, 2, 2);
             uvc_streamOnBtn.Name = "uvc_streamOnBtn";
-            uvc_streamOnBtn.Size = new Size(137, 50);
+            uvc_streamOnBtn.Size = new Size(68, 27);
             uvc_streamOnBtn.TabIndex = 77;
             uvc_streamOnBtn.Text = "开始拉流";
             uvc_streamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2493,10 +2618,11 @@
             // 
             // input1_uvc_x
             // 
-            input1_uvc_x.Location = new Point(355, 123);
+            input1_uvc_x.Location = new Point(253, 66);
+            input1_uvc_x.Margin = new Padding(2, 2, 2, 2);
             input1_uvc_x.Name = "input1_uvc_x";
             input1_uvc_x.PlaceholderText = "test differ";
-            input1_uvc_x.Size = new Size(137, 50);
+            input1_uvc_x.Size = new Size(68, 27);
             input1_uvc_x.SuffixFore = Color.FromArgb(77, 177, 77);
             input1_uvc_x.SuffixText = "uvc_x";
             input1_uvc_x.TabIndex = 139;
@@ -2504,9 +2630,10 @@
             // 
             // uvc_streamOffBtn
             // 
-            uvc_streamOffBtn.Location = new Point(355, 63);
+            uvc_streamOffBtn.Location = new Point(178, 35);
+            uvc_streamOffBtn.Margin = new Padding(2, 2, 2, 2);
             uvc_streamOffBtn.Name = "uvc_streamOffBtn";
-            uvc_streamOffBtn.Size = new Size(137, 50);
+            uvc_streamOffBtn.Size = new Size(68, 27);
             uvc_streamOffBtn.TabIndex = 78;
             uvc_streamOffBtn.Text = "停止拉流";
             uvc_streamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2529,33 +2656,37 @@
             panel6.Controls.Add(stackPanel5);
             panel6.Controls.Add(stackPanel2);
             panel6.Controls.Add(stackPanel1);
-            panel6.Location = new Point(6, 31);
+            panel6.Location = new Point(3, 17);
+            panel6.Margin = new Padding(2, 2, 2, 2);
             panel6.Name = "panel6";
-            panel6.Size = new Size(1414, 307);
+            panel6.Size = new Size(707, 168);
             panel6.TabIndex = 154;
             // 
             // SKDL0503_CB
             // 
-            SKDL0503_CB.Location = new Point(891, 9);
+            SKDL0503_CB.Location = new Point(446, 5);
+            SKDL0503_CB.Margin = new Padding(2, 2, 2, 2);
             SKDL0503_CB.Name = "SKDL0503_CB";
-            SKDL0503_CB.Size = new Size(132, 56);
+            SKDL0503_CB.Size = new Size(66, 31);
             SKDL0503_CB.TabIndex = 160;
             SKDL0503_CB.Text = "SKDL0503";
             // 
             // autoIPCheckBox
             // 
             autoIPCheckBox.Checked = true;
-            autoIPCheckBox.Location = new Point(769, 9);
+            autoIPCheckBox.Location = new Point(384, 5);
+            autoIPCheckBox.Margin = new Padding(2, 2, 2, 2);
             autoIPCheckBox.Name = "autoIPCheckBox";
-            autoIPCheckBox.Size = new Size(129, 56);
+            autoIPCheckBox.Size = new Size(64, 31);
             autoIPCheckBox.TabIndex = 159;
             autoIPCheckBox.Text = "自动IP";
             // 
             // checkBoxDecodeTest
             // 
-            checkBoxDecodeTest.Location = new Point(634, 9);
+            checkBoxDecodeTest.Location = new Point(317, 5);
+            checkBoxDecodeTest.Margin = new Padding(2, 2, 2, 2);
             checkBoxDecodeTest.Name = "checkBoxDecodeTest";
-            checkBoxDecodeTest.Size = new Size(129, 56);
+            checkBoxDecodeTest.Size = new Size(64, 31);
             checkBoxDecodeTest.TabIndex = 158;
             checkBoxDecodeTest.Text = "解码测试";
             // 
@@ -2563,26 +2694,29 @@
             // 
             stackPanel8.Controls.Add(checkbox_2streamRTSPOn);
             stackPanel8.Controls.Add(ptzStressTestBtn);
-            stackPanel8.Location = new Point(1718, 322);
+            stackPanel8.Location = new Point(859, 177);
+            stackPanel8.Margin = new Padding(2, 2, 2, 2);
             stackPanel8.Name = "stackPanel8";
-            stackPanel8.Size = new Size(442, 57);
+            stackPanel8.Size = new Size(221, 31);
             stackPanel8.TabIndex = 157;
             stackPanel8.Text = "stackPanel8";
             // 
             // checkbox_2streamRTSPOn
             // 
-            checkbox_2streamRTSPOn.Location = new Point(210, 3);
+            checkbox_2streamRTSPOn.Location = new Point(106, 2);
+            checkbox_2streamRTSPOn.Margin = new Padding(2, 2, 2, 2);
             checkbox_2streamRTSPOn.Name = "checkbox_2streamRTSPOn";
-            checkbox_2streamRTSPOn.Size = new Size(192, 51);
+            checkbox_2streamRTSPOn.Size = new Size(96, 27);
             checkbox_2streamRTSPOn.TabIndex = 169;
             checkbox_2streamRTSPOn.Text = "2路全RTSP拉流";
             checkbox_2streamRTSPOn.CheckedChanged += checkbox_2streamRTSPOn_CheckedChanged;
             // 
             // ptzStressTestBtn
             // 
-            ptzStressTestBtn.Location = new Point(3, 3);
+            ptzStressTestBtn.Location = new Point(2, 2);
+            ptzStressTestBtn.Margin = new Padding(2, 2, 2, 2);
             ptzStressTestBtn.Name = "ptzStressTestBtn";
-            ptzStressTestBtn.Size = new Size(201, 51);
+            ptzStressTestBtn.Size = new Size(100, 27);
             ptzStressTestBtn.TabIndex = 168;
             ptzStressTestBtn.Text = "云台重载测试";
             ptzStressTestBtn.Type = AntdUI.TTypeMini.Success;
@@ -2602,17 +2736,19 @@
             stackPanel7.Controls.Add(setUdhcpcBtn);
             stackPanel7.Controls.Add(getNetWorkConfigBtn);
             stackPanel7.Controls.Add(rebootDevBtn);
-            stackPanel7.Location = new Point(3, 388);
+            stackPanel7.Location = new Point(2, 213);
+            stackPanel7.Margin = new Padding(2, 2, 2, 2);
             stackPanel7.Name = "stackPanel7";
-            stackPanel7.Size = new Size(2157, 57);
+            stackPanel7.Size = new Size(1078, 31);
             stackPanel7.TabIndex = 156;
             stackPanel7.Text = "stackPanel7";
             // 
             // getDiskStatusBtn
             // 
-            getDiskStatusBtn.Location = new Point(1910, 3);
+            getDiskStatusBtn.Location = new Point(967, 2);
+            getDiskStatusBtn.Margin = new Padding(2, 2, 2, 2);
             getDiskStatusBtn.Name = "getDiskStatusBtn";
-            getDiskStatusBtn.Size = new Size(158, 51);
+            getDiskStatusBtn.Size = new Size(79, 27);
             getDiskStatusBtn.TabIndex = 168;
             getDiskStatusBtn.Text = "获取分区状态";
             getDiskStatusBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2620,9 +2756,10 @@
             // 
             // getSysVersionBtn
             // 
-            getSysVersionBtn.Location = new Point(1746, 3);
+            getSysVersionBtn.Location = new Point(884, 2);
+            getSysVersionBtn.Margin = new Padding(2, 2, 2, 2);
             getSysVersionBtn.Name = "getSysVersionBtn";
-            getSysVersionBtn.Size = new Size(158, 51);
+            getSysVersionBtn.Size = new Size(79, 27);
             getSysVersionBtn.TabIndex = 167;
             getSysVersionBtn.Text = "获取当前版本";
             getSysVersionBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2630,9 +2767,10 @@
             // 
             // uploadOtaPacketToDevBtn
             // 
-            uploadOtaPacketToDevBtn.Location = new Point(1609, 3);
+            uploadOtaPacketToDevBtn.Location = new Point(814, 2);
+            uploadOtaPacketToDevBtn.Margin = new Padding(2, 2, 2, 2);
             uploadOtaPacketToDevBtn.Name = "uploadOtaPacketToDevBtn";
-            uploadOtaPacketToDevBtn.Size = new Size(131, 51);
+            uploadOtaPacketToDevBtn.Size = new Size(66, 27);
             uploadOtaPacketToDevBtn.TabIndex = 166;
             uploadOtaPacketToDevBtn.Text = "上传固件包";
             uploadOtaPacketToDevBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2640,9 +2778,10 @@
             // 
             // checkUpgradeStatusBtn
             // 
-            checkUpgradeStatusBtn.Location = new Point(1448, 3);
+            checkUpgradeStatusBtn.Location = new Point(732, 2);
+            checkUpgradeStatusBtn.Margin = new Padding(2, 2, 2, 2);
             checkUpgradeStatusBtn.Name = "checkUpgradeStatusBtn";
-            checkUpgradeStatusBtn.Size = new Size(155, 51);
+            checkUpgradeStatusBtn.Size = new Size(78, 27);
             checkUpgradeStatusBtn.TabIndex = 165;
             checkUpgradeStatusBtn.Text = "查询升级状态";
             checkUpgradeStatusBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2650,9 +2789,10 @@
             // 
             // otaStartBtn
             // 
-            otaStartBtn.Location = new Point(1311, 3);
+            otaStartBtn.Location = new Point(662, 2);
+            otaStartBtn.Margin = new Padding(2, 2, 2, 2);
             otaStartBtn.Name = "otaStartBtn";
-            otaStartBtn.Size = new Size(131, 51);
+            otaStartBtn.Size = new Size(66, 27);
             otaStartBtn.TabIndex = 164;
             otaStartBtn.Text = "触发升级";
             otaStartBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2660,9 +2800,10 @@
             // 
             // chooseOta2PacketBtn
             // 
-            chooseOta2PacketBtn.Location = new Point(1126, 3);
+            chooseOta2PacketBtn.Location = new Point(568, 2);
+            chooseOta2PacketBtn.Margin = new Padding(2, 2, 2, 2);
             chooseOta2PacketBtn.Name = "chooseOta2PacketBtn";
-            chooseOta2PacketBtn.Size = new Size(179, 51);
+            chooseOta2PacketBtn.Size = new Size(90, 27);
             chooseOta2PacketBtn.TabIndex = 163;
             chooseOta2PacketBtn.Text = "选择固件包OTA2";
             chooseOta2PacketBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2670,9 +2811,10 @@
             // 
             // chooseOta1PacketBtn
             // 
-            chooseOta1PacketBtn.Location = new Point(941, 3);
+            chooseOta1PacketBtn.Location = new Point(474, 2);
+            chooseOta1PacketBtn.Margin = new Padding(2, 2, 2, 2);
             chooseOta1PacketBtn.Name = "chooseOta1PacketBtn";
-            chooseOta1PacketBtn.Size = new Size(179, 51);
+            chooseOta1PacketBtn.Size = new Size(90, 27);
             chooseOta1PacketBtn.TabIndex = 160;
             chooseOta1PacketBtn.Text = "选择固件包OTA1";
             chooseOta1PacketBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2680,29 +2822,32 @@
             // 
             // input_otaPacketPath2
             // 
-            input_otaPacketPath2.Location = new Point(706, 3);
+            input_otaPacketPath2.Location = new Point(356, 2);
+            input_otaPacketPath2.Margin = new Padding(2, 2, 2, 2);
             input_otaPacketPath2.Name = "input_otaPacketPath2";
             input_otaPacketPath2.PlaceholderText = "";
-            input_otaPacketPath2.Size = new Size(229, 51);
+            input_otaPacketPath2.Size = new Size(114, 27);
             input_otaPacketPath2.SuffixFore = Color.FromArgb(77, 177, 77);
             input_otaPacketPath2.SuffixText = "差分包2";
             input_otaPacketPath2.TabIndex = 161;
             // 
             // input_otaPacketPath1
             // 
-            input_otaPacketPath1.Location = new Point(471, 3);
+            input_otaPacketPath1.Location = new Point(238, 2);
+            input_otaPacketPath1.Margin = new Padding(2, 2, 2, 2);
             input_otaPacketPath1.Name = "input_otaPacketPath1";
             input_otaPacketPath1.PlaceholderText = "";
-            input_otaPacketPath1.Size = new Size(229, 51);
+            input_otaPacketPath1.Size = new Size(114, 27);
             input_otaPacketPath1.SuffixFore = Color.FromArgb(77, 177, 77);
             input_otaPacketPath1.SuffixText = "差分包1";
             input_otaPacketPath1.TabIndex = 162;
             // 
             // setUdhcpcBtn
             // 
-            setUdhcpcBtn.Location = new Point(300, 3);
+            setUdhcpcBtn.Location = new Point(152, 2);
+            setUdhcpcBtn.Margin = new Padding(2, 2, 2, 2);
             setUdhcpcBtn.Name = "setUdhcpcBtn";
-            setUdhcpcBtn.Size = new Size(165, 51);
+            setUdhcpcBtn.Size = new Size(82, 27);
             setUdhcpcBtn.TabIndex = 158;
             setUdhcpcBtn.Text = "设置自动获取IP";
             setUdhcpcBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2710,9 +2855,10 @@
             // 
             // getNetWorkConfigBtn
             // 
-            getNetWorkConfigBtn.Location = new Point(146, 3);
+            getNetWorkConfigBtn.Location = new Point(74, 2);
+            getNetWorkConfigBtn.Margin = new Padding(2, 2, 2, 2);
             getNetWorkConfigBtn.Name = "getNetWorkConfigBtn";
-            getNetWorkConfigBtn.Size = new Size(148, 51);
+            getNetWorkConfigBtn.Size = new Size(74, 27);
             getNetWorkConfigBtn.TabIndex = 157;
             getNetWorkConfigBtn.Text = "获取网络配置";
             getNetWorkConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2720,9 +2866,10 @@
             // 
             // rebootDevBtn
             // 
-            rebootDevBtn.Location = new Point(3, 3);
+            rebootDevBtn.Location = new Point(2, 2);
+            rebootDevBtn.Margin = new Padding(2, 2, 2, 2);
             rebootDevBtn.Name = "rebootDevBtn";
-            rebootDevBtn.Size = new Size(137, 51);
+            rebootDevBtn.Size = new Size(68, 27);
             rebootDevBtn.TabIndex = 148;
             rebootDevBtn.Text = "重启设备";
             rebootDevBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2738,52 +2885,58 @@
             flowLayoutPanel2.Controls.Add(closeUpZoomBtn);
             flowLayoutPanel2.Controls.Add(ptzMachineControlBtn);
             flowLayoutPanel2.Controls.Add(eptzControlBtn);
-            flowLayoutPanel2.Location = new Point(3, 322);
+            flowLayoutPanel2.Location = new Point(2, 177);
+            flowLayoutPanel2.Margin = new Padding(2, 2, 2, 2);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(1709, 57);
+            flowLayoutPanel2.Size = new Size(854, 31);
             flowLayoutPanel2.TabIndex = 155;
             // 
             // checkbox_7streamRTSPOn
             // 
-            checkbox_7streamRTSPOn.Location = new Point(3, 3);
+            checkbox_7streamRTSPOn.Location = new Point(2, 2);
+            checkbox_7streamRTSPOn.Margin = new Padding(2, 2, 2, 2);
             checkbox_7streamRTSPOn.Name = "checkbox_7streamRTSPOn";
-            checkbox_7streamRTSPOn.Size = new Size(174, 46);
+            checkbox_7streamRTSPOn.Size = new Size(87, 25);
             checkbox_7streamRTSPOn.TabIndex = 0;
             checkbox_7streamRTSPOn.Text = "7路全RTSP拉流";
             checkbox_7streamRTSPOn.CheckedChanged += checkbox_7streamRTSPOn_CheckedChanged;
             // 
             // checkbox_zoomCircleTest
             // 
-            checkbox_zoomCircleTest.Location = new Point(183, 3);
+            checkbox_zoomCircleTest.Location = new Point(93, 2);
+            checkbox_zoomCircleTest.Margin = new Padding(2, 2, 2, 2);
             checkbox_zoomCircleTest.Name = "checkbox_zoomCircleTest";
-            checkbox_zoomCircleTest.Size = new Size(197, 46);
+            checkbox_zoomCircleTest.Size = new Size(98, 25);
             checkbox_zoomCircleTest.TabIndex = 3;
             checkbox_zoomCircleTest.Text = "光学变焦循环变倍";
             checkbox_zoomCircleTest.CheckedChanged += checkbox_zoomCircleTest_CheckedChanged;
             // 
             // checkbox_eptzCircleTest
             // 
-            checkbox_eptzCircleTest.Location = new Point(386, 3);
+            checkbox_eptzCircleTest.Location = new Point(195, 2);
+            checkbox_eptzCircleTest.Margin = new Padding(2, 2, 2, 2);
             checkbox_eptzCircleTest.Name = "checkbox_eptzCircleTest";
-            checkbox_eptzCircleTest.Size = new Size(197, 46);
+            checkbox_eptzCircleTest.Size = new Size(98, 25);
             checkbox_eptzCircleTest.TabIndex = 1;
             checkbox_eptzCircleTest.Text = "电子云台循环转动";
             checkbox_eptzCircleTest.CheckedChanged += checkbox_eptzCircleTest_CheckedChanged;
             // 
             // checkbox_ptzCircleTest
             // 
-            checkbox_ptzCircleTest.Location = new Point(589, 3);
+            checkbox_ptzCircleTest.Location = new Point(297, 2);
+            checkbox_ptzCircleTest.Margin = new Padding(2, 2, 2, 2);
             checkbox_ptzCircleTest.Name = "checkbox_ptzCircleTest";
-            checkbox_ptzCircleTest.Size = new Size(197, 46);
+            checkbox_ptzCircleTest.Size = new Size(98, 25);
             checkbox_ptzCircleTest.TabIndex = 2;
             checkbox_ptzCircleTest.Text = "机械云台循环转动";
             checkbox_ptzCircleTest.CheckedChanged += checkbox_ptzCircleTest_CheckedChanged;
             // 
             // paranomicZoomBtn
             // 
-            paranomicZoomBtn.Location = new Point(792, 3);
+            paranomicZoomBtn.Location = new Point(399, 2);
+            paranomicZoomBtn.Margin = new Padding(2, 2, 2, 2);
             paranomicZoomBtn.Name = "paranomicZoomBtn";
-            paranomicZoomBtn.Size = new Size(137, 46);
+            paranomicZoomBtn.Size = new Size(68, 25);
             paranomicZoomBtn.TabIndex = 146;
             paranomicZoomBtn.Text = "全景变倍";
             paranomicZoomBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2791,9 +2944,10 @@
             // 
             // closeUpZoomBtn
             // 
-            closeUpZoomBtn.Location = new Point(935, 3);
+            closeUpZoomBtn.Location = new Point(471, 2);
+            closeUpZoomBtn.Margin = new Padding(2, 2, 2, 2);
             closeUpZoomBtn.Name = "closeUpZoomBtn";
-            closeUpZoomBtn.Size = new Size(137, 46);
+            closeUpZoomBtn.Size = new Size(68, 25);
             closeUpZoomBtn.TabIndex = 147;
             closeUpZoomBtn.Text = "特写变倍";
             closeUpZoomBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2801,9 +2955,10 @@
             // 
             // ptzMachineControlBtn
             // 
-            ptzMachineControlBtn.Location = new Point(1078, 3);
+            ptzMachineControlBtn.Location = new Point(543, 2);
+            ptzMachineControlBtn.Margin = new Padding(2, 2, 2, 2);
             ptzMachineControlBtn.Name = "ptzMachineControlBtn";
-            ptzMachineControlBtn.Size = new Size(235, 46);
+            ptzMachineControlBtn.Size = new Size(118, 25);
             ptzMachineControlBtn.TabIndex = 148;
             ptzMachineControlBtn.Text = "云台机械转（上下左右）";
             ptzMachineControlBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2811,9 +2966,10 @@
             // 
             // eptzControlBtn
             // 
-            eptzControlBtn.Location = new Point(1319, 3);
+            eptzControlBtn.Location = new Point(665, 2);
+            eptzControlBtn.Margin = new Padding(2, 2, 2, 2);
             eptzControlBtn.Name = "eptzControlBtn";
-            eptzControlBtn.Size = new Size(235, 46);
+            eptzControlBtn.Size = new Size(118, 25);
             eptzControlBtn.TabIndex = 149;
             eptzControlBtn.Text = "电子云台转（上下左右）";
             eptzControlBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2825,18 +2981,20 @@
             flowLayoutPanel1.Controls.Add(input_rtmp_panoramicSub);
             flowLayoutPanel1.Controls.Add(input_rtmp_closeUpMain);
             flowLayoutPanel1.Controls.Add(input_rtmp_closeUpSub);
-            flowLayoutPanel1.Location = new Point(477, 140);
+            flowLayoutPanel1.Location = new Point(238, 77);
+            flowLayoutPanel1.Margin = new Padding(2, 2, 2, 2);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(820, 106);
+            flowLayoutPanel1.Size = new Size(410, 58);
             flowLayoutPanel1.TabIndex = 154;
             // 
             // input_rtmp_panoramicMain
             // 
             input_rtmp_panoramicMain.Font = new Font("Microsoft YaHei UI", 7F);
-            input_rtmp_panoramicMain.Location = new Point(3, 3);
+            input_rtmp_panoramicMain.Location = new Point(2, 2);
+            input_rtmp_panoramicMain.Margin = new Padding(2, 2, 2, 2);
             input_rtmp_panoramicMain.Name = "input_rtmp_panoramicMain";
             input_rtmp_panoramicMain.PlaceholderText = "请输入测试设备IP地址：";
-            input_rtmp_panoramicMain.Size = new Size(402, 46);
+            input_rtmp_panoramicMain.Size = new Size(201, 25);
             input_rtmp_panoramicMain.SuffixFore = Color.FromArgb(77, 177, 77);
             input_rtmp_panoramicMain.SuffixText = "rtmp1";
             input_rtmp_panoramicMain.TabIndex = 153;
@@ -2845,10 +3003,11 @@
             // input_rtmp_panoramicSub
             // 
             input_rtmp_panoramicSub.Font = new Font("Microsoft YaHei UI", 7F);
-            input_rtmp_panoramicSub.Location = new Point(411, 3);
+            input_rtmp_panoramicSub.Location = new Point(207, 2);
+            input_rtmp_panoramicSub.Margin = new Padding(2, 2, 2, 2);
             input_rtmp_panoramicSub.Name = "input_rtmp_panoramicSub";
             input_rtmp_panoramicSub.PlaceholderText = "请输入测试设备IP地址：";
-            input_rtmp_panoramicSub.Size = new Size(402, 46);
+            input_rtmp_panoramicSub.Size = new Size(201, 25);
             input_rtmp_panoramicSub.SuffixFore = Color.FromArgb(77, 177, 77);
             input_rtmp_panoramicSub.SuffixText = "rtmp2";
             input_rtmp_panoramicSub.TabIndex = 154;
@@ -2857,10 +3016,11 @@
             // input_rtmp_closeUpMain
             // 
             input_rtmp_closeUpMain.Font = new Font("Microsoft YaHei UI", 7F);
-            input_rtmp_closeUpMain.Location = new Point(3, 55);
+            input_rtmp_closeUpMain.Location = new Point(2, 31);
+            input_rtmp_closeUpMain.Margin = new Padding(2, 2, 2, 2);
             input_rtmp_closeUpMain.Name = "input_rtmp_closeUpMain";
             input_rtmp_closeUpMain.PlaceholderText = "请输入测试设备IP地址：";
-            input_rtmp_closeUpMain.Size = new Size(402, 46);
+            input_rtmp_closeUpMain.Size = new Size(201, 25);
             input_rtmp_closeUpMain.SuffixFore = Color.FromArgb(77, 177, 77);
             input_rtmp_closeUpMain.SuffixText = "rtmp3";
             input_rtmp_closeUpMain.TabIndex = 155;
@@ -2869,10 +3029,11 @@
             // input_rtmp_closeUpSub
             // 
             input_rtmp_closeUpSub.Font = new Font("Microsoft YaHei UI", 7F);
-            input_rtmp_closeUpSub.Location = new Point(411, 55);
+            input_rtmp_closeUpSub.Location = new Point(207, 31);
+            input_rtmp_closeUpSub.Margin = new Padding(2, 2, 2, 2);
             input_rtmp_closeUpSub.Name = "input_rtmp_closeUpSub";
             input_rtmp_closeUpSub.PlaceholderText = "请输入测试设备IP地址：";
-            input_rtmp_closeUpSub.Size = new Size(402, 46);
+            input_rtmp_closeUpSub.Size = new Size(201, 25);
             input_rtmp_closeUpSub.SuffixFore = Color.FromArgb(77, 177, 77);
             input_rtmp_closeUpSub.SuffixText = "rtmp4";
             input_rtmp_closeUpSub.TabIndex = 156;
@@ -2883,18 +3044,20 @@
             stackPanel3.Controls.Add(clumsyLimitSpeedBtn);
             stackPanel3.Controls.Add(clumsyStopLimitSpeedBtn);
             stackPanel3.Controls.Add(input1_clumsyLimit);
-            stackPanel3.Location = new Point(5, 199);
+            stackPanel3.Location = new Point(2, 109);
+            stackPanel3.Margin = new Padding(2, 2, 2, 2);
             stackPanel3.Name = "stackPanel3";
             stackPanel3.RightToLeft = RightToLeft.Yes;
-            stackPanel3.Size = new Size(451, 57);
+            stackPanel3.Size = new Size(226, 31);
             stackPanel3.TabIndex = 149;
             stackPanel3.Text = "stackPanel3";
             // 
             // clumsyLimitSpeedBtn
             // 
-            clumsyLimitSpeedBtn.Location = new Point(-1, 3);
+            clumsyLimitSpeedBtn.Location = new Point(-2, 2);
+            clumsyLimitSpeedBtn.Margin = new Padding(2, 2, 2, 2);
             clumsyLimitSpeedBtn.Name = "clumsyLimitSpeedBtn";
-            clumsyLimitSpeedBtn.Size = new Size(137, 51);
+            clumsyLimitSpeedBtn.Size = new Size(68, 27);
             clumsyLimitSpeedBtn.TabIndex = 134;
             clumsyLimitSpeedBtn.Text = "clumsy限速";
             clumsyLimitSpeedBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2902,9 +3065,10 @@
             // 
             // clumsyStopLimitSpeedBtn
             // 
-            clumsyStopLimitSpeedBtn.Location = new Point(142, 3);
+            clumsyStopLimitSpeedBtn.Location = new Point(70, 2);
+            clumsyStopLimitSpeedBtn.Margin = new Padding(2, 2, 2, 2);
             clumsyStopLimitSpeedBtn.Name = "clumsyStopLimitSpeedBtn";
-            clumsyStopLimitSpeedBtn.Size = new Size(169, 51);
+            clumsyStopLimitSpeedBtn.Size = new Size(84, 27);
             clumsyStopLimitSpeedBtn.TabIndex = 135;
             clumsyStopLimitSpeedBtn.Text = "clumsy解除限速";
             clumsyStopLimitSpeedBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2912,10 +3076,11 @@
             // 
             // input1_clumsyLimit
             // 
-            input1_clumsyLimit.Location = new Point(317, 3);
+            input1_clumsyLimit.Location = new Point(158, 2);
+            input1_clumsyLimit.Margin = new Padding(2, 2, 2, 2);
             input1_clumsyLimit.Name = "input1_clumsyLimit";
             input1_clumsyLimit.PlaceholderText = "test differ";
-            input1_clumsyLimit.Size = new Size(131, 51);
+            input1_clumsyLimit.Size = new Size(66, 27);
             input1_clumsyLimit.SuffixFore = Color.FromArgb(77, 177, 77);
             input1_clumsyLimit.SuffixText = "限速值%";
             input1_clumsyLimit.TabIndex = 136;
@@ -2933,18 +3098,20 @@
             stackPanel4.Controls.Add(extreme1StreamOnBtn);
             stackPanel4.Controls.Add(extreme2StreamOnBtn);
             stackPanel4.Controls.Add(extreme2StreamOffBtn);
-            stackPanel4.Location = new Point(5, 262);
+            stackPanel4.Location = new Point(2, 144);
+            stackPanel4.Margin = new Padding(2, 2, 2, 2);
             stackPanel4.Name = "stackPanel4";
             stackPanel4.RightToLeft = RightToLeft.Yes;
-            stackPanel4.Size = new Size(1392, 53);
+            stackPanel4.Size = new Size(696, 29);
             stackPanel4.TabIndex = 150;
             stackPanel4.Text = "stackPanel4";
             // 
             // setUvcPanoramicBtn
             // 
-            setUvcPanoramicBtn.Location = new Point(15, 3);
+            setUvcPanoramicBtn.Location = new Point(2, 2);
+            setUvcPanoramicBtn.Margin = new Padding(2, 2, 2, 2);
             setUvcPanoramicBtn.Name = "setUvcPanoramicBtn";
-            setUvcPanoramicBtn.Size = new Size(137, 47);
+            setUvcPanoramicBtn.Size = new Size(68, 25);
             setUvcPanoramicBtn.TabIndex = 146;
             setUvcPanoramicBtn.Text = "uvc全景";
             setUvcPanoramicBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2952,9 +3119,10 @@
             // 
             // setUvcCloseUpBtn
             // 
-            setUvcCloseUpBtn.Location = new Point(158, 3);
+            setUvcCloseUpBtn.Location = new Point(74, 2);
+            setUvcCloseUpBtn.Margin = new Padding(2, 2, 2, 2);
             setUvcCloseUpBtn.Name = "setUvcCloseUpBtn";
-            setUvcCloseUpBtn.Size = new Size(137, 47);
+            setUvcCloseUpBtn.Size = new Size(68, 25);
             setUvcCloseUpBtn.TabIndex = 147;
             setUvcCloseUpBtn.Text = "uvc特写";
             setUvcCloseUpBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2962,9 +3130,10 @@
             // 
             // hiResModeBtn
             // 
-            hiResModeBtn.Location = new Point(301, 3);
+            hiResModeBtn.Location = new Point(146, 2);
+            hiResModeBtn.Margin = new Padding(2, 2, 2, 2);
             hiResModeBtn.Name = "hiResModeBtn";
-            hiResModeBtn.Size = new Size(137, 47);
+            hiResModeBtn.Size = new Size(68, 25);
             hiResModeBtn.TabIndex = 143;
             hiResModeBtn.Text = "高分辨率模式";
             hiResModeBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2972,9 +3141,10 @@
             // 
             // hiFpsModeBtn
             // 
-            hiFpsModeBtn.Location = new Point(444, 3);
+            hiFpsModeBtn.Location = new Point(218, 2);
+            hiFpsModeBtn.Margin = new Padding(2, 2, 2, 2);
             hiFpsModeBtn.Name = "hiFpsModeBtn";
-            hiFpsModeBtn.Size = new Size(137, 47);
+            hiFpsModeBtn.Size = new Size(68, 25);
             hiFpsModeBtn.TabIndex = 144;
             hiFpsModeBtn.Text = "高帧率模式";
             hiFpsModeBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2982,9 +3152,10 @@
             // 
             // extremeModeBtn
             // 
-            extremeModeBtn.Location = new Point(587, 3);
+            extremeModeBtn.Location = new Point(290, 2);
+            extremeModeBtn.Margin = new Padding(2, 2, 2, 2);
             extremeModeBtn.Name = "extremeModeBtn";
-            extremeModeBtn.Size = new Size(137, 47);
+            extremeModeBtn.Size = new Size(68, 25);
             extremeModeBtn.TabIndex = 145;
             extremeModeBtn.Text = "性能模式";
             extremeModeBtn.Type = AntdUI.TTypeMini.Primary;
@@ -2993,9 +3164,10 @@
             // extreme1StreamOffBtn
             // 
             extreme1StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            extreme1StreamOffBtn.Location = new Point(730, 3);
+            extreme1StreamOffBtn.Location = new Point(362, 2);
+            extreme1StreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             extreme1StreamOffBtn.Name = "extreme1StreamOffBtn";
-            extreme1StreamOffBtn.Size = new Size(137, 47);
+            extreme1StreamOffBtn.Size = new Size(68, 25);
             extreme1StreamOffBtn.TabIndex = 140;
             extreme1StreamOffBtn.Text = "关流";
             extreme1StreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3007,9 +3179,10 @@
             extreme1StreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             extreme1StreamOnBtn.IconHoverSvg = "";
             extreme1StreamOnBtn.IconSvg = "PlayCircleFilled";
-            extreme1StreamOnBtn.Location = new Point(873, 3);
+            extreme1StreamOnBtn.Location = new Point(434, 2);
+            extreme1StreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             extreme1StreamOnBtn.Name = "extreme1StreamOnBtn";
-            extreme1StreamOnBtn.Size = new Size(206, 47);
+            extreme1StreamOnBtn.Size = new Size(103, 25);
             extreme1StreamOnBtn.TabIndex = 139;
             extreme1StreamOnBtn.Text = "extreme1拉流";
             extreme1StreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3021,9 +3194,10 @@
             extreme2StreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             extreme2StreamOnBtn.IconHoverSvg = "";
             extreme2StreamOnBtn.IconSvg = "PlayCircleFilled";
-            extreme2StreamOnBtn.Location = new Point(1085, 3);
+            extreme2StreamOnBtn.Location = new Point(541, 2);
+            extreme2StreamOnBtn.Margin = new Padding(2, 2, 2, 2);
             extreme2StreamOnBtn.Name = "extreme2StreamOnBtn";
-            extreme2StreamOnBtn.Size = new Size(206, 47);
+            extreme2StreamOnBtn.Size = new Size(103, 25);
             extreme2StreamOnBtn.TabIndex = 141;
             extreme2StreamOnBtn.Text = "extreme2拉流";
             extreme2StreamOnBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3032,9 +3206,10 @@
             // extreme2StreamOffBtn
             // 
             extreme2StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
-            extreme2StreamOffBtn.Location = new Point(1297, 3);
+            extreme2StreamOffBtn.Location = new Point(648, 2);
+            extreme2StreamOffBtn.Margin = new Padding(2, 2, 2, 2);
             extreme2StreamOffBtn.Name = "extreme2StreamOffBtn";
-            extreme2StreamOffBtn.Size = new Size(92, 47);
+            extreme2StreamOffBtn.Size = new Size(46, 25);
             extreme2StreamOffBtn.TabIndex = 142;
             extreme2StreamOffBtn.Text = "关流";
             extreme2StreamOffBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3046,10 +3221,11 @@
             stackPanel6.Controls.Add(panel3);
             stackPanel6.Controls.Add(panel4);
             stackPanel6.Controls.Add(panel5);
-            stackPanel6.Location = new Point(1406, 13);
+            stackPanel6.Location = new Point(703, 7);
+            stackPanel6.Margin = new Padding(2, 2, 2, 2);
             stackPanel6.Name = "stackPanel6";
             stackPanel6.RightToLeft = RightToLeft.Yes;
-            stackPanel6.Size = new Size(820, 258);
+            stackPanel6.Size = new Size(410, 141);
             stackPanel6.TabIndex = 152;
             stackPanel6.Text = "stackPanel6";
             // 
@@ -3060,9 +3236,10 @@
             panel2.BorderWidth = 3F;
             panel2.Controls.Add(label1);
             panel2.Controls.Add(panel_panoramicMain_resolution);
-            panel2.Location = new Point(3, 3);
+            panel2.Location = new Point(-4, 2);
+            panel2.Margin = new Padding(2, 2, 2, 2);
             panel2.Name = "panel2";
-            panel2.Size = new Size(199, 252);
+            panel2.Size = new Size(100, 137);
             panel2.TabIndex = 124;
             panel2.Text = "panel2";
             // 
@@ -3072,9 +3249,10 @@
             label1.Dock = DockStyle.Top;
             label1.Font = new Font("等线", 6F);
             label1.ForeColor = Color.Red;
-            label1.Location = new Point(6, 6);
+            label1.Location = new Point(3, 3);
+            label1.Margin = new Padding(2, 2, 2, 2);
             label1.Name = "label1";
-            label1.Size = new Size(187, 34);
+            label1.Size = new Size(94, 19);
             label1.SuffixSvg = "YoutubeFilled";
             label1.TabIndex = 120;
             label1.Text = "全景主流支持分辨率";
@@ -3084,10 +3262,10 @@
             // 
             panel_panoramicMain_resolution.BackColor = Color.White;
             panel_panoramicMain_resolution.BorderColor = Color.FromArgb(100, 215, 234);
-            panel_panoramicMain_resolution.Location = new Point(6, 52);
-            panel_panoramicMain_resolution.Margin = new Padding(10);
+            panel_panoramicMain_resolution.Location = new Point(3, 29);
+            panel_panoramicMain_resolution.Margin = new Padding(5, 5, 5, 5);
             panel_panoramicMain_resolution.Name = "panel_panoramicMain_resolution";
-            panel_panoramicMain_resolution.Size = new Size(187, 199);
+            panel_panoramicMain_resolution.Size = new Size(94, 109);
             panel_panoramicMain_resolution.TabIndex = 123;
             panel_panoramicMain_resolution.Text = "flowPanel1";
             // 
@@ -3098,9 +3276,10 @@
             panel3.BorderWidth = 3F;
             panel3.Controls.Add(label2);
             panel3.Controls.Add(panel_panoramicSub_resolution);
-            panel3.Location = new Point(208, 3);
+            panel3.Location = new Point(100, 2);
+            panel3.Margin = new Padding(2, 2, 2, 2);
             panel3.Name = "panel3";
-            panel3.Size = new Size(199, 252);
+            panel3.Size = new Size(100, 137);
             panel3.TabIndex = 125;
             panel3.Text = "panel3";
             // 
@@ -3110,9 +3289,10 @@
             label2.Dock = DockStyle.Top;
             label2.Font = new Font("等线", 6F);
             label2.ForeColor = Color.Red;
-            label2.Location = new Point(6, 6);
+            label2.Location = new Point(3, 3);
+            label2.Margin = new Padding(2, 2, 2, 2);
             label2.Name = "label2";
-            label2.Size = new Size(187, 34);
+            label2.Size = new Size(94, 19);
             label2.SuffixSvg = "YoutubeFilled";
             label2.TabIndex = 120;
             label2.Text = "全景辅流支持分辨率";
@@ -3122,10 +3302,10 @@
             // 
             panel_panoramicSub_resolution.BackColor = Color.White;
             panel_panoramicSub_resolution.BorderColor = Color.FromArgb(100, 215, 234);
-            panel_panoramicSub_resolution.Location = new Point(6, 52);
-            panel_panoramicSub_resolution.Margin = new Padding(10);
+            panel_panoramicSub_resolution.Location = new Point(3, 29);
+            panel_panoramicSub_resolution.Margin = new Padding(5, 5, 5, 5);
             panel_panoramicSub_resolution.Name = "panel_panoramicSub_resolution";
-            panel_panoramicSub_resolution.Size = new Size(187, 199);
+            panel_panoramicSub_resolution.Size = new Size(94, 109);
             panel_panoramicSub_resolution.TabIndex = 123;
             panel_panoramicSub_resolution.Text = "flowPanel1";
             // 
@@ -3136,9 +3316,10 @@
             panel4.BorderWidth = 3F;
             panel4.Controls.Add(label3);
             panel4.Controls.Add(panel_closeUpMain_resolution);
-            panel4.Location = new Point(413, 3);
+            panel4.Location = new Point(204, 2);
+            panel4.Margin = new Padding(2, 2, 2, 2);
             panel4.Name = "panel4";
-            panel4.Size = new Size(199, 252);
+            panel4.Size = new Size(100, 137);
             panel4.TabIndex = 126;
             panel4.Text = "panel4";
             // 
@@ -3148,9 +3329,10 @@
             label3.Dock = DockStyle.Top;
             label3.Font = new Font("等线", 6F);
             label3.ForeColor = Color.Red;
-            label3.Location = new Point(6, 6);
+            label3.Location = new Point(3, 3);
+            label3.Margin = new Padding(2, 2, 2, 2);
             label3.Name = "label3";
-            label3.Size = new Size(187, 34);
+            label3.Size = new Size(94, 19);
             label3.SuffixSvg = "YoutubeFilled";
             label3.TabIndex = 120;
             label3.Text = "特写主流支持分辨率";
@@ -3160,10 +3342,10 @@
             // 
             panel_closeUpMain_resolution.BackColor = Color.White;
             panel_closeUpMain_resolution.BorderColor = Color.FromArgb(100, 215, 234);
-            panel_closeUpMain_resolution.Location = new Point(6, 52);
-            panel_closeUpMain_resolution.Margin = new Padding(10);
+            panel_closeUpMain_resolution.Location = new Point(3, 29);
+            panel_closeUpMain_resolution.Margin = new Padding(5, 5, 5, 5);
             panel_closeUpMain_resolution.Name = "panel_closeUpMain_resolution";
-            panel_closeUpMain_resolution.Size = new Size(187, 199);
+            panel_closeUpMain_resolution.Size = new Size(94, 109);
             panel_closeUpMain_resolution.TabIndex = 123;
             panel_closeUpMain_resolution.Text = "flowPanel1";
             // 
@@ -3174,9 +3356,10 @@
             panel5.BorderWidth = 3F;
             panel5.Controls.Add(label4);
             panel5.Controls.Add(panel_closeUpSub_resolution);
-            panel5.Location = new Point(618, 3);
+            panel5.Location = new Point(308, 2);
+            panel5.Margin = new Padding(2, 2, 2, 2);
             panel5.Name = "panel5";
-            panel5.Size = new Size(199, 252);
+            panel5.Size = new Size(100, 137);
             panel5.TabIndex = 127;
             panel5.Text = "panel5";
             // 
@@ -3186,9 +3369,10 @@
             label4.Dock = DockStyle.Top;
             label4.Font = new Font("等线", 6F);
             label4.ForeColor = Color.Red;
-            label4.Location = new Point(6, 6);
+            label4.Location = new Point(3, 3);
+            label4.Margin = new Padding(2, 2, 2, 2);
             label4.Name = "label4";
-            label4.Size = new Size(187, 34);
+            label4.Size = new Size(94, 19);
             label4.SuffixSvg = "YoutubeFilled";
             label4.TabIndex = 120;
             label4.Text = "特写辅流支持分辨率";
@@ -3198,10 +3382,10 @@
             // 
             panel_closeUpSub_resolution.BackColor = Color.White;
             panel_closeUpSub_resolution.BorderColor = Color.FromArgb(100, 215, 234);
-            panel_closeUpSub_resolution.Location = new Point(6, 52);
-            panel_closeUpSub_resolution.Margin = new Padding(10);
+            panel_closeUpSub_resolution.Location = new Point(3, 29);
+            panel_closeUpSub_resolution.Margin = new Padding(5, 5, 5, 5);
             panel_closeUpSub_resolution.Name = "panel_closeUpSub_resolution";
-            panel_closeUpSub_resolution.Size = new Size(187, 199);
+            panel_closeUpSub_resolution.Size = new Size(94, 109);
             panel_closeUpSub_resolution.TabIndex = 123;
             panel_closeUpSub_resolution.Text = "flowPanel1";
             // 
@@ -3209,19 +3393,21 @@
             // 
             stackPanel5.Controls.Add(input1_testdiffer);
             stackPanel5.Controls.Add(input1_allStreamBitrate);
-            stackPanel5.Location = new Point(3, 136);
+            stackPanel5.Location = new Point(2, 75);
+            stackPanel5.Margin = new Padding(2, 2, 2, 2);
             stackPanel5.Name = "stackPanel5";
             stackPanel5.RightToLeft = RightToLeft.Yes;
-            stackPanel5.Size = new Size(468, 57);
+            stackPanel5.Size = new Size(234, 31);
             stackPanel5.TabIndex = 151;
             stackPanel5.Text = "stackPanel5";
             // 
             // input1_testdiffer
             // 
-            input1_testdiffer.Location = new Point(0, 3);
+            input1_testdiffer.Location = new Point(-1, 2);
+            input1_testdiffer.Margin = new Padding(2, 2, 2, 2);
             input1_testdiffer.Name = "input1_testdiffer";
             input1_testdiffer.PlaceholderText = "test differ";
-            input1_testdiffer.Size = new Size(253, 51);
+            input1_testdiffer.Size = new Size(126, 27);
             input1_testdiffer.SuffixFore = Color.FromArgb(77, 177, 77);
             input1_testdiffer.SuffixText = "测试差异值";
             input1_testdiffer.TabIndex = 129;
@@ -3229,10 +3415,11 @@
             // 
             // input1_allStreamBitrate
             // 
-            input1_allStreamBitrate.Location = new Point(259, 3);
+            input1_allStreamBitrate.Location = new Point(129, 2);
+            input1_allStreamBitrate.Margin = new Padding(2, 2, 2, 2);
             input1_allStreamBitrate.Name = "input1_allStreamBitrate";
             input1_allStreamBitrate.PlaceholderText = "test differ";
-            input1_allStreamBitrate.Size = new Size(206, 51);
+            input1_allStreamBitrate.Size = new Size(103, 27);
             input1_allStreamBitrate.SuffixFore = Color.FromArgb(77, 177, 77);
             input1_allStreamBitrate.SuffixText = "码率配置kb";
             input1_allStreamBitrate.TabIndex = 138;
@@ -3246,18 +3433,20 @@
             stackPanel2.Controls.Add(changeAllStreamBitrateBtn);
             stackPanel2.Controls.Add(changeAllStreamCurConfigBtn);
             stackPanel2.Controls.Add(resetAllStreamDefaultConfigBtn);
-            stackPanel2.Location = new Point(5, 74);
+            stackPanel2.Location = new Point(2, 41);
+            stackPanel2.Margin = new Padding(2, 2, 2, 2);
             stackPanel2.Name = "stackPanel2";
             stackPanel2.RightToLeft = RightToLeft.Yes;
-            stackPanel2.Size = new Size(1395, 57);
+            stackPanel2.Size = new Size(698, 31);
             stackPanel2.TabIndex = 148;
             stackPanel2.Text = "stackPanel2";
             // 
             // getAllResolutionBtn
             // 
-            getAllResolutionBtn.Location = new Point(3, 3);
+            getAllResolutionBtn.Location = new Point(-4, 2);
+            getAllResolutionBtn.Margin = new Padding(2, 2, 2, 2);
             getAllResolutionBtn.Name = "getAllResolutionBtn";
-            getAllResolutionBtn.Size = new Size(172, 51);
+            getAllResolutionBtn.Size = new Size(86, 27);
             getAllResolutionBtn.TabIndex = 118;
             getAllResolutionBtn.Text = "获取所有分辨率";
             getAllResolutionBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3265,9 +3454,10 @@
             // 
             // readAllStreamCurConfigBtn
             // 
-            readAllStreamCurConfigBtn.Location = new Point(181, 3);
+            readAllStreamCurConfigBtn.Location = new Point(86, 2);
+            readAllStreamCurConfigBtn.Margin = new Padding(2, 2, 2, 2);
             readAllStreamCurConfigBtn.Name = "readAllStreamCurConfigBtn";
-            readAllStreamCurConfigBtn.Size = new Size(228, 51);
+            readAllStreamCurConfigBtn.Size = new Size(114, 27);
             readAllStreamCurConfigBtn.TabIndex = 130;
             readAllStreamCurConfigBtn.Text = "读取所有视频当前配置";
             readAllStreamCurConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3275,9 +3465,10 @@
             // 
             // changeResolutionOrderBtn
             // 
-            changeResolutionOrderBtn.Location = new Point(415, 3);
+            changeResolutionOrderBtn.Location = new Point(204, 2);
+            changeResolutionOrderBtn.Margin = new Padding(2, 2, 2, 2);
             changeResolutionOrderBtn.Name = "changeResolutionOrderBtn";
-            changeResolutionOrderBtn.Size = new Size(227, 51);
+            changeResolutionOrderBtn.Size = new Size(114, 27);
             changeResolutionOrderBtn.TabIndex = 132;
             changeResolutionOrderBtn.Text = "修改分辨率配置_顺序";
             changeResolutionOrderBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3285,9 +3476,10 @@
             // 
             // changeAllStreamBitrateBtn
             // 
-            changeAllStreamBitrateBtn.Location = new Point(648, 3);
+            changeAllStreamBitrateBtn.Location = new Point(322, 2);
+            changeAllStreamBitrateBtn.Margin = new Padding(2, 2, 2, 2);
             changeAllStreamBitrateBtn.Name = "changeAllStreamBitrateBtn";
-            changeAllStreamBitrateBtn.Size = new Size(261, 51);
+            changeAllStreamBitrateBtn.Size = new Size(130, 27);
             changeAllStreamBitrateBtn.TabIndex = 137;
             changeAllStreamBitrateBtn.Text = "修改所有视频流码率配置";
             changeAllStreamBitrateBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3295,9 +3487,10 @@
             // 
             // changeAllStreamCurConfigBtn
             // 
-            changeAllStreamCurConfigBtn.Location = new Point(915, 3);
+            changeAllStreamCurConfigBtn.Location = new Point(456, 2);
+            changeAllStreamCurConfigBtn.Margin = new Padding(2, 2, 2, 2);
             changeAllStreamCurConfigBtn.Name = "changeAllStreamCurConfigBtn";
-            changeAllStreamCurConfigBtn.Size = new Size(227, 51);
+            changeAllStreamCurConfigBtn.Size = new Size(114, 27);
             changeAllStreamCurConfigBtn.TabIndex = 131;
             changeAllStreamCurConfigBtn.Text = "修改所有视频流配置";
             changeAllStreamCurConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3305,9 +3498,10 @@
             // 
             // resetAllStreamDefaultConfigBtn
             // 
-            resetAllStreamDefaultConfigBtn.Location = new Point(1148, 3);
+            resetAllStreamDefaultConfigBtn.Location = new Point(574, 2);
+            resetAllStreamDefaultConfigBtn.Margin = new Padding(2, 2, 2, 2);
             resetAllStreamDefaultConfigBtn.Name = "resetAllStreamDefaultConfigBtn";
-            resetAllStreamDefaultConfigBtn.Size = new Size(244, 51);
+            resetAllStreamDefaultConfigBtn.Size = new Size(122, 27);
             resetAllStreamDefaultConfigBtn.TabIndex = 133;
             resetAllStreamDefaultConfigBtn.Text = "恢复所有视频流默认配置";
             resetAllStreamDefaultConfigBtn.Type = AntdUI.TTypeMini.Primary;
@@ -3318,29 +3512,32 @@
             stackPanel1.Controls.Add(textBox_ip);
             stackPanel1.Controls.Add(buttonGetToken);
             stackPanel1.Controls.Add(token_input);
-            stackPanel1.Location = new Point(5, 10);
+            stackPanel1.Location = new Point(2, 5);
+            stackPanel1.Margin = new Padding(2, 2, 2, 2);
             stackPanel1.Name = "stackPanel1";
             stackPanel1.RightToLeft = RightToLeft.Yes;
-            stackPanel1.Size = new Size(624, 57);
+            stackPanel1.Size = new Size(312, 31);
             stackPanel1.TabIndex = 147;
             stackPanel1.Text = "stackPanel1";
             // 
             // textBox_ip
             // 
             textBox_ip.Font = new Font("Microsoft YaHei UI", 7F);
-            textBox_ip.Location = new Point(4, 3);
+            textBox_ip.Location = new Point(0, 2);
+            textBox_ip.Margin = new Padding(2, 2, 2, 2);
             textBox_ip.Name = "textBox_ip";
             textBox_ip.PlaceholderText = "请输入测试设备IP地址：";
-            textBox_ip.Size = new Size(171, 51);
+            textBox_ip.Size = new Size(86, 27);
             textBox_ip.SuffixFore = Color.FromArgb(77, 177, 77);
             textBox_ip.SuffixText = "";
             textBox_ip.TabIndex = 79;
             // 
             // buttonGetToken
             // 
-            buttonGetToken.Location = new Point(181, 3);
+            buttonGetToken.Location = new Point(90, 2);
+            buttonGetToken.Margin = new Padding(2, 2, 2, 2);
             buttonGetToken.Name = "buttonGetToken";
-            buttonGetToken.Size = new Size(137, 51);
+            buttonGetToken.Size = new Size(68, 27);
             buttonGetToken.TabIndex = 76;
             buttonGetToken.Text = "获取Token";
             buttonGetToken.Type = AntdUI.TTypeMini.Primary;
@@ -3348,10 +3545,11 @@
             // 
             // token_input
             // 
-            token_input.Location = new Point(324, 3);
+            token_input.Location = new Point(162, 2);
+            token_input.Margin = new Padding(2, 2, 2, 2);
             token_input.Name = "token_input";
             token_input.PlaceholderText = "token here";
-            token_input.Size = new Size(297, 51);
+            token_input.Size = new Size(148, 27);
             token_input.SuffixFore = Color.FromArgb(77, 177, 77);
             token_input.SuffixText = "";
             token_input.TabIndex = 77;
@@ -3362,10 +3560,11 @@
             oneKeyStopTestBtn.IconHoverSvg = "WindowsFilled";
             oneKeyStopTestBtn.IconRatio = 0.8F;
             oneKeyStopTestBtn.IconSvg = "StopFilled";
-            oneKeyStopTestBtn.Location = new Point(1717, 545);
+            oneKeyStopTestBtn.Location = new Point(858, 299);
+            oneKeyStopTestBtn.Margin = new Padding(2, 2, 2, 2);
             oneKeyStopTestBtn.Name = "oneKeyStopTestBtn";
             oneKeyStopTestBtn.OriginalBackColor = Color.FromArgb(100, 215, 234);
-            oneKeyStopTestBtn.Size = new Size(191, 50);
+            oneKeyStopTestBtn.Size = new Size(96, 27);
             oneKeyStopTestBtn.TabIndex = 146;
             oneKeyStopTestBtn.Text = "一键停止测试";
             oneKeyStopTestBtn.Type = AntdUI.TTypeMini.Error;
@@ -3376,10 +3575,11 @@
             divider3.BackColor = Color.FromArgb(100, 215, 234);
             divider3.Controls.Add(badge1);
             divider3.ForeColor = SystemColors.ControlText;
-            divider3.Location = new Point(6, 345);
+            divider3.Location = new Point(3, 189);
+            divider3.Margin = new Padding(2, 2, 2, 2);
             divider3.Name = "divider3";
             divider3.Orientation = AntdUI.TOrientation.Left;
-            divider3.Size = new Size(687, 19);
+            divider3.Size = new Size(344, 10);
             divider3.TabIndex = 82;
             divider3.Text = "视频配置";
             divider3.Thickness = 6F;
@@ -3388,9 +3588,10 @@
             // 
             badge1.BackColor = Color.FromArgb(100, 215, 234);
             badge1.Font = new Font("等线", 6F);
-            badge1.Location = new Point(207, -4);
+            badge1.Location = new Point(104, -2);
+            badge1.Margin = new Padding(2, 2, 2, 2);
             badge1.Name = "badge1";
-            badge1.Size = new Size(454, 25);
+            badge1.Size = new Size(227, 14);
             badge1.State = AntdUI.TState.Processing;
             badge1.TabIndex = 146;
             badge1.Text = "除高分辨率和性能模组case，测试前请先切到高分辨率模式";
@@ -3399,11 +3600,11 @@
             // 
             divider2.BackColor = Color.FromArgb(100, 215, 234);
             divider2.ForeColor = Color.Black;
-            divider2.Location = new Point(1427, 6);
-            divider2.Margin = new Padding(4);
+            divider2.Location = new Point(714, 3);
+            divider2.Margin = new Padding(2, 2, 2, 2);
             divider2.Name = "divider2";
             divider2.Orientation = AntdUI.TOrientation.Left;
-            divider2.Size = new Size(484, 19);
+            divider2.Size = new Size(242, 10);
             divider2.TabIndex = 81;
             divider2.Text = "日志输出：";
             divider2.Thickness = 6F;
@@ -3412,33 +3613,47 @@
             // 
             txtBoxRcv.BackColor = Color.FromArgb(100, 215, 234);
             txtBoxRcv.Font = new Font("等线", 5F);
-            txtBoxRcv.Location = new Point(1427, 31);
-            txtBoxRcv.Margin = new Padding(4);
+            txtBoxRcv.Location = new Point(714, 17);
+            txtBoxRcv.Margin = new Padding(2, 2, 2, 2);
             txtBoxRcv.Name = "txtBoxRcv";
-            txtBoxRcv.Size = new Size(484, 564);
+            txtBoxRcv.Size = new Size(242, 309);
             txtBoxRcv.TabIndex = 80;
             txtBoxRcv.Text = "chatList1";
             // 
             // divider1
             // 
             divider1.BackColor = Color.FromArgb(100, 215, 234);
-            divider1.Location = new Point(6, 6);
+            divider1.Location = new Point(3, 3);
+            divider1.Margin = new Padding(2, 2, 2, 2);
             divider1.Name = "divider1";
             divider1.Orientation = AntdUI.TOrientation.Left;
-            divider1.Size = new Size(1414, 19);
+            divider1.Size = new Size(707, 10);
             divider1.TabIndex = 75;
             divider1.Text = "通用设置";
             divider1.Thickness = 6F;
             // 
+            // input_Uvctype
+            // 
+            input_Uvctype.Location = new Point(190, 66);
+            input_Uvctype.Margin = new Padding(2);
+            input_Uvctype.Name = "input_Uvctype";
+            input_Uvctype.PlaceholderText = "test differ";
+            input_Uvctype.Size = new Size(68, 27);
+            input_Uvctype.SuffixFore = Color.FromArgb(77, 177, 77);
+            input_Uvctype.SuffixText = "type";
+            input_Uvctype.TabIndex = 173;
+            input_Uvctype.Text = "MJPG";
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(14F, 31F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1921, 1080);
+            ClientSize = new Size(960, 592);
             Controls.Add(panel1);
             Controls.Add(pageHeader1);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(2, 2, 2, 2);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "2026-SKDL整合压测工具";
@@ -3762,5 +3977,6 @@
         private AntdUI.Input newSwitch3;
         private AntdUI.Input newSwitch2;
         private AntdUI.Button getDiskStatusBtn;
+        private AntdUI.Input input_Uvctype;
     }
 }
