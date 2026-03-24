@@ -2106,7 +2106,9 @@ namespace skdl_new_2025_test_tool
                         int height = 2160;
                         input1_uvc_x.Text = width.ToString();
                         input2_uvc_y.Text = height.ToString();
+          
                         string format = "H264";
+                        input_Uvctype.Text = format;
                         string devicePath = null;
 
 
@@ -2122,9 +2124,9 @@ namespace skdl_new_2025_test_tool
                             LogSaveOutput("UVC 启动失败，停止测试");
                             break;
                         }
-                        //等待12秒,预览
-                        await Task.Delay(12000);
-                        LogSaveOutput($"预览高分辨率模式教师UVC特写[{width}x{height}],格式{format} 12秒");
+                        //等待10秒,预览
+                        await Task.Delay(10000);
+                        LogSaveOutput($"预览高分辨率模式教师UVC特写[{width}x{height}],格式{format} 10秒");
 
 
                         string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC特写[{width}x{height}]");
@@ -2190,7 +2192,7 @@ namespace skdl_new_2025_test_tool
                             // logic 2 uvc 拉流1080P  1920x1080
                             input1_uvc_x.Text = "1920";
                             input2_uvc_y.Text = "1080";
-                            input_Uvctype.Text = "H264";
+                            input_Uvctype.Text = "MJPG";
 
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
@@ -2372,6 +2374,7 @@ namespace skdl_new_2025_test_tool
                         input1_uvc_x.Text = width.ToString();
                         input2_uvc_y.Text = height.ToString();
                         string format = "H264";
+                        input_Uvctype.Text = format;
                         string devicePath = null;
                         // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                         if (GetCameras("Seewo Lubo").Count > 1)
@@ -2453,7 +2456,7 @@ namespace skdl_new_2025_test_tool
                             // logic 2 uvc 拉流1080P  1920x1080
                             input1_uvc_x.Text = "1920";
                             input2_uvc_y.Text = "1080";
-                            input_Uvctype.Text = "H264";
+                            input_Uvctype.Text = "MJPG";
 
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
@@ -11287,6 +11290,7 @@ namespace skdl_new_2025_test_tool
                         input1_uvc_x.Text = width.ToString();
                         input2_uvc_y.Text = height.ToString();
                         string format = "H264";
+                        input_Uvctype.Text = format;
 
                         // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                         string devicePath = null;
@@ -11366,7 +11370,7 @@ namespace skdl_new_2025_test_tool
                             // logic 2 uvc 拉流1080P  1920x1080
                             input1_uvc_x.Text = "1920";
                             input2_uvc_y.Text = "1080";
-                            input_Uvctype.Text = "H264";
+                            input_Uvctype.Text = "MJPG";
 
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
@@ -13754,7 +13758,7 @@ namespace skdl_new_2025_test_tool
                                 }
 
                                 if (!startOk)
-                                {
+                                {  
                                     LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
                                     LogFailType(uvcResolution, format); // 记录失败信息
                                     continue; // 跳过当前格式，继续下一个
@@ -16211,6 +16215,47 @@ namespace skdl_new_2025_test_tool
         // 改动 :添加的私有方法,启动 UVC 流,适用手动拉流和指定path拉流
         private async Task<bool> StartUVC(int width, int height, string format, string devicePath = null)
         {
+            
+            // 1. 4K 分辨率 (3840x2160 及以上) 只支持 H264
+            if ((width >= 3840 || height >= 2160) && format != "H264")
+            {
+                LogSaveOutput($"【UVC兼容性检查】4K分辨率 ({width}x{height}) 不支持 {format} 格式，仅支持 H264。跳过此格式测试。");
+                return false;
+            }
+
+            // 2. NV12 格式：将不支持的分辨率转换为对齐后的分辨率
+            if (format == "NV12" && ((width == 960 && height == 540) ||
+            (width == 640 && height == 360) ||
+            (width == 320 && height == 180)))
+            {
+                // 定义 NV12 支持的原生分辨率映射表（原始分辨率 → 对齐后分辨率）
+                var nv12ResolutionMapping = new Dictionary<(int, int), (int, int)>
+        {
+            { (320, 180), (320, 192) },   // 180 → 192 (16倍数)
+            { (640, 360), (640, 368) },   // 360 → 368 (16倍数)
+            { (960, 540), (960, 560) }    // 540 → 560 (16倍数)
+        };
+
+                // 检查当前分辨率是否需要转换
+                if (nv12ResolutionMapping.ContainsKey((width, height)))
+                {
+                    var (newWidth, newHeight) = nv12ResolutionMapping[(width, height)];
+                    LogSaveOutput($"【UVC兼容性检查】NV12 分辨率 {width}x{height} 转换为对齐分辨率 {newWidth}x{newHeight}（NV12要求高度为16的倍数）");
+                    width = newWidth;
+                    height = newHeight;
+                }
+                
+            }
+            else
+            {
+                LogSaveOutput($"【UVC兼容性检查】NV12 格式不支持分辨率 {width}x{height}，仅支持 960x540、640x360、320x180。跳过此测试。");
+                return false;
+            }
+
+            // 3. MJPG 格式支持除 4K 以外的所有分辨率（已在第一步判断过4K，这里无需重复）
+            // MJPG 的兼容性已经通过第一步的4K检查覆盖
+
+            // ========== 原有的启动逻辑 ==========
             // 如果已有摄像头实例，先释放
             if (camera1 != null)
             {
@@ -16264,6 +16309,7 @@ namespace skdl_new_2025_test_tool
             }
             return success;
         }
+       
 
         private async void uvcStreamOnSpecificDevicePathBtn_Click(object sender, EventArgs e)
         {
