@@ -94,6 +94,13 @@ namespace skdl_new_2025_test_tool
         private long _lastMemoryCheckTick = 0;
         private long _memoryLeakSampleCount = 0;
 
+        // 诊断日志相关
+        private static readonly object _diagLogLock = new object();
+        private static string _diagLogFile = "";
+        private static List<string> _diagLogBuffer = new List<string>();
+        private const int DIAG_LOG_FLUSH_INTERVAL = 5000;
+        private long _lastDiagLogFlush = 0;
+
         /// <summary>
         /// 手动设置码率（当FFprobe无法获取时使用，单位Kbps）
         /// </summary>
@@ -239,6 +246,7 @@ namespace skdl_new_2025_test_tool
             {
                 try
                 {
+                    DiagLog($"GetBitrateAsync START: {url}");
                     KillOtherFfmpegProcesses();
                     Thread.Sleep(200);
 
@@ -274,6 +282,7 @@ namespace skdl_new_2025_test_tool
                     };
 
                     process.Start();
+                    DiagLog($"GetBitrateAsync: ffmpeg started, PID: {process.Id}");
 
                     process.OutputDataReceived += (s, e) => { if (e.Data != null) outputBuilder.AppendLine(e.Data); };
                     process.ErrorDataReceived += (s, e) => { if (e.Data != null) errorBuilder.AppendLine(e.Data); };
@@ -281,7 +290,11 @@ namespace skdl_new_2025_test_tool
                     process.BeginErrorReadLine();
 
                     bool exited = process.WaitForExit((DURATION + 25) * 1000);
-                    if (!exited) process.Kill(entireProcessTree: true);
+                    if (!exited)
+                    {
+                        DiagLog("GetBitrateAsync: ffmpeg timeout, killing");
+                        process.Kill(entireProcessTree: true);
+                    }
 
                     Thread.Sleep(500);
 
@@ -301,10 +314,12 @@ namespace skdl_new_2025_test_tool
                             _lastValidBitrateKbps = bitrate.Value;
                         }
                         _lastFFmpegError = $"Bitrate: {bitrate.Value} kbps";
+                        DiagLog($"GetBitrateAsync: SUCCESS {bitrate.Value}k");
                     }
                     else
                     {
                         _lastFFmpegError = $"Parse failed, output: {(errorOutput.Length > 200 ? errorOutput.Substring(0, 200) : errorOutput)}";
+                        DiagLog($"GetBitrateAsync: PARSE FAILED - {errorOutput.Substring(0, Math.Min(100, errorOutput.Length))}");
                     }
 
                     return bitrate;
@@ -312,6 +327,7 @@ namespace skdl_new_2025_test_tool
                 catch (Exception ex)
                 {
                     _lastFFmpegError = $"GetBitrate error: {ex.Message}";
+                    DiagLog($"GetBitrateAsync: EXCEPTION {ex.GetType().Name}: {ex.Message}");
                     return null;
                 }
             });
@@ -392,14 +408,24 @@ namespace skdl_new_2025_test_tool
 
         public void Stop()
         {
+            DiagLog($"Stop called, IsPlaying={IsPlaying}");
+            LogMemoryStatus("Stop Start");
+            
             try
             {
                 lock (_lifecycleLock)
                 {
-                    if (!IsPlaying) return;
+                    if (!IsPlaying) 
+                    {
+                        DiagLog("Stop: Already stopped");
+                        return;
+                    }
                     IsPlaying = false;
+                    
+                    DiagLog("Stop: Cancelling _cts");
                     _cts?.Cancel();
 
+                    DiagLog("Stop: Cancelling _bitrateMonitorCts");
                     _bitrateMonitorCts?.Cancel();
                     _bitrateMonitorCts?.Dispose();
                     _bitrateMonitorCts = null;
@@ -412,6 +438,7 @@ namespace skdl_new_2025_test_tool
                         _playThread.Join(1500);
                         if (_playThread.IsAlive)
                         {
+                            DiagLog("Stop: Thread not responding, aborting");
                             try { _playThread.Abort(); } catch { }
                         }
                     }
@@ -471,16 +498,19 @@ namespace skdl_new_2025_test_tool
                     {
                         _requestSnapshot = false;
                     }
+                    
+                    DiagLog("Stop: Cleanup complete");
+                    LogMemoryStatus("Stop End");
+                    FlushDiagLog();
                 }
             }
             catch (SocketException ex) when (ex.ErrorCode == 995)
             {
-                // 忽略 "I/O 操作被中止" 错误，这是预期的清理行为
+                DiagLog("Stop: SocketException 995 (expected during cleanup)");
             }
             catch (Exception ex)
             {
-                // 可选：记录其他异常
-                // Log.Error(ex);
+                DiagLog($"Stop: Exception {ex.GetType().Name}: {ex.Message}");
             }
         }
 
@@ -547,8 +577,36 @@ namespace skdl_new_2025_test_tool
 
         public void Dispose()
         {
+            DiagLog("Dispose called");
+            FlushDiagLog();
             Stop();
             _cts?.Dispose();
+        }
+
+        public string GetDiagLogPath()
+        {
+            InitDiagLog();
+            return _diagLogFile;
+        }
+
+        public void ForceGarbageCollection()
+        {
+            DiagLog("ForceGC: Before GC");
+            LogMemoryStatus("ForceGC Before");
+            GC.Collect(2, GCCollectionMode.Forced, true, true);
+            GC.WaitForPendingFinalizers();
+            GC.Collect(2, GCCollectionMode.Forced, true, true);
+            LogMemoryStatus("ForceGC After");
+            DiagLog("ForceGC: After GC");
+            FlushDiagLog();
+        }
+
+        public void ResetDiagnostics()
+        {
+            FlushDiagLog();
+            _diagLogBuffer.Clear();
+            DiagLog($"=== Diag Log Reset ===");
+            LogMemoryStatus("ResetDiag");
         }
         #endregion
 
@@ -578,6 +636,65 @@ namespace skdl_new_2025_test_tool
         private static bool IsSocketAbort(SocketException ex)
         {
             return ex != null && ex.ErrorCode == 995;
+        }
+
+        private void InitDiagLog()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(_diagLogFile))
+                {
+                    string logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+                    if (!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
+                    _diagLogFile = Path.Combine(logDir, $"diag_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+                    DiagLog($"=== Diag Log Started: {_diagLogFile} ===");
+                    DiagLog($"Process ID: {Environment.ProcessId}");
+                    DiagLog($"Thread Count: {Environment.ProcessorCount}");
+                }
+            }
+            catch { }
+        }
+
+        public static void DiagLog(string message)
+        {
+            try
+            {
+                string logLine = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][T{Environment.CurrentManagedThreadId}] {message}";
+                lock (_diagLogLock)
+                {
+                    _diagLogBuffer.Add(logLine);
+                    if (_diagLogBuffer.Count >= 50 || string.IsNullOrEmpty(_diagLogFile))
+                    {
+                        FlushDiagLog();
+                    }
+                }
+            }
+            catch { }
+        }
+
+        public static void FlushDiagLog()
+        {
+            if (string.IsNullOrEmpty(_diagLogFile) || _diagLogBuffer.Count == 0) return;
+            try
+            {
+                File.AppendAllLines(_diagLogFile, _diagLogBuffer);
+                _diagLogBuffer.Clear();
+            }
+            catch { }
+        }
+
+        private void LogMemoryStatus(string context)
+        {
+            try
+            {
+                long workingSet = Process.GetCurrentProcess().WorkingSet64;
+                long privateBytes = Process.GetCurrentProcess().PrivateMemorySize64;
+                long mbUsed = workingSet / (1024 * 1024);
+                long mbPrivate = privateBytes / (1024 * 1024);
+                int threadCount = Process.GetCurrentProcess().Threads.Count;
+                DiagLog($"MEM [{context}]: WS={mbUsed}MB, Private={mbPrivate}MB, Threads={threadCount}");
+            }
+            catch { }
         }
 
         /// <summary>
@@ -886,6 +1003,10 @@ namespace skdl_new_2025_test_tool
             // 错峰启动
             Thread.Sleep(Math.Abs(GetHashCode()) % 300);
 
+            InitDiagLog();
+            DiagLog($"=== PlayLoop START: URL={url}, decodeFrames={decodeFrames} ===");
+            LogMemoryStatus("PlayLoop Start");
+
             _capture = null;
             _flvCapture = null;
             int retryCount = 0;
@@ -960,10 +1081,13 @@ namespace skdl_new_2025_test_tool
                     if (!isConnected) return;
 
                     // 连接成功后立即用ffprobe获取流信息（优先获取配置码率）
+                    var ffprobeCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                    ffprobeCts.CancelAfter(15000);
                     Task.Run(async () =>
                     {
                         try
                         {
+                            DiagLog($"FFprobe task started for URL: {url}");
                             bool isRtmp = url.Contains("rtmp", StringComparison.OrdinalIgnoreCase);
                             using var probe = new Process();
                             string probeArgs;
@@ -988,10 +1112,17 @@ namespace skdl_new_2025_test_tool
                                 CreateNoWindow = true
                             };
                             probe.Start();
+                            DiagLog($"FFprobe process started, PID: {probe.Id}");
 
-                            // 等待最多10秒
-                            using var cts = new CancellationTokenSource(10000);
-                            try { await probe.WaitForExitAsync(cts.Token); } catch { }
+                            try { await probe.WaitForExitAsync(ffprobeCts.Token); } catch (OperationCanceledException) { DiagLog("FFprobe cancelled"); }
+                            catch { }
+
+                            if (ffprobeCts.Token.IsCancellationRequested)
+                            {
+                                DiagLog("FFprobe cancelled before completion");
+                                try { probe.Kill(entireProcessTree: true); } catch { }
+                                return;
+                            }
 
                             // 确保进程结束
                             if (!probe.HasExited)
@@ -1003,6 +1134,26 @@ namespace skdl_new_2025_test_tool
                             string output = "", error = "";
                             try { output = probe.StandardOutput.ReadToEnd(); } catch { }
                             try { error = probe.StandardError.ReadToEnd(); } catch { }
+                            DiagLog($"FFprobe completed. Output length: {output?.Length ?? 0}");
+
+                            // 检查输出是否有效（如果流配置改变，可能返回空或错误）
+                            if (string.IsNullOrWhiteSpace(output) || output.Contains("Invalid data found") || output.Contains("Server returned"))
+                            {
+                                _lastFFmpegError = $"FFprobe returned invalid/empty output. Will use ManualBitrate: {ManualBitrateKbps}k";
+                                DiagLog($"FFprobe invalid output: {output?.Substring(0, Math.Min(200, output?.Length ?? 0))}");
+                                
+                                // 如果ffprobe失败但有手动码率，使用手动码率
+                                if (ManualBitrateKbps > 0)
+                                {
+                                    lock (_bitrateLock)
+                                    {
+                                        _rawBitrateKbps = ManualBitrateKbps;
+                                        _currentBitrateKbps = ManualBitrateKbps;
+                                        _lastValidBitrateKbps = ManualBitrateKbps;
+                                    }
+                                }
+                                return;
+                            }
 
                             // 保存ffprobe输出用于调试
                             _lastProbeOutput = output;
@@ -1075,6 +1226,7 @@ namespace skdl_new_2025_test_tool
                                     _lastValidBitrateKbps = configuredBitrate.Value;
                                     _bitrateFromProbe = true;
                                 }
+                                DiagLog($"FFprobe bitrate: {configuredBitrate.Value}k");
                             }
                             else if (ManualBitrateKbps > 0)
                             {
@@ -1084,6 +1236,11 @@ namespace skdl_new_2025_test_tool
                                     _currentBitrateKbps = ManualBitrateKbps;
                                     _lastValidBitrateKbps = ManualBitrateKbps;
                                 }
+                                DiagLog($"FFprobe no bitrate, using ManualBitrate: {ManualBitrateKbps}k");
+                            }
+                            else
+                            {
+                                DiagLog("FFprobe no bitrate and no ManualBitrate");
                             }
 
                             // 解析帧率 - 优先用r_frame_rate
@@ -1100,6 +1257,7 @@ namespace skdl_new_2025_test_tool
                                         _smoothedFps = (float)fps;
                                         _lastValidFps = (float)fps;
                                         _currentFps = (float)fps;
+                                        DiagLog($"FFprobe FPS: {fps}");
                                     }
                                 }
                             }
@@ -1316,7 +1474,11 @@ namespace skdl_new_2025_test_tool
                                 try
                                 {
                                     long workingSet = Process.GetCurrentProcess().WorkingSet64;
+                                    long privateBytes = Process.GetCurrentProcess().PrivateMemorySize64;
                                     long mbUsed = workingSet / (1024 * 1024);
+                                    long mbPrivate = privateBytes / (1024 * 1024);
+
+                                    DiagLog($"MEM_CHECK: WS={mbUsed}MB, Private={mbPrivate}MB, _memoryLeakSampleCount={_memoryLeakSampleCount}");
 
                                     if (mbUsed > 3000)
                                     {
@@ -1324,10 +1486,12 @@ namespace skdl_new_2025_test_tool
                                         if (_memoryLeakSampleCount >= 3)
                                         {
                                             _lastFFmpegError = $"High memory usage detected: {mbUsed}MB, triggering GC";
+                                            DiagLog($"MEM_GC: High memory trigger GC at {mbUsed}MB");
                                             _memoryLeakSampleCount = 0;
-                                            GC.Collect();
+                                            GC.Collect(2, GCCollectionMode.Forced, true, true);
                                             GC.WaitForPendingFinalizers();
-                                            GC.Collect();
+                                            GC.Collect(2, GCCollectionMode.Forced, true, true);
+                                            LogMemoryStatus("After GC");
                                         }
                                     }
                                     else
@@ -1335,9 +1499,10 @@ namespace skdl_new_2025_test_tool
                                         _memoryLeakSampleCount = 0;
                                     }
 
-                                    if (mbUsed > 1000)
+                                    if (mbUsed > 2000)
                                     {
                                         _lastFFmpegError = $"Critical memory: {mbUsed}MB, stopping playback to prevent crash";
+                                        DiagLog($"MEM_CRITICAL: Stopping playback at {mbUsed}MB");
                                         IsPlaying = false;
                                         break;
                                     }
@@ -1465,6 +1630,10 @@ namespace skdl_new_2025_test_tool
                 }
                 finally
                 {
+                    DiagLog("=== PlayLoop END ===");
+                    LogMemoryStatus("PlayLoop End");
+                    FlushDiagLog();
+                    
                     try
                     {
                         if (_capture != null && _capture.IsOpened()) { _capture.Release(); }

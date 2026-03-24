@@ -32,8 +32,8 @@
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj": {
-                "projectPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\SKDL-new-2025-0402\\VideoCapture\\VideoCapture_uvc.csproj"
+              "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj": {
+                "projectPath": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj"
               }
             }
           }
@@ -128,6 +128,22 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj",
+        "projectName": "VideoCapture_uvc",
+        "projectPath": "D:\\GitWork\\SSY0517\\VideoCapture\\VideoCapture_uvc.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
       }
     }
   }

@@ -666,11 +666,11 @@
           }
         }
       },
-      "DirectShowLib/2.1.0.1599": {
+      "DirectShow/1.0.0.0": {
         "runtime": {
-          "DirectShowLib.dll": {
-            "assemblyVersion": "2.1.0.1599",
-            "fileVersion": "2.1.0.1599"
+          "DirectShow.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       }
@@ -1016,7 +1016,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "DirectShowLib/2.1.0.1599": {
+    "DirectShow/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

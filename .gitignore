@@ -14,7 +14,9 @@
 .vs/
 .vscode/
 .idea/
-
+# .NET 编译输出与缓存
+[Oo]bj/
+[Bb]in/
 # ==================== 编译产物 ====================
 # 输出目录（Debug/Release）
 bin/
@@ -83,3 +85,12 @@ coverage/
 # docs/
 # *.md
 # *.pdf
+*.v2
+*.v2
+*.json
+*.bin
+*.dll
+*.exe
+*.v2
+*.v2
+*.png
