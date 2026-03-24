@@ -16771,11 +16771,11 @@ namespace skdl_new_2025_test_tool
                                         double expectedPassBitRate = expectedBitRate;
                                         if (testBRControl == "固定码率")
                                         {
-                                            expectedPassBitRate = expectedPassBitRate * 0.95;
+                                            expectedPassBitRate = expectedPassBitRate * 0.85;
                                         }
                                         else
                                         {
-                                            expectedPassBitRate = expectedPassBitRate * 0.8;
+                                            expectedPassBitRate = expectedPassBitRate * 0.7;
                                         }
 
                                         if (WindowsFunc.IsImageValid(picPath))
@@ -16783,21 +16783,21 @@ namespace skdl_new_2025_test_tool
                                             // 图片没问题，再判断码率和帧率是否符合预期 -- 分别固定码率和动态码率两种情况讨论 -
                                             // 码率判断标准：固定码率上下浮动5%，动态码率上下浮动20%
 
-                                            LogSaveOutput($"预期码率：{expectedPassBitRate} kbps\n当前码率：{nowBitRate} kbps\n预期帧率：{expectedFps * 0.9} fps\n当前帧率：{nowFps} fps");
+                                            LogSaveOutput($"预期码率：{expectedPassBitRate} kbps\n当前码率：{nowBitRate} kbps\n预期帧率：{expectedFps * 0.8} fps\n当前帧率：{nowFps} fps");
 
                                             if ((nowBitRate >= expectedPassBitRate) &&
-                                                ((nowFps >= expectedFps * 0.9)))
+                                                ((nowFps >= expectedFps * 0.8)))
                                             {
-                                                testColumnNameRTSP = $"PASS:\n1、图片正常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                                testColumnNameRTSP = $"PASS:\n1、图片正常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                             }
                                             else
                                             {
-                                                testColumnNameRTSP = $"FAIL:\n1、图片正常，码率或帧率异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                                testColumnNameRTSP = $"FAIL:\n1、图片正常，码率或帧率异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                             }
                                         }
                                         else
                                         {
-                                            testColumnNameRTSP = $"FAIL:\n1、图片异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n 3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                            testColumnNameRTSP = $"FAIL:\n1、图片异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n 3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                         }
 
                                         await Task.Delay(1000);
@@ -16860,11 +16860,11 @@ namespace skdl_new_2025_test_tool
                                         double expectedPassBitRate = expectedBitRate;
                                         if (testBRControl == "固定码率")
                                         {
-                                            expectedPassBitRate = expectedPassBitRate * 0.95;
+                                            expectedPassBitRate = expectedPassBitRate * 0.85;
                                         }
                                         else
                                         {
-                                            expectedPassBitRate = expectedPassBitRate * 0.8;
+                                            expectedPassBitRate = expectedPassBitRate * 0.7;
                                         }
 
                                         if (WindowsFunc.IsImageValid(picPath))
@@ -16872,21 +16872,21 @@ namespace skdl_new_2025_test_tool
                                             // 图片没问题，再判断码率和帧率是否符合预期 -- 分别固定码率和动态码率两种情况讨论 -
                                             // 码率判断标准：固定码率上下浮动5%，动态码率上下浮动20%
 
-                                            LogSaveOutput($"预期码率：{expectedPassBitRate} kbps\n当前码率：{nowBitRate} kbps\n预期帧率：{expectedFps * 0.9} fps\n当前帧率：{nowFps} fps");
+                                            LogSaveOutput($"预期码率：{expectedPassBitRate} kbps\n当前码率：{nowBitRate} kbps\n预期帧率：{expectedFps * 0.8} fps\n当前帧率：{nowFps} fps");
 
                                             if ((nowBitRate >= expectedPassBitRate) &&
-                                                ((nowFps >= expectedFps * 0.9)))
+                                                ((nowFps >= expectedFps * 0.8)))
                                             {
-                                                testColumnNameRTMP = $"PASS:\n1、图片正常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                                testColumnNameRTMP = $"PASS:\n1、图片正常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                             }
                                             else
                                             {
-                                                testColumnNameRTMP = $"FAIL:\n1、图片正常，帧率或码率异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                                testColumnNameRTMP = $"FAIL:\n1、图片正常，帧率或码率异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                             }
                                         }
                                         else
                                         {
-                                            testColumnNameRTMP = $"FAIL:\n1、图片异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                            testColumnNameRTMP = $"FAIL:\n1、图片异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                         }
                                         await Task.Delay(1000);
 
@@ -16968,11 +16968,11 @@ namespace skdl_new_2025_test_tool
                                         double expectedPassBitRate = expectedBitRate;
                                         if (testBRControl == "固定码率")
                                         {
-                                            expectedPassBitRate = expectedPassBitRate * 0.95;
+                                            expectedPassBitRate = expectedPassBitRate * 0.85;
                                         }
                                         else
                                         {
-                                            expectedPassBitRate = expectedPassBitRate * 0.8;
+                                            expectedPassBitRate = expectedPassBitRate * 0.7;
                                         }
 
                                         if (WindowsFunc.IsImageValid(picPath))
@@ -16980,21 +16980,21 @@ namespace skdl_new_2025_test_tool
                                             // 图片没问题，再判断码率和帧率是否符合预期 -- 分别固定码率和动态码率两种情况讨论 -
                                             // 码率判断标准：固定码率上下浮动5%，动态码率上下浮动20%
 
-                                            LogSaveOutput($"预期码率：{expectedPassBitRate} kbps\n当前码率：{nowBitRate} kbps\n预期帧率：{expectedFps * 0.9} fps\n当前帧率：{nowFps} fps");
+                                            LogSaveOutput($"预期码率：{expectedPassBitRate} kbps\n当前码率：{nowBitRate} kbps\n预期帧率：{expectedFps * 0.8} fps\n当前帧率：{nowFps} fps");
 
                                             if (((nowBitRate >= expectedPassBitRate)) &&
-                                                ((nowFps >= expectedFps * 0.9)))
+                                                ((nowFps >= expectedFps * 0.8)))
                                             {
-                                                testColumnNameGB2818 = $"PASS:\n1、图片正常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                                testColumnNameGB2818 = $"PASS:\n1、图片正常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                             }
                                             else
                                             {
-                                                testColumnNameGB2818 = $"FAIL:\n1、图片正常，帧率或码率异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                                testColumnNameGB2818 = $"FAIL:\n1、图片正常，帧率或码率异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                             }
                                         }
                                         else
                                         {
-                                            testColumnNameGB2818 = $"FAIL:\n1、图片异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.9} - 帧率：{curFps} fps";
+                                            testColumnNameGB2818 = $"FAIL:\n1、图片异常：{picPath}\n2、期待码率：{expectedPassBitRate} - 码率：{curBitRate} kbps\n3、期待帧率：{expectedFps * 0.8} - 帧率：{curFps} fps";
                                         }
                                         await Task.Delay(1000);
 

@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2D4D874F-8238-4926-A019-6DB6491FED1A}|skdl-new-2025-test-tool.csproj|d:\\gitwork\\kdl\\skdl-new-2025-0402\\skdl-new-2025-test-tool\\kdl-2026\\opencvrtspplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 190,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
@@ -76,20 +76,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
               "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAHJAAAAAAAAAAAAAwHtAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAG9CAAAAAAAAAIA0wINCAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-20T10:00:22.864Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs [\u8BBE\u8BA1]",
               "DocumentMoniker": "D:\\GitWork\\KDL\\SKDL-new-2025-0402\\skdl-new-2025-test-tool\\KDL-2026\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
@@ -109,8 +109,7 @@
               "RelativeToolTip": "OpenCvRtspPlayer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-20T10:00:22.862Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-20T10:00:22.862Z"
             },
             {
               "$type": "Document",
