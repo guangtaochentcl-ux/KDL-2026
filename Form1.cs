@@ -16248,7 +16248,6 @@ namespace skdl_new_2025_test_tool
                             height = newHeight;
                         }
                     }
-
                 }
                 else
                 {
