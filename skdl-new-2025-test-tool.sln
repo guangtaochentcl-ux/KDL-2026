@@ -5,7 +5,7 @@ VisualStudioVersion = 18.4.11612.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skdl-new-2025-test-tool", "skdl-new-2025-test-tool.csproj", "{2D4D874F-8238-4926-A019-6DB6491FED1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoCapture_uvc", "..\..\..\..\SSY0517\VideoCapture\VideoCapture_uvc.csproj", "{A80DE893-1110-4CBF-B5C4-07890B11CCD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoCapture_uvc", "..\..\..\SKDL-new-2025-0402\VideoCapture\VideoCapture_uvc.csproj", "{A80DE893-1110-4CBF-B5C4-07890B11CCD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
