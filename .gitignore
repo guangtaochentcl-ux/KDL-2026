@@ -6,8 +6,8 @@
 *.sln.docstates
 *.sln.startup
 # 忽略编译输出目录
-[Oo]bj/
-[Bb]in/
+# [Oo]bj/
+# [Bb]in/
 # 忽略缓存/临时文件
 *.cache
 # VS 工作区/缓存目录
@@ -15,12 +15,12 @@
 .vscode/
 .idea/
 # .NET 编译输出与缓存
-[Oo]bj/
-[Bb]in/
+# [Oo]bj/
+# [Bb]in/
 # ==================== 编译产物 ====================
 # 输出目录（Debug/Release）
-bin/
-obj/
+# bin/
+# obj/
 # 发布目录
 publish/
 dist/
