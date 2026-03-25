@@ -251,7 +251,7 @@ namespace skdl_new_2025_test_tool
         }
 
 
-
+        
 
         // 定义变量
         private System.Drawing.Point _startMousePos; // 鼠标按下时的【屏幕坐标】
@@ -16222,29 +16222,31 @@ namespace skdl_new_2025_test_tool
                 LogSaveOutput($"【UVC兼容性检查】4K分辨率 ({width}x{height}) 不支持 {format} 格式，仅支持 H264。跳过此格式测试。");
                 return false;
             }
-
+            
             // 2. NV12 格式：将不支持的分辨率转换为对齐后的分辨率
-            if (format == "NV12" )
+            if (format == "NV12"  )
             {
-                if(((width == 960 && height == 540) ||
+                if (((width == 960 && height == 540) ||
                     (width == 640 && height == 360) ||
                     (width == 320 && height == 180)))
                 {
-                    // 定义 NV12 支持的原生分辨率映射表（原始分辨率 → 对齐后分辨率）
-                    var nv12ResolutionMapping = new Dictionary<(int, int), (int, int)>
                     {
-                        { (320, 180), (320, 192) },   // 180 → 192 (16倍数)
-                        { (640, 360), (640, 368) },   // 360 → 368 (16倍数)
-                        { (960, 540), (960, 560) }    // 540 → 560 (16倍数)
-                    };
+                        // 定义 NV12 支持的原生分辨率映射表（原始分辨率 → 对齐后分辨率）
+                        var nv12ResolutionMapping = new Dictionary<(int, int), (int, int)>
+                            {
+                                { (320, 180), (320, 192) },   // 180 → 192 (16倍数)
+                                { (640, 360), (640, 368) },   // 360 → 368 (16倍数)
+                                { (960, 540), (960, 560) }    // 540 → 560 (16倍数)
+                            };
 
-                    // 检查当前分辨率是否需要转换
-                    if (nv12ResolutionMapping.ContainsKey((width, height)))
-                    {
-                        var (newWidth, newHeight) = nv12ResolutionMapping[(width, height)];
-                        LogSaveOutput($"【UVC兼容性检查】NV12 分辨率 {width}x{height} 转换为对齐分辨率 {newWidth}x{newHeight}（NV12要求高度为16的倍数）");
-                        width = newWidth;
-                        height = newHeight;
+                        // 检查当前分辨率是否需要转换
+                        if (nv12ResolutionMapping.ContainsKey((width, height)))
+                        {
+                            var (newWidth, newHeight) = nv12ResolutionMapping[(width, height)];
+                            LogSaveOutput($"【UVC兼容性检查】NV12 分辨率 {width}x{height} 转换为对齐分辨率 {newWidth}x{newHeight}（NV12要求高度为16的倍数）");
+                            width = newWidth;
+                            height = newHeight;
+                        }
                     }
                 }
                 else
@@ -16253,7 +16255,9 @@ namespace skdl_new_2025_test_tool
                     return false;
                 }
             }
-            
+                
+
+           
 
             // 3. MJPG 格式支持除 4K 以外的所有分辨率（已在第一步判断过4K，这里无需重复）
             // MJPG 的兼容性已经通过第一步的4K检查覆盖
