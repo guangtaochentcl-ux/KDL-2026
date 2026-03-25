@@ -59,7 +59,7 @@ TestResults/
 coverage/
 # 二进制文件
 *.bin
-*.dll
+# *.dll
 *.exe
 *.lib
 *.so
@@ -89,7 +89,7 @@ coverage/
 *.v2
 *.json
 *.bin
-*.dll
+# *.dll
 *.exe
 *.v2
 *.v2
