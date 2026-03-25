@@ -5996,7 +5996,7 @@ namespace skdl_new_2025_test_tool
                                     continue; // 跳过当前格式，继续下一个
                                 }
 
-                                // 预览 15 秒
+                                // 预览 10 秒
                                 await Task.Delay(10000);
 
                                 // 截图
@@ -6583,7 +6583,7 @@ namespace skdl_new_2025_test_tool
                         buttonGetToken_Click(null, null);
                         await Task.Delay(1000);
 
-                        bool isFirstTest = (item.TestCount == 0);
+                        bool isFirstTest = (item.TestCount == 1);
                         var (isPass, currentPics) = await ExecuteOneTestRound(testFolder, isFirstTest, previousPics);
 
                         if (isPass)
