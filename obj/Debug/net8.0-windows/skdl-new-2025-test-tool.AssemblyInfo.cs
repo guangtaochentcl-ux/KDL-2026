@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("skdl-new-2025-test-tool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dff8fca5dc13dba5cd834a013fba4795634510db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+963d6393e0085d96931a584b7abcb37be7302dc7")]
 [assembly: System.Reflection.AssemblyProductAttribute("skdl-new-2025-test-tool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("skdl-new-2025-test-tool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
