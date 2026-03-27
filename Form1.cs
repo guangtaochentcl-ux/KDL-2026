@@ -1384,11 +1384,14 @@ namespace skdl_new_2025_test_tool
                             buttonGetToken_Click(null, null);
                             await Task.Delay(1000);
 
-                            // 设置自动ip
-                            getNetWorkConfigBtn_Click(null, null);
-                            await Task.Delay(1000);
-                            setUdhcpcBtn_Click(null, null);
-                            await Task.Delay(1000);
+                            if (autoIPCheckBox.Checked)
+                            {
+                                // 设置自动ip
+                                getNetWorkConfigBtn_Click(null, null);
+                                await Task.Delay(1000);
+                                setUdhcpcBtn_Click(null, null);
+                                await Task.Delay(1000);
+                            }
 
                             resetAllStreamDefaultConfigBtn_Click(null, null);
                             await Task.Delay(1000);
