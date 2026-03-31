@@ -59,6 +59,7 @@ namespace skdl_new_2025_test_tool
         private int checkRtmpStreamStatusWaitingTime = 10000; // RTMP拉流状态检查间隔，适当放宽一些
 
         private static readonly object _failFileLock = new object(); //用于记录UVC失败类型,方便查看
+        private static readonly object _cameraLock = new object(); // camera1 线程安全锁
 
         bool Stop_uvc = true;//用于UVC停止拉流的标志位
         public Form1()
@@ -1547,8 +1548,9 @@ namespace skdl_new_2025_test_tool
                         }
                         finally
                         {
-                            // 4. 恢复按钮状态
-                            item.BtnText = "开始测试";
+                            // 4. 恢复按钮状态（TestCase34由其内部Lambda的finally恢复）
+                            if (item.Name != "case34_模式切换压测")
+                                item.BtnText = "开始测试";
                         }
                     }
 
@@ -1884,6 +1886,10 @@ namespace skdl_new_2025_test_tool
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
+                    }
+                    finally
+                    {
+                        item.BtnText = "开始测试";
                     }
 
                 }
@@ -4947,6 +4953,11 @@ namespace skdl_new_2025_test_tool
             setUdhcpcBtn_Click(null, null);
             await Task.Delay(100);
 
+            //测试ai流先设置 高分辨率模式
+            hiResModeBtn_Click(null, null);
+            LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
+            await Task.Delay(50000);
+
             string ori_panoramicMain_pic, next_panoramicMain_pic = "";
             string ori_panoramicSub_pic, next_panoramicSub_pic = "";
             string ori_closeUpMain_pic, next_closeUpMain_pic = "";
@@ -6066,6 +6077,11 @@ namespace skdl_new_2025_test_tool
                 Directory.Delete(testFolder, true);
             }
 
+            //测试ai流先设置 高分辨率模式
+            hiResModeBtn_Click(null, null);
+            LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
+            await Task.Delay(50000);
+
             string ori_panoramicMain_pic, next_panoramicMain_pic = "";
             string ori_panoramicSub_pic, next_panoramicSub_pic = "";
             string ori_closeUpMain_pic, next_closeUpMain_pic = "";
@@ -6412,7 +6428,7 @@ namespace skdl_new_2025_test_tool
                         string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
                         LogSaveOutput(ai1_pic);
                         await Task.Delay(100);
-
+                        
                         // AI左后排流拉流测试出结果
                         string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
                         LogSaveOutput(ai2_pic);
@@ -7394,6 +7410,11 @@ namespace skdl_new_2025_test_tool
             {
                 Directory.Delete(testFolder, true);
             }
+
+            //测试ai流先设置 高分辨率模式
+            hiResModeBtn_Click(null, null);
+            LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
+            await Task.Delay(50000);
 
             //string ori_panoramicMain_pic, next_panoramicMain_pic = "";
             //string ori_panoramicSub_pic, next_panoramicSub_pic = "";
@@ -8483,9 +8504,12 @@ namespace skdl_new_2025_test_tool
         {
             try
             {
-                // 释放 UVC 资源
-                camera1?.Dispose();
-                camera1 = null;
+                Stop_uvc = true;
+                lock (_cameraLock)
+                {
+                    camera1?.Dispose();
+                    camera1 = null;
+                }
 
                 // 释放并清空 PictureBox 图像
                 pictureBox_uvcStream.Image?.Dispose();
@@ -8517,11 +8541,15 @@ namespace skdl_new_2025_test_tool
             string ipSafe = _currentIp.Replace(".", "_");
             try
             {
-
-                if (camera1 == null)
+                VideoCapturer localCamera;
+                lock (_cameraLock)
                 {
-                    LogSaveOutput($"cameral为空");
-                    return "";
+                    if (camera1 == null)
+                    {
+                        LogSaveOutput($"cameral为空");
+                        return "";
+                    }
+                    localCamera = camera1;
                 }
 
                 string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testData", ipSafe, folder);
@@ -8531,7 +8559,7 @@ namespace skdl_new_2025_test_tool
                 string fullPath = Path.Combine(dir, fileName);
 
                 // === 核心修改：直接调用 VMR9 截图 ===
-                bool success = camera1.Snapshot(fullPath);
+                bool success = localCamera.Snapshot(fullPath);
 
                 if (!success)
                 {
@@ -8566,7 +8594,6 @@ namespace skdl_new_2025_test_tool
             {
                 // 3. 创建设备实例并读取分辨率
                 var videoDevice = new VideoCaptureDevice(target.MonikerString);
-
                 foreach (var cap in videoDevice.VideoCapabilities)
                 {
                     LogSaveOutput($"分辨率: {cap.FrameSize.Width} x {cap.FrameSize.Height}");
@@ -15811,6 +15838,7 @@ namespace skdl_new_2025_test_tool
             // 1. 4K 分辨率 (3840x2160 及以上) 只支持 H264
             if ((width >= 3840 || height >= 2160) && format != "H264")
             {
+                Stop_uvc = true;
                 LogSaveOutput($"【UVC兼容性检查】4K分辨率 ({width}x{height}) 不支持 {format} 格式，仅支持 H264。跳过此格式测试。");
                 return false;
             }
@@ -15843,6 +15871,7 @@ namespace skdl_new_2025_test_tool
                 }
                 else
                 {
+                    Stop_uvc = true;
                     LogSaveOutput($"【UVC兼容性检查】NV12 格式不支持分辨率 {width}x{height}，仅支持 960x540、640x360、320x180。跳过此测试。");
                     return false;
                 }
@@ -15856,10 +15885,13 @@ namespace skdl_new_2025_test_tool
 
             // ========== 原有的启动逻辑 ==========
             // 如果已有摄像头实例，先释放
-            if (camera1 != null)
+            lock (_cameraLock)
             {
-                camera1.Dispose();
-                camera1 = null;
+                if (camera1 != null)
+                {
+                    camera1.Dispose();
+                    camera1 = null;
+                }
             }
 
             // 刷新 PictureBox
@@ -15868,15 +15900,17 @@ namespace skdl_new_2025_test_tool
             await Task.Delay(100);
 
             // 创建新实例并设置参数
-            camera1 = new VideoCapturer();
-            camera1.SetPreviewSize(width, height);
-            camera1.SetDisplayWindow(pictureBox_uvcStream.Handle);
-            camera1.SetDisplaySize(pictureBox_uvcStream.Width, pictureBox_uvcStream.Height);
+            var newCamera = new VideoCapturer();
+            newCamera.SetPreviewSize(width, height);
+            newCamera.SetDisplayWindow(pictureBox_uvcStream.Handle);
+            newCamera.SetDisplaySize(pictureBox_uvcStream.Width, pictureBox_uvcStream.Height);
 
             // 获取设备列表
             List<CameraInfo> cameras = GetCameras("Seewo Lubo");
             if (cameras.Count == 0)
             {
+                Stop_uvc = true;
+                newCamera?.Dispose();
                 LogSaveOutput("未找到名称为 'Seewo Lubo' 的摄像头");
                 return false;
             }
@@ -15895,17 +15929,21 @@ namespace skdl_new_2025_test_tool
             }
 
             // 启动捕获
-            bool success = await camera1.StartupCapture(cameras[index], index, format, checkBoxDecodeTest.Checked);
+            bool success = await newCamera.StartupCapture(cameras[index], index, format, checkBoxDecodeTest.Checked);
             if (success)
             {
+                lock (_cameraLock)
+                {
+                    camera1 = newCamera;
+                }
                 Stop_uvc = false;
                 LogSaveOutput($"拉流成功: {width}x{height} 格式 {format}");
             }
             else
             {
+                Stop_uvc = true;
                 LogSaveOutput($"拉流失败: {width}x{height} 格式 {format}");
-                camera1?.Dispose();
-                camera1 = null;
+                newCamera?.Dispose();
             }
             return success;
         }
@@ -15934,9 +15972,14 @@ namespace skdl_new_2025_test_tool
         private void pictureBox_uvcStream_SizeChanged(object sender, EventArgs e)
         {
             //检查空指针
-            if (camera1 != null)
+            VideoCapturer localCamera;
+            lock (_cameraLock)
             {
-                WindowsFunc.ResizeVideoCapture(camera1, pictureBox_uvcStream);
+                localCamera = camera1;
+            }
+            if (localCamera != null)
+            {
+                WindowsFunc.ResizeVideoCapture(localCamera, pictureBox_uvcStream);
             }
         }
 
