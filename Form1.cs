@@ -1545,8 +1545,9 @@ namespace skdl_new_2025_test_tool
                         }
                         finally
                         {
-                            // 4. 恢复按钮状态
-                            item.BtnText = "开始测试";
+                            // 4. 恢复按钮状态（TestCase34由其内部Lambda的finally恢复）
+                            if (item.Name != "case34_模式切换压测")
+                                item.BtnText = "开始测试";
                         }
                     }
 
@@ -1882,6 +1883,10 @@ namespace skdl_new_2025_test_tool
                     catch (Exception ex)
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
+                    }
+                    finally
+                    {
+                        item.BtnText = "开始测试";
                     }
 
                 }
@@ -4945,6 +4950,11 @@ namespace skdl_new_2025_test_tool
             setUdhcpcBtn_Click(null, null);
             await Task.Delay(100);
 
+            //测试ai流先设置 高分辨率模式
+            hiResModeBtn_Click(null, null);
+            LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
+            await Task.Delay(50000);
+
             string ori_panoramicMain_pic, next_panoramicMain_pic = "";
             string ori_panoramicSub_pic, next_panoramicSub_pic = "";
             string ori_closeUpMain_pic, next_closeUpMain_pic = "";
@@ -6063,6 +6073,11 @@ namespace skdl_new_2025_test_tool
             {
                 Directory.Delete(testFolder, true);
             }
+
+            //测试ai流先设置 高分辨率模式
+            hiResModeBtn_Click(null, null);
+            LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
+            await Task.Delay(50000);
 
             string ori_panoramicMain_pic, next_panoramicMain_pic = "";
             string ori_panoramicSub_pic, next_panoramicSub_pic = "";
@@ -7392,6 +7407,11 @@ namespace skdl_new_2025_test_tool
             {
                 Directory.Delete(testFolder, true);
             }
+
+            //测试ai流先设置 高分辨率模式
+            hiResModeBtn_Click(null, null);
+            LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
+            await Task.Delay(50000);
 
             //string ori_panoramicMain_pic, next_panoramicMain_pic = "";
             //string ori_panoramicSub_pic, next_panoramicSub_pic = "";
