@@ -9619,6 +9619,9 @@ namespace skdl_new_2025_test_tool
                                         await Task.Delay(6000);
                                         await controlRelay(switchIndex_now, false, 0);
                                         await Task.Delay(5000);
+
+                                        LogSaveOutput($"{curTestIP_now} - 下电60秒完成，准备开始下一次测试");
+                                        await Task.Delay(60000);
                                     }
                                     else
                                     {
