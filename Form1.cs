@@ -253,7 +253,7 @@ namespace skdl_new_2025_test_tool
         }
 
 
-        
+
 
         // 定义变量
         private System.Drawing.Point _startMousePos; // 鼠标按下时的【屏幕坐标】
@@ -596,7 +596,7 @@ namespace skdl_new_2025_test_tool
             }
         }
 
-        
+
         /// 统一的测试执行方法 - 自动处理拉流、截图、验证、AI流开关
         /// </summary>
         /// <param name="testFolder">测试文件夹路径</param>
@@ -811,9 +811,10 @@ namespace skdl_new_2025_test_tool
             LogSaveOutput("【特写辅流】开始拉流");
         }
 
-        private void closeUpSubStreamOffBtn_Click(object sender, EventArgs e)
+        private async void closeUpSubStreamOffBtn_Click(object sender, EventArgs e)
         {
             player_CloseUpSub.Stop();
+            Task.Delay(100);
             LogSaveOutput("【特写辅流】已停止");
         }
 
@@ -821,19 +822,40 @@ namespace skdl_new_2025_test_tool
         {
             await SafeSnapshotAsync(player_CloseUpSub, "特写辅流");
         }
+        //加锁防止重复点击导致状态混乱崩溃
+        private readonly object _ai1OnLock = new object();
+        private readonly object _ai1OffLock = new object();
+        private readonly object _ai2OnLock = new object();
+        private readonly object _ai2OffLock = new object();
+        private readonly object _ai3OnLock = new object();
+        private readonly object _ai3OffLock = new object();
+
 
         // === AI 1 ===
         private void ai1StreanOnBtn_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
-            player_ai1.Start($"rtsp://{_currentIp}/ai1", checkBoxDecodeTest.Checked);
-            LogSaveOutput("【AI1前排】开始拉流");
+            Task.Run(() =>
+            {
+                lock(_ai1OnLock)
+                {
+                    if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
+                    player_ai1.Start($"rtsp://{_currentIp}/ai1", checkBoxDecodeTest.Checked);
+                    LogSaveOutput("【AI1前排】开始拉流");
+                }
+                
+            });
         }
 
         private void ai1StreanOffBtn_Click(object sender, EventArgs e)
         {
-            player_ai1.Stop();
-            LogSaveOutput("【AI1前排】已停止");
+            Task.Run(() =>
+            {
+                lock (_ai1OffLock)   
+                {
+                    player_ai1.Stop();
+                    LogSaveOutput("【AI1前排】已停止");
+                }
+            });
         }
 
         private async void ai1StreamSnapShotBtn_Click(object sender, EventArgs e)
@@ -844,15 +866,29 @@ namespace skdl_new_2025_test_tool
         // === AI 2 ===
         private void ai2StreanOnBtn_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
-            player_ai2.Start($"rtsp://{_currentIp}/ai2", checkBoxDecodeTest.Checked);
-            LogSaveOutput("【AI2左后】开始拉流");
+            Task.Run(() =>
+            {
+                lock (_ai2OnLock)
+                    {
+                    if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
+                    player_ai2.Start($"rtsp://{_currentIp}/ai2", checkBoxDecodeTest.Checked);
+                    LogSaveOutput("【AI2左后】开始拉流");
+                }
+               
+            });
         }
 
         private void ai2StreanOffBtn_Click(object sender, EventArgs e)
         {
-            player_ai2.Stop();
-            LogSaveOutput("【AI2左后】已停止");
+            Task.Run(() =>
+            {
+                lock (_ai2OffLock)
+                {
+                    player_ai2.Stop();
+                    LogSaveOutput("【AI1前排】已停止");
+                }
+              
+            });
         }
 
         private async void ai2StreamSnapShotBtn_Click(object sender, EventArgs e)
@@ -863,15 +899,28 @@ namespace skdl_new_2025_test_tool
         // === AI 3 ===
         private void ai3StreanOnBtn_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
-            player_ai3.Start($"rtsp://{_currentIp}/ai3", checkBoxDecodeTest.Checked);
-            LogSaveOutput("【AI3右后】开始拉流");
+            Task.Run(() =>
+            {
+                lock (_ai3OnLock)
+                {
+                    if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
+                    player_ai3.Start($"rtsp://{_currentIp}/ai3", checkBoxDecodeTest.Checked);
+                    LogSaveOutput("【AI3右后】开始拉流");
+                }
+               
+            });
         }
 
         private void ai3StreanOffBtn_Click(object sender, EventArgs e)
         {
-            player_ai3.Stop();
-            LogSaveOutput("【AI3右后】已停止");
+            Task.Run(() =>
+            {
+                lock (_ai3OffLock)
+                {
+                    player_ai3.Stop();
+                    LogSaveOutput("【AI1前排】已停止");
+                }
+            });
         }
 
         private async void ai3StreamSnapShotBtn_Click(object sender, EventArgs e)
@@ -1564,7 +1613,7 @@ namespace skdl_new_2025_test_tool
         {
             try
             {
-               
+
                 // ========== 新增：4K模式下跳过AI流 ==========
                 bool isAIStream = streamType == "ai1" || streamType == "ai2" || streamType == "ai3";
                 if (isAIStream && IsCurrentResolution4K())
@@ -1695,8 +1744,10 @@ namespace skdl_new_2025_test_tool
                             {
                                 //Logic 3 -  切到性能模式：性能模式-拉2路 [extreme、extreme_2]
                                 extremeModeBtn_Click(null, null);
+                                LogSaveOutput($"[Logic3] extreme模式按钮已点击，当前Is4K={IsCurrentResolution4K()}");
                                 LogSaveOutput($"即将切到性能模式并等待{switchModeTime}秒完全切换完成，请稍等……");
                                 await Task.Delay(switchModeTime * 1000);
+                                LogSaveOutput($"[Logic3] 等待{switchModeTime}秒后，当前Is4K={IsCurrentResolution4K()}");
 
                                 // 获取token
                                 buttonGetToken_Click(null, null);
@@ -2303,7 +2354,7 @@ namespace skdl_new_2025_test_tool
                         int height = 2160;
                         input1_uvc_x.Text = width.ToString();
                         input2_uvc_y.Text = height.ToString();
-          
+
                         string format = "H264";
                         input_Uvctype.Text = format;
                         string devicePath = null;
@@ -2532,7 +2583,7 @@ namespace skdl_new_2025_test_tool
             // 获取token
             buttonGetToken_Click(null, null);
             await Task.Delay(1000);
-            
+
 
             // 切到对应测试模式
             hiResModeBtn_Click(null, null);
@@ -2585,7 +2636,7 @@ namespace skdl_new_2025_test_tool
                             LogSaveOutput("UVC 启动失败，停止测试");
                             break;
                         }
-                        
+
                         await Task.Delay(10000);//等待12秒使流稳定
                         LogSaveOutput($"预览高分辨率模式教师UVC全景[{width}x{height}] {format} - 10s");
 
@@ -5127,7 +5178,7 @@ namespace skdl_new_2025_test_tool
                                             ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                             ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                             ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                         
+
                                         }
                                         else
                                         {
@@ -5135,7 +5186,7 @@ namespace skdl_new_2025_test_tool
                                             ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                             ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                             ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                            
+
                                         }
 
                                         bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
@@ -5146,7 +5197,7 @@ namespace skdl_new_2025_test_tool
                                         LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
                                         bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
                                         LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                                        
+
 
 
                                         LogSaveOutput($"{_currentIp} - 等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
@@ -5193,7 +5244,7 @@ namespace skdl_new_2025_test_tool
                                         string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
                                         LogSaveOutput(ai3_pic);
                                         await Task.Delay(100);
-                                        if(item.TestCount == 1)
+                                        if (item.TestCount == 1)
                                         {
                                             ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
                                             ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
@@ -6065,11 +6116,13 @@ namespace skdl_new_2025_test_tool
                     {
                         LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
                     }
+
+
                 }
             });
         }
 
-        
+
 
 
 
@@ -6129,12 +6182,7 @@ namespace skdl_new_2025_test_tool
                         await Task.Delay(100);
                         closeUpSubStreamOnBtn_Click(null, null);
                         await Task.Delay(100);
-                        ai1StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai2StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai3StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
+                        
                         panoramicMainRtmpStreanOnBtn_Click(null, null);
                         await Task.Delay(100);
                         panoramicSubRtmpStreanOnBtn_Click(null, null);
@@ -6164,21 +6212,7 @@ namespace skdl_new_2025_test_tool
                         string closeUpSub_pic = await SafeSnapshotAsync(player_CloseUpSub, testFolder, "特写辅流");
                         LogSaveOutput(closeUpSub_pic);
                         await Task.Delay(100);
-
-                        // AI1前排流拉流测试出结果
-                        string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
-                        LogSaveOutput(ai1_pic);
-                        await Task.Delay(100);
-
-                        // AI左后排流拉流测试出结果
-                        string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
-                        LogSaveOutput(ai2_pic);
-                        await Task.Delay(100);
-
-                        // AI右后排流拉流测试出结果
-                        string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
-                        LogSaveOutput(ai3_pic);
-                        await Task.Delay(100);
+                        
 
                         // 全景主流RTMP拉流测试出结果
                         string panoramicRTMPMain_pic = await SafeSnapshotAsync(player_rtmp_panoramicMain, testFolder, "全景RTMP主流");
@@ -6206,9 +6240,7 @@ namespace skdl_new_2025_test_tool
                             ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                             ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                             ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                            
                             ori_panoramic_RTMP_Main_pic = panoramicRTMPMain_pic; next_panoramic_RTMP_Main_pic = panoramicRTMPMain_pic;
                             ori_panoramic_RTMP_Sub_pic = panoramicRTMPSub_pic; next_panoramicSub_pic = panoramicRTMPSub_pic;
                             ori_closeUp_RTMP_Main_pic = closeUpRTMPMain_pic; next_closeUp_RTMP_Main_pic = closeUpRTMPMain_pic;
@@ -6220,9 +6252,7 @@ namespace skdl_new_2025_test_tool
                             ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                             ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                             ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                            
                             ori_panoramic_RTMP_Main_pic = next_panoramic_RTMP_Main_pic; next_panoramic_RTMP_Main_pic = panoramicRTMPMain_pic;
                             ori_panoramic_RTMP_Sub_pic = next_panoramic_RTMP_Sub_pic; next_panoramic_RTMP_Sub_pic = panoramicRTMPSub_pic;
                             ori_closeUp_RTMP_Main_pic = next_closeUp_RTMP_Main_pic; next_closeUp_RTMP_Main_pic = closeUpRTMPMain_pic;
@@ -6238,12 +6268,7 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 特写RTMP主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
                         bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 特写RTMP辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI1RTMP流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI2RTMP左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI3RTMP右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
+                       
                         bool panoramicRTMPMainResult = checkPICValid(ori_panoramic_RTMP_Main_pic, next_panoramic_RTMP_Main_pic);
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 全景RTMP主流测试结果：{panoramicRTMPMainResult} -- {ori_panoramic_RTMP_Main_pic} : {next_panoramic_RTMP_Main_pic}");
                         bool panoramicRTMPSubResult = checkPICValid(ori_panoramic_RTMP_Sub_pic, next_panoramic_RTMP_Sub_pic);
@@ -6252,6 +6277,7 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 特写RTMP主流测试结果：{closeUpRTMPMainResult} -- {ori_closeUp_RTMP_Main_pic} : {next_closeUp_RTMP_Main_pic}");
                         bool closeUpRTMPSubResult = checkPICValid(ori_closeUp_RTMP_Sub_pic, next_closeUp_RTMP_Sub_pic);
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 特写RTMP辅流测试结果：{closeUpRTMPSubResult} -- {ori_closeUp_RTMP_Sub_pic} : {next_closeUp_RTMP_Sub_pic}");
+
 
                         LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
                         await Task.Delay(checkStreamStatusWaitingTime);
@@ -6264,6 +6290,136 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
                         bool closeUpSubStatusResult = getStreamStatusResult(player_CloseUpSub);
                         LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
+
+
+                       
+
+                        // 所有流关流
+                        panoramicMainStreamOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        panoramicSubStreamOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        closeUpMainStreamOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        closeUpSubStreamOffBtn_Click(null, null);
+                        await Task.Delay(100);
+
+                        panoramicRtmpStreanOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        panoramicSubRtmpStreanOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        closeUpMainRtmpStreanOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        closeUpSubRtmpStreanOffBtn_Click(null, null);
+                        await Task.Delay(100);
+
+                        //等所有的流关闭后再执行ai流的测试
+                        LogSaveOutput("AI流已启动，等待稳定中（5秒）...");
+                        await Task.Delay(5000);
+                        ai1StreanOnBtn_Click(null, null);
+                        await Task.Delay(100);
+                        ai2StreanOnBtn_Click(null, null);
+                        await Task.Delay(100);
+                        ai3StreanOnBtn_Click(null, null);
+                        await Task.Delay(100);
+
+                        //ai1
+                        bool ai1Ready = getStreamStatusResult(player_ai1);
+                        LogSaveOutput($"AI1就绪状态: {ai1Ready}, FPS={player_ai1.GetPlayerStatus().Fps}, Bitrate={player_ai1.GetPlayerStatus().TotalBitrateKbps}Kbps");
+                        if (!ai1Ready)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                await Task.Delay(2000);
+                                ai1Ready = getStreamStatusResult(player_ai1);
+                                LogSaveOutput($"AI1第{i + 1}次重检: {ai1Ready}, FPS={player_ai1.GetPlayerStatus().Fps}");
+                                if (ai1Ready) break;
+                            }
+                        }
+
+                        // AI2
+                        bool ai2Ready = getStreamStatusResult(player_ai2);
+                        LogSaveOutput($"AI2就绪状态: {ai2Ready}, FPS={player_ai2.GetPlayerStatus().Fps}, Bitrate={player_ai2.GetPlayerStatus().TotalBitrateKbps}Kbps");
+                        if (!ai2Ready)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                await Task.Delay(2000);
+                                ai2Ready = getStreamStatusResult(player_ai2);
+                                LogSaveOutput($"AI2第{i + 1}次重检: {ai2Ready}, FPS={player_ai2.GetPlayerStatus().Fps}");
+                                if (ai2Ready) break;
+                            }
+                        }
+
+                        // AI3
+                        bool ai3Ready = getStreamStatusResult(player_ai3);
+                        LogSaveOutput($"AI3就绪状态: {ai3Ready}, FPS={player_ai3.GetPlayerStatus().Fps}, Bitrate={player_ai3.GetPlayerStatus().TotalBitrateKbps}Kbps");
+                        if (!ai3Ready)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                await Task.Delay(2000);
+                                ai3Ready = getStreamStatusResult(player_ai3);
+                                LogSaveOutput($"AI3第{i + 1}次重检: {ai3Ready}, FPS={player_ai3.GetPlayerStatus().Fps}");
+                                if (ai3Ready) break;
+                            }
+                        }
+
+
+
+                        // AI1前排流拉流测试出结果
+                        string ai1_pic = "", ai2_pic = "", ai3_pic = "";
+                        if (ai1Ready)
+                        {
+                            ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                            LogSaveOutput(ai1_pic);
+                        }
+                        else
+                        {
+                            LogSaveOutput("【AI1未就绪，已跳过截图】");
+                        }
+
+                        if (ai2Ready)
+                        {
+                            ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI2左后排流");
+                            LogSaveOutput(ai2_pic);
+                        }
+                        else
+                        {
+                            LogSaveOutput("【AI2未就绪，已跳过截图】");
+                        }
+
+                        if (ai3Ready)
+                        {
+                            ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI3右后排流");
+                            LogSaveOutput(ai3_pic);
+                        }
+                        else
+                        {
+                            LogSaveOutput("【AI3未就绪，已跳过截图】");
+                        }
+
+
+                        if (item.TestCount == 1)
+                        {
+                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
+                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                        }
+                        else
+                        {
+                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
+                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                        }
+
+                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI1RTMP流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
+                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI2RTMP左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
+                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI3RTMP右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
+
                         bool ai1StatusResult = getStreamStatusResult(player_ai1);
                         LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
                         bool ai2StatusResult = getStreamStatusResult(player_ai2);
@@ -6286,28 +6442,11 @@ namespace skdl_new_2025_test_tool
                             break;
                         }
 
-                        // 所有流关流
-                        panoramicMainStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        panoramicSubStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        closeUpMainStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        closeUpSubStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
                         ai1StreanOffBtn_Click(null, null);
                         await Task.Delay(100);
                         ai2StreanOffBtn_Click(null, null);
                         await Task.Delay(100);
                         ai3StreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        panoramicRtmpStreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        panoramicSubRtmpStreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        closeUpMainRtmpStreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        closeUpSubRtmpStreanOffBtn_Click(null, null);
                         await Task.Delay(100);
 
                         clumsyStopLimitSpeedBtn_Click(null, null);
@@ -6437,7 +6576,7 @@ namespace skdl_new_2025_test_tool
                         string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
                         LogSaveOutput(ai1_pic);
                         await Task.Delay(100);
-                        
+
                         // AI左后排流拉流测试出结果
                         string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
                         LogSaveOutput(ai2_pic);
@@ -7173,8 +7312,8 @@ namespace skdl_new_2025_test_tool
 
                         if (isPass)
                         {
-                        
-                            item.TestCount ++;
+
+                            item.TestCount++;
                             item.TestResult = "PASS";
                             previousPics = currentPics;
                         }
@@ -7215,7 +7354,7 @@ namespace skdl_new_2025_test_tool
             }
 
             Dictionary<string, string> previousPics = null;  //用于记录截图对比
-        
+
 
             this.BeginInvoke(async () =>
             {
@@ -7622,7 +7761,7 @@ namespace skdl_new_2025_test_tool
             //改动： 添加逻辑，使主码流维持在1080p，辅码流在720p
             // ========== 新增：固定分辨率设置 ==========
             // 先读取当前配置
-             readAllStreamCurConfigBtn_Click(null, null);
+            readAllStreamCurConfigBtn_Click(null, null);
             await Task.Delay(1000);
 
             // 设置主码流为1080P
@@ -7809,7 +7948,7 @@ namespace skdl_new_2025_test_tool
 
                         // KD改动: 统一拉流，自动处理AI流,里面会判断是否拉ai,包含判断和验证
                         //仅使用ExecuteOneTestRound一个函数
-                        bool isFirstTest = (item.TestCount==1);
+                        bool isFirstTest = (item.TestCount == 1);
                         var (isPass, currentPics) = await ExecuteOneTestRound(testFolder, isFirstTest, previousPics);
 
                         if (isPass)
@@ -8387,7 +8526,7 @@ namespace skdl_new_2025_test_tool
             LogSaveOutput("【特写主流RTMP】已停止");
         }
 
-        private void closeUpSubRtmpStreanOffBtn_Click(object sender, EventArgs e)
+        private async void closeUpSubRtmpStreanOffBtn_Click(object sender, EventArgs e)
         {
             player_rtmp_closeUpSub.Stop();
             LogSaveOutput("【特写辅流RTMP】已停止");
@@ -8501,11 +8640,11 @@ namespace skdl_new_2025_test_tool
                 string format = input_Uvctype.Text; // 从界面获取格式
                 await StartUVC(w, h, format);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-            
+
 
         }
         //改动： 增加picture_box 释放图片资源，防止内存泄露
@@ -13389,7 +13528,7 @@ namespace skdl_new_2025_test_tool
                                 }
 
                                 if (!startOk)
-                                {  
+                                {
                                     LogSaveOutput($"启动失败，跳过格式 {format} 分辨率 {uvcResolution}");
                                     LogFailType(uvcResolution, format); // 记录失败信息
                                     continue; // 跳过当前格式，继续下一个
@@ -15822,8 +15961,8 @@ namespace skdl_new_2025_test_tool
             }
 
         }
-        
-        
+
+
         //添加UVC失败拉流的类型,保存成日志
         private void LogFailType(string resolution, string format)
         {
@@ -15846,7 +15985,7 @@ namespace skdl_new_2025_test_tool
         // 改动 :添加的私有方法,启动 UVC 流,适用手动拉流和指定path拉流
         private async Task<bool> StartUVC(int width, int height, string format, string devicePath = null)
         {
-            
+
             // 1. 4K 分辨率 (3840x2160 及以上) 只支持 H264
             if ((width >= 3840 || height >= 2160) && format != "H264")
             {
@@ -15854,9 +15993,9 @@ namespace skdl_new_2025_test_tool
                 LogSaveOutput($"【UVC兼容性检查】4K分辨率 ({width}x{height}) 不支持 {format} 格式，仅支持 H264。跳过此格式测试。");
                 return false;
             }
-            
+
             // 2. NV12 格式：将不支持的分辨率转换为对齐后的分辨率
-            if (format == "NV12"  )
+            if (format == "NV12")
             {
                 if (((width == 960 && height == 540) ||
                     (width == 640 && height == 360) ||
@@ -15888,9 +16027,9 @@ namespace skdl_new_2025_test_tool
                     return false;
                 }
             }
-                
 
-           
+
+
 
             // 3. MJPG 格式支持除 4K 以外的所有分辨率（已在第一步判断过4K，这里无需重复）
             // MJPG 的兼容性已经通过第一步的4K检查覆盖
@@ -15959,7 +16098,7 @@ namespace skdl_new_2025_test_tool
             }
             return success;
         }
-       
+
 
         private async void uvcStreamOnSpecificDevicePathBtn_Click(object sender, EventArgs e)
         {
@@ -16125,7 +16264,7 @@ namespace skdl_new_2025_test_tool
                 //    LogSaveOutput($"获取当前流状态：\n 码率：{status.TotalBitrateKbps}\n 帧率：{status.Fps}\n");
                 //    await Task.Delay(1000);
                 //}
-                LogSaveOutput( $"当前码率：{await player1.GetBitrateAsync(networkUrlInput.Text)}");
+                LogSaveOutput($"当前码率：{await player1.GetBitrateAsync(networkUrlInput.Text)}");
                 LogSaveOutput($"当前帧率：{player1.GetPlayerStatus().Fps}");
             });
         }
@@ -16248,7 +16387,7 @@ namespace skdl_new_2025_test_tool
                 }
 
 
-                
+
 
                 try
                 {
@@ -16264,7 +16403,7 @@ namespace skdl_new_2025_test_tool
                 {
 
                 }
-                
+
 
                 try
                 {
@@ -16512,7 +16651,7 @@ namespace skdl_new_2025_test_tool
                                         excelHelper.Save();
 
                                         LogSaveOutput($"RTSP测试结果已写入Excel - {testColumnNameRTSP}");
-                                        
+
                                     }
                                 }
                                 else
@@ -17076,6 +17215,11 @@ namespace skdl_new_2025_test_tool
             {
                 LogSaveOutput($"当前设备分区状态获取异常！\n{ex.ToString()}");
             }
+        }
+
+        private void input_rtmp_panoramicMain_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
