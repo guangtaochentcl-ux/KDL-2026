@@ -1399,6 +1399,14 @@ namespace skdl_new_2025_test_tool
             testCases.Add(t34);
 
 
+            TestCases t35 = new TestCases();
+            t35.Name = "case35_ota双版本互刷升级压测(兼容4项目-不测拉流)";
+            t35.Description = "测试步骤：\r\n1、选择ota包1和ota包2（需要进行双固件升级压测的版本）\r\n2、点击开始测试即可\r\n\r\n1、使用自动化工具进行OTA升级1000次 \r\n2、查看工具每次刷机是否正常";
+            t35.TestCount = 0;
+            t35.TestResult = "待测试";
+            testCases.Add(t35);
+
+
             table1_testCase.DataSource = testCases;
             table1_testCase.CellClick += Table1_CellClick;
         }
@@ -1590,6 +1598,10 @@ namespace skdl_new_2025_test_tool
                             {
                                 TestCase34(item);
                             }
+                            if (item.Name == "case35_ota双版本互刷升级压测(兼容4项目-不测拉流)")
+                            {
+                                TestCase35(item);
+                            }
 
                         }
                         catch (Exception ex)
@@ -1647,6 +1659,205 @@ namespace skdl_new_2025_test_tool
                 return false;
             }
         }
+
+
+        private async void TestCase35(TestCases item)
+        {
+            LogSaveOutput($"{_currentIp} - 测试用例：【{item.Name}】运行中");
+            // 3. 更新测试结果
+            item.TestCount++; // 次数+1
+
+            string testFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testData", _currentIp.Replace(".", "_").Replace(":", "_"), item.Name);
+            LogSaveOutput($"{_currentIp} - 测试文件夹：{testFolder}");
+            if (Directory.Exists(testFolder))
+            {
+                Directory.Delete(testFolder, true);
+            }
+
+            // 获取token
+            buttonGetToken_Click(null, null);
+            await Task.Delay(1000);
+
+            this.BeginInvoke(async () =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        // 获取token
+                        buttonGetToken_Click(null, null);
+                        await Task.Delay(1000);
+
+                        // 双版本循环分区OTA升级流程
+                        string curSysVersion = await getSysVersion();
+                        string ota1Path = input_otaPacketPath1.Text;
+                        string ota2Path = input_otaPacketPath2.Text;
+                        string nextUpgradePath = "";
+                        bool upgradeResult = false;
+
+                        LogSaveOutput($"{_currentIp} - 【OTA1：{ota1Path}】");
+                        LogSaveOutput($"{_currentIp} - 【OTA2：{ota2Path}】");
+                        if (ota1Path.Contains(curSysVersion))
+                        {
+                            LogSaveOutput($"{_currentIp} - Ready to : OTA2PATH : {ota2Path} -- {curSysVersion}");
+                            nextUpgradePath = ota2Path;
+                        }
+                        else if (ota2Path.Contains(curSysVersion))
+                        {
+                            LogSaveOutput($"{_currentIp} - Ready to : OTA1PATH : {ota1Path} -- {curSysVersion}");
+                            nextUpgradePath = ota1Path;
+                        }
+                        else
+                        {
+                            LogSaveOutput($"{_currentIp} - 停止测试 - 没有找到能够升级的版本，当前版本：{curSysVersion} 不在您所选择的2种版本中");
+                            item.TestResult = "FAIL";
+                            break;
+                        }
+
+                        if (nextUpgradePath != "")
+                        {
+                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
+                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
+                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
+                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
+                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
+                            // 上传ota包
+                            if (await _api.UploadFirmwareAsync_SKDL_new(nextUpgradePath) == "success")
+                            {
+                                // 触发升级
+                                if (await _api.StartUpdate() == "success")
+                                {
+                                    int update_checkCount = 0;
+                                    // 检测升级版本和设备升级状态
+                                    while (true)
+                                    {
+                                        // 获取token
+                                        buttonGetToken_Click(null, null);
+                                        await Task.Delay(1000);
+                                        update_checkCount += 1;
+                                        string progress = await _api.CheckUpgradeStaus("progress");
+                                        string status = await _api.CheckUpgradeStaus("status");
+                                        LogSaveOutput($"{_currentIp} - 当前升级进度【{progress}】 -- 升级状态 【{status}】");
+                                        if ((progress == "100" && status == "completed"))
+                                        {
+                                            LogSaveOutput($"{_currentIp} - 升级流程结束，等待设备启动完成！");
+                                            upgradeResult = true;
+                                            break;
+                                        }
+                                        if (progress == "99" && status == "update" || progress == "99" && status == "fail" || progress == "0" && status == "not start")
+                                        {
+                                            LogSaveOutput($"{_currentIp} - 升级流程结束，等待60秒设备启动完成！异端流程执行");
+                                            await Task.Delay(60000);
+                                            upgradeResult = true;
+                                            break;
+                                        }
+                                        if (update_checkCount >= 60)
+                                        {
+                                            upgradeResult = false;
+                                            item.TestResult = "FAIL";
+                                            LogSaveOutput($"{_currentIp} - 升级流程超时！");
+                                            break;
+                                        }
+                                        await Task.Delay(3000);
+                                    }
+                                }
+                                else
+                                {
+                                    LogSaveOutput($"{_currentIp} - 触发升级失败，请检查设备状态！");
+                                    item.TestResult = "FAIL";
+                                    upgradeResult = false;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                LogSaveOutput($"{_currentIp} - ota包上传失败，请检查！\n{nextUpgradePath}");
+                                item.TestResult = "FAIL";
+                                upgradeResult = false;
+                                break;
+                            }
+                        }
+
+                        int update_checkVersionCount = 0;
+                        // ota升级测试结果更新
+                        if (upgradeResult)
+                        {
+                            // ota升级进度完成，等待重启完成
+                            LogSaveOutput($"{_currentIp} - ota升级进度完成，等待重启后进行拉流检测……");
+                            while (true)
+                            {
+                                update_checkVersionCount += 1;
+                                await Task.Delay(3000);
+                                // 获取token
+                                buttonGetToken_Click(null, null);
+                                await Task.Delay(1000);
+                                string upgradeDoneVersion = await _api.GetSysVerison();
+                                string diskStatus = await _api.GetDiskStatus();
+                                if (upgradeDoneVersion != null)
+                                {
+                                    if (nextUpgradePath.Contains(upgradeDoneVersion) && diskStatus.Contains("SUCCESS"))
+                                    {
+                                        item.TestResult = "PASS";
+                                        upgradeResult = true;
+                                        LogSaveOutput($"设备【{_currentIp}】升级完成，当前版本：{upgradeDoneVersion}, 期望版本：{nextUpgradePath}");
+
+                                        // 结果呈现，次数增加
+                                        bool isSuccess = upgradeResult;
+
+                                        LogSaveOutput($"{_currentIp} - {item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
+                                        if (stopTest)
+                                        {
+                                            LogSaveOutput($"{_currentIp} - 手动停止测试！");
+                                            return;
+                                        }
+
+                                        if (isSuccess)
+                                        {
+                                            item.TestCount++;
+                                            item.TestResult = "PASS";
+                                            LogSaveOutput($"{_currentIp} - 【第{item.TestCount}次测试结束，下一次测试即将开始……】");
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            item.TestResult = "FAIL";
+                                            return;
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        LogSaveOutput($"{_currentIp} - 设备【{_currentIp}】升级失败，当前版本：{upgradeDoneVersion}, 期望版本：{nextUpgradePath}");
+                                        item.TestResult = "FAIL";
+                                        upgradeResult = false;
+                                        return;
+                                    }
+                                }
+                                if (update_checkVersionCount >= 30)
+                                {
+                                    item.TestResult = "FAIL";
+                                    upgradeResult = false;
+                                    LogSaveOutput($"{_currentIp} - 长时间没有起来，当前设备 【{_currentIp}】 OTA升级失败，期望版本：【{nextUpgradePath}】");
+                                    return;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            upgradeResult = false;
+                            item.TestResult = "FAIL";
+                            break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogSaveOutput($"{_currentIp} - case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
+                    }
+
+                }
+            });
+        }
+
 
 
         int switchModeTime = 80; // 切换模式后等待的时间，单位秒
