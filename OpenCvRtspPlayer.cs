@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 基于OpenCV的RTSP/FLV视频流播放器类
  * 提供RTSP/HTTP-FLV流媒体播放、帧抓取、性能监控等功能
  */
@@ -453,26 +453,25 @@ namespace skdl_new_2025_test_tool
                         _flvCapture = null;
                     }
 
-                    if (!_pictureBox.IsDisposed)
+                    try
                     {
-                        try
+                        if (_pictureBox.IsHandleCreated && !_pictureBox.IsDisposed)
                         {
-                            if (_pictureBox.IsHandleCreated)
+                            _pictureBox.Invoke(new Action(() =>
                             {
-                                _pictureBox.Invoke(new Action(() =>
-                                {
-                                    _pictureBox.Image?.Dispose();
-                                    _pictureBox.Image = null;
-                                }));
-                            }
+                                _pictureBox.Image?.Dispose();
+                                _pictureBox.Image = null;
+                            }));
                         }
-                        catch { }
                     }
+                    catch { }
+                    
 
                     _currentFps = 0;
                     _smoothedFps = 0;
                     _lastValidFps = 0;
                     _bitrateMonitorConsecutiveFailures = 0;
+                    _streamFpsFromMeta = 0;
                     _memoryLeakSampleCount = 0;
                     lock (_bitrateLock)
                     {
@@ -997,6 +996,8 @@ namespace skdl_new_2025_test_tool
             }
             return false;
         }
+    
+
 
         private void PlayLoop(string url, bool decodeFrames, CancellationToken token)
         {
@@ -1371,9 +1372,22 @@ namespace skdl_new_2025_test_tool
                                     bool grabbed = false;
                                     lock (_captureLock)
                                     {
-                                        if (_capture != null && _capture.IsOpened())
+                                        try
                                         {
-                                            grabbed = _capture.Grab();
+                                            if (_capture != null)
+                                            {
+                                                bool opened = false;
+                                                try { opened = _capture.IsOpened(); } catch { }
+                                                if (opened)
+                                                {
+                                                    grabbed = _capture.Grab();
+                                                }
+                                            }
+                                        }
+                                        catch (AccessViolationException)
+                                        {
+                                            try { _capture?.Dispose(); } catch { }
+                                            _capture = null;
                                         }
                                     }
 
@@ -1529,6 +1543,17 @@ namespace skdl_new_2025_test_tool
                                 {
                                     if (!_capture.Retrieve(currentFrame) || currentFrame.Empty())
                                         continue;
+                                }
+                                catch (AccessViolationException)
+                                {
+                                    // _capture 已损坏，安全清理并重连
+                                    lock (_captureLock)
+                                    {
+                                        try { _capture?.Dispose(); } catch { }
+                                        _capture = null;
+                                    }
+                                    Thread.Sleep(100);
+                                    continue;
                                 }
                                 catch (SocketException ex) when (IsSocketAbort(ex))
                                 {
