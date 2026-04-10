@@ -4,6 +4,7 @@ using BaseProjejct;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Emgu.CV.Cuda;
 using Emgu.CV.Dnn;
 using Newtonsoft.Json;
@@ -89,9 +90,9 @@ namespace skdl_new_2025_test_tool
             {
                 System.Drawing.Rectangle bounds = tabControl3.GetTabRect(e.Index);
                 bool isSelected = e.Index == tabControl3.SelectedIndex;
-                using (Font tabFont = new Font("Microsoft YaHei UI", 10f, FontStyle.Regular))
-                using (SolidBrush brush = new SolidBrush(isSelected ? Color.FromArgb(100, 215, 234) : Color.FromArgb(240, 240, 240)))
-                using (SolidBrush textBrush = new SolidBrush(Color.Black))  // 统一白色文字
+                using (System.Drawing.Font tabFont = new System.Drawing.Font("Microsoft YaHei UI", 10f, FontStyle.Regular))
+                using (SolidBrush brush = new SolidBrush(isSelected ? System.Drawing.Color.FromArgb(100, 215, 234) : System.Drawing.Color.FromArgb(240, 240, 240)))
+                using (SolidBrush textBrush = new SolidBrush(System.Drawing.Color.Black))  // 统一白色文字
                 {
                     e.Graphics.FillRectangle(brush, bounds);
                     StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
@@ -267,7 +268,7 @@ namespace skdl_new_2025_test_tool
             {
                 _isDragging = true;
                 // 关键点：全部记录【屏幕绝对坐标】
-                _startMousePos = Control.MousePosition;
+                _startMousePos = System.Windows.Forms.Control.MousePosition;
                 _startFormPos = this.Location;
             }
         }
@@ -278,7 +279,7 @@ namespace skdl_new_2025_test_tool
             if (_isDragging && e.Button == MouseButtons.Left)
             {
                 // 1. 获取当前鼠标的屏幕坐标
-                System.Drawing.Point currentMousePos = Control.MousePosition;
+                System.Drawing.Point currentMousePos = System.Windows.Forms.Control.MousePosition;
 
                 // 2. 计算鼠标移动了多少距离 (当前 - 起始)
                 int offsetX = currentMousePos.X - _startMousePos.X;
@@ -449,6 +450,7 @@ namespace skdl_new_2025_test_tool
             //{
             //    LogSaveOutput($"{_currentIp} -- IP地址格式错误！");            //}
         }
+
 
         // === 通用截图辅助方法 (解决死循环问题) ===
         private async Task<string> SafeSnapshotAsync(OpenCvRtspPlayer player, string dir, string name)
@@ -836,13 +838,13 @@ namespace skdl_new_2025_test_tool
         {
             Task.Run(() =>
             {
-                lock(_ai1OnLock)
+                lock (_ai1OnLock)
                 {
                     if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
                     player_ai1.Start($"rtsp://{_currentIp}/ai1", checkBoxDecodeTest.Checked);
                     LogSaveOutput("【AI1前排】开始拉流");
                 }
-                
+
             });
         }
 
@@ -850,7 +852,7 @@ namespace skdl_new_2025_test_tool
         {
             Task.Run(() =>
             {
-                lock (_ai1OffLock)   
+                lock (_ai1OffLock)
                 {
                     player_ai1.Stop();
                     LogSaveOutput("【AI1前排】已停止");
@@ -869,12 +871,12 @@ namespace skdl_new_2025_test_tool
             Task.Run(() =>
             {
                 lock (_ai2OnLock)
-                    {
+                {
                     if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
                     player_ai2.Start($"rtsp://{_currentIp}/ai2", checkBoxDecodeTest.Checked);
                     LogSaveOutput("【AI2左后】开始拉流");
                 }
-               
+
             });
         }
 
@@ -885,9 +887,9 @@ namespace skdl_new_2025_test_tool
                 lock (_ai2OffLock)
                 {
                     player_ai2.Stop();
-                    LogSaveOutput("【AI1前排】已停止");
+                    LogSaveOutput("【AI2前排】已停止");
                 }
-              
+
             });
         }
 
@@ -907,7 +909,7 @@ namespace skdl_new_2025_test_tool
                     player_ai3.Start($"rtsp://{_currentIp}/ai3", checkBoxDecodeTest.Checked);
                     LogSaveOutput("【AI3右后】开始拉流");
                 }
-               
+
             });
         }
 
@@ -918,7 +920,7 @@ namespace skdl_new_2025_test_tool
                 lock (_ai3OffLock)
                 {
                     player_ai3.Stop();
-                    LogSaveOutput("【AI1前排】已停止");
+                    LogSaveOutput("【AI3前排】已停止");
                 }
             });
         }
@@ -2592,167 +2594,109 @@ namespace skdl_new_2025_test_tool
 
             this.BeginInvoke(async () =>
             {
-                while (true)
+                try  // Begininvoke
                 {
-                    try
+
+
+                    while (true)
                     {
-                        if (stopTest)
+                        try
                         {
-                            LogSaveOutput("手动停止测试！");
-                            break;
-                        }
+                            if (stopTest)
+                            {
+                                LogSaveOutput("手动停止测试！");
+                                break;
+                            }
 
-                        if (stopTest)
-                        {
-                            LogSaveOutput("手动停止测试！");
-                            break;
-                        }
+                            if (stopTest)
+                            {
+                                LogSaveOutput("手动停止测试！");
+                                break;
+                            }
 
-                        // 获取token
-                        buttonGetToken_Click(null, null);
-                        await Task.Delay(1000);
-
-
-                        // Logic 1 网络流设置为主流 1080P30帧、辅流默认，RTSP 拉流主流 + UVC 拉流H264 4K
-                        // 设置到uvc出全景模式
-                        setUvcPanoramicBtn_Click(null, null);
-                        await Task.Delay(100);
-                        int width = 3840;
-                        int height = 2160;
-                        input1_uvc_x.Text = width.ToString();
-                        input2_uvc_y.Text = height.ToString();
-                        string format = "H264";
-                        input_Uvctype.Text = format;
-                        string devicePath = null;
-                        // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                        if (GetCameras("Seewo Lubo").Count > 1)
-                        {
-                            devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
-                        }
-                        //没有输入path,默认null,会自动使用默认摄像头
-                        bool uvcStarted = await StartUVC(width, height, format, devicePath);
-                        if (!uvcStarted)
-                        {
-                            LogSaveOutput("UVC 启动失败，停止测试");
-                            break;
-                        }
-
-                        await Task.Delay(10000);//等待12秒使流稳定
-                        LogSaveOutput($"预览高分辨率模式教师UVC全景[{width}x{height}] {format} - 10s");
+                            // 获取token
+                            buttonGetToken_Click(null, null);
+                            await Task.Delay(1000);
 
 
-                        string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{width}x{height}]");
-                        LogSaveOutput(uvc_pic);
-                        await Task.Delay(100);
-
-                        bool highResolutionTeacherResult = checkPICValid(uvc_pic, uvc_pic);
-                        LogSaveOutput($"Logic1 -- uvc 全景主流[{width}x{height}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
-
-                        if (!highResolutionTeacherResult)
-                        {
-                            LogSaveOutput($"UVC异常，停止测试");
-                            break;
-                        }
-
-
-                        // 先读取当前配置
-                        readAllStreamCurConfigBtn_Click(null, null);
-                        await Task.Delay(1000);
-
-                        // 设置主流到1080P - 30fps
-                        LogSaveOutput(cur_panoramicMain_stream_config = cur_panoramicMain_stream_config
-                            .Replace($"\"fps\": {JObject.Parse(cur_panoramicMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
-                            .Replace($"\"resolution\": \"{JObject.Parse(cur_panoramicMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"1920x1080\""));
-                        LogSaveOutput(cur_closeUpMain_stream_config = cur_closeUpMain_stream_config
-                            .Replace($"\"fps\": {JObject.Parse(cur_closeUpMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
-                            .Replace($"\"resolution\": \"{JObject.Parse(cur_closeUpMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"1920x1080\""));
-                        LogSaveOutput(set_panoramicMain_stream_config_result = await _api.SetSpecVideoStreamConfig("panoramicMain", cur_panoramicMain_stream_config));
-                        LogSaveOutput(set_closeUpMain_stream_config_result = await _api.SetSpecVideoStreamConfig("closeUpMain", cur_closeUpMain_stream_config));
-
-                        // 全景主流拉流
-                        panoramicMainStreamOnBtn_Click(null, null);
-                        await Task.Delay(100);
-
-                        // 全景主流拉流测试出结果
-                        string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
-                        LogSaveOutput(panoramicMain_pic);
-                        await Task.Delay(100);
-
-                        bool panoramicMainResult = checkPICValid(panoramicMain_pic, panoramicMain_pic);
-                        LogSaveOutput($"Logic1 -- rtsp 全景主流测试结果：{panoramicMainResult}");
-
-                        LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
-                        await Task.Delay(checkStreamStatusWaitingTime);
-                        // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
-                        bool panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
-                        LogSaveOutput($"Logic1 -- 当前全景主流状态测试结果：{panoramicMainStatusResult}");
-
-                        if (highResolutionTeacherResult && panoramicMainResult && panoramicMainStatusResult)
-                        {
-                            // Logic 2 重新RTSP拉主流 + UCV 拉流MJPEG 1080P
-
-                            // 1、先关流
-                            // 所有流关流
-                            uvc_streamOffBtn_Click(null, null);
+                            // Logic 1 网络流设置为主流 1080P30帧、辅流默认，RTSP 拉流主流 + UVC 拉流H264 4K
+                            // 设置到uvc出全景模式
+                            setUvcPanoramicBtn_Click(null, null);
                             await Task.Delay(100);
-                            // 所有流关流
-                            panoramicMainStreamOffBtn_Click(null, null);
-                            await Task.Delay(100);
-                            await Task.Delay(circleTestDelayTime * 1000);
-
-                            // 2、再拉流
-                            // logic 2 uvc 拉流1080P  1920x1080
-                            input1_uvc_x.Text = "1920";
-                            input2_uvc_y.Text = "1080";
-                            input_Uvctype.Text = "MJPG";
-
+                            int width = 3840;
+                            int height = 2160;
+                            input1_uvc_x.Text = width.ToString();
+                            input2_uvc_y.Text = height.ToString();
+                            string format = "H264";
+                            input_Uvctype.Text = format;
+                            string devicePath = null;
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
                             {
-                                uvcStreamOnSpecificDevicePathBtn_Click(null, null);
+                                devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
                             }
-                            else
+                            //没有输入path,默认null,会自动使用默认摄像头
+                            bool uvcStarted = await StartUVC(width, height, format, devicePath);
+                            if (!uvcStarted)
                             {
-                                uvc_streamOnBtn_Click(null, null);
+                                LogSaveOutput("UVC 启动失败，停止测试");
+                                break;
                             }
-                            await Task.Delay(5000);
-                            LogSaveOutput("预览10秒，请稍等……");
-                            await Task.Delay(10000);
 
-                            uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{1920}x{1080}]");
+                            await Task.Delay(10000);//等待12秒使流稳定
+                            LogSaveOutput($"预览高分辨率模式教师UVC全景[{width}x{height}] {format} - 10s");
+
+
+                            string uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{width}x{height}]");
                             LogSaveOutput(uvc_pic);
                             await Task.Delay(100);
 
-                            highResolutionTeacherResult = checkPICValid(uvc_pic, uvc_pic);
-                            LogSaveOutput($"Logic2 -- uvc 全景主流[{1920}x{1080}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
+                            bool highResolutionTeacherResult = checkPICValid(uvc_pic, uvc_pic);
+                            LogSaveOutput($"Logic1 -- uvc 全景主流[{width}x{height}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
+
                             if (!highResolutionTeacherResult)
                             {
                                 LogSaveOutput($"UVC异常，停止测试");
                                 break;
                             }
 
-                            // logic 2 rtsp 
+
+                            // 先读取当前配置
+                            readAllStreamCurConfigBtn_Click(null, null);
+                            await Task.Delay(1000);
+
+                            // 设置主流到1080P - 30fps
+                            LogSaveOutput(cur_panoramicMain_stream_config = cur_panoramicMain_stream_config
+                                .Replace($"\"fps\": {JObject.Parse(cur_panoramicMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
+                                .Replace($"\"resolution\": \"{JObject.Parse(cur_panoramicMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"1920x1080\""));
+                            LogSaveOutput(cur_closeUpMain_stream_config = cur_closeUpMain_stream_config
+                                .Replace($"\"fps\": {JObject.Parse(cur_closeUpMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
+                                .Replace($"\"resolution\": \"{JObject.Parse(cur_closeUpMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"1920x1080\""));
+                            LogSaveOutput(set_panoramicMain_stream_config_result = await _api.SetSpecVideoStreamConfig("panoramicMain", cur_panoramicMain_stream_config));
+                            LogSaveOutput(set_closeUpMain_stream_config_result = await _api.SetSpecVideoStreamConfig("closeUpMain", cur_closeUpMain_stream_config));
+
                             // 全景主流拉流
                             panoramicMainStreamOnBtn_Click(null, null);
                             await Task.Delay(100);
 
                             // 全景主流拉流测试出结果
-                            panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
+                            string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
                             LogSaveOutput(panoramicMain_pic);
                             await Task.Delay(100);
 
-                            panoramicMainResult = checkPICValid(panoramicMain_pic, panoramicMain_pic);
-                            LogSaveOutput($"Logic2 -- rtsp 全景主流测试结果：{panoramicMainResult}");
+                            bool panoramicMainResult = checkPICValid(panoramicMain_pic, panoramicMain_pic);
+                            LogSaveOutput($"Logic1 -- rtsp 全景主流测试结果：{panoramicMainResult}");
 
                             LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
                             await Task.Delay(checkStreamStatusWaitingTime);
                             // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
-                            panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
-                            LogSaveOutput($"Logic2 -- 当前全景主流状态测试结果：{panoramicMainStatusResult}");
+                            bool panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
+                            LogSaveOutput($"Logic1 -- 当前全景主流状态测试结果：{panoramicMainStatusResult}");
 
                             if (highResolutionTeacherResult && panoramicMainResult && panoramicMainStatusResult)
                             {
-                                // logic 3 重新RTSP拉流 + 网络流设置为主流 4KP30帧、辅流默认，RTSP 拉流主流
+                                // Logic 2 重新RTSP拉主流 + UCV 拉流MJPEG 1080P
+
                                 // 1、先关流
                                 // 所有流关流
                                 uvc_streamOffBtn_Click(null, null);
@@ -2762,21 +2706,38 @@ namespace skdl_new_2025_test_tool
                                 await Task.Delay(100);
                                 await Task.Delay(circleTestDelayTime * 1000);
 
-                                // rtsp 4k
-                                // 先读取当前配置
-                                readAllStreamCurConfigBtn_Click(null, null);
-                                await Task.Delay(1000);
+                                // 2、再拉流
+                                // logic 2 uvc 拉流1080P  1920x1080
+                                input1_uvc_x.Text = "1920";
+                                input2_uvc_y.Text = "1080";
+                                input_Uvctype.Text = "MJPG";
 
-                                // 设置主流到4k - 30fps
-                                LogSaveOutput(cur_panoramicMain_stream_config = cur_panoramicMain_stream_config
-                                    .Replace($"\"fps\": {JObject.Parse(cur_panoramicMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
-                                    .Replace($"\"resolution\": \"{JObject.Parse(cur_panoramicMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"3840x2160\""));
-                                LogSaveOutput(cur_closeUpMain_stream_config = cur_closeUpMain_stream_config
-                                    .Replace($"\"fps\": {JObject.Parse(cur_closeUpMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
-                                    .Replace($"\"resolution\": \"{JObject.Parse(cur_closeUpMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"3840x2160\""));
-                                LogSaveOutput(set_panoramicMain_stream_config_result = await _api.SetSpecVideoStreamConfig("panoramicMain", cur_panoramicMain_stream_config));
-                                LogSaveOutput(set_closeUpMain_stream_config_result = await _api.SetSpecVideoStreamConfig("closeUpMain", cur_closeUpMain_stream_config));
+                                // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
+                                if (GetCameras("Seewo Lubo").Count > 1)
+                                {
+                                    uvcStreamOnSpecificDevicePathBtn_Click(null, null);
+                                }
+                                else
+                                {
+                                    uvc_streamOnBtn_Click(null, null);
+                                }
+                                await Task.Delay(5000);
+                                LogSaveOutput("预览10秒，请稍等……");
+                                await Task.Delay(10000);
 
+                                uvc_pic = await uvcTaskSnapShot("Seewo Lubo", item.Name, $"高分辨率模式教师UVC全景[{1920}x{1080}]");
+                                LogSaveOutput(uvc_pic);
+                                await Task.Delay(100);
+
+                                highResolutionTeacherResult = checkPICValid(uvc_pic, uvc_pic);
+                                LogSaveOutput($"Logic2 -- uvc 全景主流[{1920}x{1080}]测试结果：{highResolutionTeacherResult} -- {uvc_pic} ");
+                                if (!highResolutionTeacherResult)
+                                {
+                                    LogSaveOutput($"UVC异常，停止测试");
+                                    break;
+                                }
+
+                                // logic 2 rtsp 
                                 // 全景主流拉流
                                 panoramicMainStreamOnBtn_Click(null, null);
                                 await Task.Delay(100);
@@ -2787,46 +2748,100 @@ namespace skdl_new_2025_test_tool
                                 await Task.Delay(100);
 
                                 panoramicMainResult = checkPICValid(panoramicMain_pic, panoramicMain_pic);
-                                LogSaveOutput($"Logic3 -- rtsp 全景主流测试结果：{panoramicMainResult}");
+                                LogSaveOutput($"Logic2 -- rtsp 全景主流测试结果：{panoramicMainResult}");
 
                                 LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
                                 await Task.Delay(checkStreamStatusWaitingTime);
                                 // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
                                 panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
-                                LogSaveOutput($"Logic3 -- 当前全景主流4K30FPS状态测试结果：{panoramicMainStatusResult}");
+                                LogSaveOutput($"Logic2 -- 当前全景主流状态测试结果：{panoramicMainStatusResult}");
 
-                                if (panoramicMainResult && panoramicMainStatusResult)
+                                if (highResolutionTeacherResult && panoramicMainResult && panoramicMainStatusResult)
                                 {
-                                    item.TestCount++;
-                                    item.TestResult = "PASS";
-                                    LogSaveOutput($"【Logic3 测试完成 -- 第{item.TestCount}次测试PASS，即将开始下一次测试……】");
+                                    // logic 3 重新RTSP拉流 + 网络流设置为主流 4KP30帧、辅流默认，RTSP 拉流主流
+                                    // 1、先关流
+                                    // 所有流关流
+                                    uvc_streamOffBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    // 所有流关流
+                                    panoramicMainStreamOffBtn_Click(null, null);
+                                    await Task.Delay(100);
                                     await Task.Delay(circleTestDelayTime * 1000);
-                                    continue;
+
+                                    // rtsp 4k
+                                    // 先读取当前配置
+                                    readAllStreamCurConfigBtn_Click(null, null);
+                                    await Task.Delay(1000);
+
+                                    // 设置主流到4k - 30fps
+                                    LogSaveOutput(cur_panoramicMain_stream_config = cur_panoramicMain_stream_config
+                                        .Replace($"\"fps\": {JObject.Parse(cur_panoramicMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
+                                        .Replace($"\"resolution\": \"{JObject.Parse(cur_panoramicMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"3840x2160\""));
+                                    LogSaveOutput(cur_closeUpMain_stream_config = cur_closeUpMain_stream_config
+                                        .Replace($"\"fps\": {JObject.Parse(cur_closeUpMain_stream_config)["fps"].ToString()},", $"\"fps\": 30,")
+                                        .Replace($"\"resolution\": \"{JObject.Parse(cur_closeUpMain_stream_config)["resolution"].ToString()}\"", $"\"resolution\": \"3840x2160\""));
+                                    LogSaveOutput(set_panoramicMain_stream_config_result = await _api.SetSpecVideoStreamConfig("panoramicMain", cur_panoramicMain_stream_config));
+                                    LogSaveOutput(set_closeUpMain_stream_config_result = await _api.SetSpecVideoStreamConfig("closeUpMain", cur_closeUpMain_stream_config));
+
+                                    // 全景主流拉流
+                                    panoramicMainStreamOnBtn_Click(null, null);
+                                    await Task.Delay(100);
+
+                                    // 全景主流拉流测试出结果
+                                    panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
+                                    LogSaveOutput(panoramicMain_pic);
+                                    await Task.Delay(100);
+
+                                    panoramicMainResult = checkPICValid(panoramicMain_pic, panoramicMain_pic);
+                                    LogSaveOutput($"Logic3 -- rtsp 全景主流测试结果：{panoramicMainResult}");
+
+                                    LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
+                                    await Task.Delay(checkStreamStatusWaitingTime);
+                                    // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
+                                    panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
+                                    LogSaveOutput($"Logic3 -- 当前全景主流4K30FPS状态测试结果：{panoramicMainStatusResult}");
+
+                                    if (panoramicMainResult && panoramicMainStatusResult)
+                                    {
+                                        item.TestCount++;
+                                        item.TestResult = "PASS";
+                                        LogSaveOutput($"【Logic3 测试完成 -- 第{item.TestCount}次测试PASS，即将开始下一次测试……】");
+                                        await Task.Delay(circleTestDelayTime * 1000);
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        LogSaveOutput("测试停止，当前Logic 3 测试失败：\n Logic 3 网络流设置为主流 4K 30帧、辅流默认，RTSP 拉流主流" +
+                                        $"rtsp 结果：{panoramicMainResult} - {panoramicMainStatusResult}");
+                                        item.TestResult = "FAIL";
+                                        break;
+                                    }
+
                                 }
                                 else
                                 {
-                                    LogSaveOutput("测试停止，当前Logic 3 测试失败：\n Logic 3 网络流设置为主流 4K 30帧、辅流默认，RTSP 拉流主流" +
-                                    $"rtsp 结果：{panoramicMainResult} - {panoramicMainStatusResult}");
+                                    LogSaveOutput("测试停止，当前Logic 1 测试失败：\n Logic 1 网络流设置为主流 1080P30帧、辅流默认，RTSP 拉流主流 + UVC 拉流H264 4K" +
+                                        $"uvc 结果：{highResolutionTeacherResult} + rtsp 结果：{panoramicMainResult} - {panoramicMainStatusResult}");
                                     item.TestResult = "FAIL";
                                     break;
                                 }
-
-                            }
-                            else
-                            {
-                                LogSaveOutput("测试停止，当前Logic 1 测试失败：\n Logic 1 网络流设置为主流 1080P30帧、辅流默认，RTSP 拉流主流 + UVC 拉流H264 4K" +
-                                    $"uvc 结果：{highResolutionTeacherResult} + rtsp 结果：{panoramicMainResult} - {panoramicMainStatusResult}");
-                                item.TestResult = "FAIL";
-                                break;
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
+                        catch (Exception ex)
+                        {
+                            //while这里是内部异常,如果这里抛出了异常，Beinvoke就会死掉
+                            LogSaveOutput($"case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
+                            await Task.Delay(3000);  // 异常后等3秒再继续，避免快速死循环
+                        }
                     }
 
-
+                }
+                catch (Exception ex)
+                {
+                    // BeginInvoke 全局兜底：所有 while 循环内的 catch 都没拦住的异常会到这里
+                    LogSaveOutput($"【严重】TestCase30 BeginInvoke 全局异常，测试已终止: {ex.ToString()}");
+                    // 可以选择通知UI或写日志后退出
+                    LogSaveOutput("已经停止测试!!!");
                 }
             });
         }
@@ -6182,7 +6197,7 @@ namespace skdl_new_2025_test_tool
                         await Task.Delay(100);
                         closeUpSubStreamOnBtn_Click(null, null);
                         await Task.Delay(100);
-                        
+
                         panoramicMainRtmpStreanOnBtn_Click(null, null);
                         await Task.Delay(100);
                         panoramicSubRtmpStreanOnBtn_Click(null, null);
@@ -6212,7 +6227,7 @@ namespace skdl_new_2025_test_tool
                         string closeUpSub_pic = await SafeSnapshotAsync(player_CloseUpSub, testFolder, "特写辅流");
                         LogSaveOutput(closeUpSub_pic);
                         await Task.Delay(100);
-                        
+
 
                         // 全景主流RTMP拉流测试出结果
                         string panoramicRTMPMain_pic = await SafeSnapshotAsync(player_rtmp_panoramicMain, testFolder, "全景RTMP主流");
@@ -6240,7 +6255,7 @@ namespace skdl_new_2025_test_tool
                             ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                             ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                             ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                            
+
                             ori_panoramic_RTMP_Main_pic = panoramicRTMPMain_pic; next_panoramic_RTMP_Main_pic = panoramicRTMPMain_pic;
                             ori_panoramic_RTMP_Sub_pic = panoramicRTMPSub_pic; next_panoramicSub_pic = panoramicRTMPSub_pic;
                             ori_closeUp_RTMP_Main_pic = closeUpRTMPMain_pic; next_closeUp_RTMP_Main_pic = closeUpRTMPMain_pic;
@@ -6252,7 +6267,7 @@ namespace skdl_new_2025_test_tool
                             ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                             ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                             ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                            
+
                             ori_panoramic_RTMP_Main_pic = next_panoramic_RTMP_Main_pic; next_panoramic_RTMP_Main_pic = panoramicRTMPMain_pic;
                             ori_panoramic_RTMP_Sub_pic = next_panoramic_RTMP_Sub_pic; next_panoramic_RTMP_Sub_pic = panoramicRTMPSub_pic;
                             ori_closeUp_RTMP_Main_pic = next_closeUp_RTMP_Main_pic; next_closeUp_RTMP_Main_pic = closeUpRTMPMain_pic;
@@ -6268,7 +6283,7 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 特写RTMP主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
                         bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 特写RTMP辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                       
+
                         bool panoramicRTMPMainResult = checkPICValid(ori_panoramic_RTMP_Main_pic, next_panoramic_RTMP_Main_pic);
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- 全景RTMP主流测试结果：{panoramicRTMPMainResult} -- {ori_panoramic_RTMP_Main_pic} : {next_panoramic_RTMP_Main_pic}");
                         bool panoramicRTMPSubResult = checkPICValid(ori_panoramic_RTMP_Sub_pic, next_panoramic_RTMP_Sub_pic);
@@ -6292,7 +6307,7 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
 
 
-                       
+
 
                         // 所有流关流
                         panoramicMainStreamOffBtn_Click(null, null);
@@ -6314,14 +6329,14 @@ namespace skdl_new_2025_test_tool
                         await Task.Delay(100);
 
                         //等所有的流关闭后再执行ai流的测试
-                        LogSaveOutput("AI流已启动，等待稳定中（5秒）...");
-                        await Task.Delay(5000);
+                        LogSaveOutput("AI流已启动，等待稳定中（3秒）...");
+                        await Task.Delay(3000);
                         ai1StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
+                        await Task.Delay(1000);
                         ai2StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
+                        await Task.Delay(3000);
                         ai3StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
+                        await Task.Delay(5000);
 
                         //ai1
                         bool ai1Ready = getStreamStatusResult(player_ai1);
@@ -6330,7 +6345,7 @@ namespace skdl_new_2025_test_tool
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                await Task.Delay(2000);
+                                await Task.Delay(1000);
                                 ai1Ready = getStreamStatusResult(player_ai1);
                                 LogSaveOutput($"AI1第{i + 1}次重检: {ai1Ready}, FPS={player_ai1.GetPlayerStatus().Fps}");
                                 if (ai1Ready) break;
@@ -6342,11 +6357,12 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"AI2就绪状态: {ai2Ready}, FPS={player_ai2.GetPlayerStatus().Fps}, Bitrate={player_ai2.GetPlayerStatus().TotalBitrateKbps}Kbps");
                         if (!ai2Ready)
                         {
-                            for (int i = 0; i < 3; i++)
+                            for (int i = 0; i < 5; i++)
                             {
-                                await Task.Delay(2000);
+                                await Task.Delay(3000);
                                 ai2Ready = getStreamStatusResult(player_ai2);
                                 LogSaveOutput($"AI2第{i + 1}次重检: {ai2Ready}, FPS={player_ai2.GetPlayerStatus().Fps}");
+                                if (i == 2) ai2StreanOnBtn_Click(null, null);
                                 if (ai2Ready) break;
                             }
                         }
@@ -6356,15 +6372,15 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"AI3就绪状态: {ai3Ready}, FPS={player_ai3.GetPlayerStatus().Fps}, Bitrate={player_ai3.GetPlayerStatus().TotalBitrateKbps}Kbps");
                         if (!ai3Ready)
                         {
-                            for (int i = 0; i < 3; i++)
+                            for (int i = 0; i < 5; i++)
                             {
-                                await Task.Delay(2000);
+                                await Task.Delay(5000);
                                 ai3Ready = getStreamStatusResult(player_ai3);
                                 LogSaveOutput($"AI3第{i + 1}次重检: {ai3Ready}, FPS={player_ai3.GetPlayerStatus().Fps}");
+                                if (i == 2) ai3StreanOnBtn_Click(null, null);
                                 if (ai3Ready) break;
                             }
                         }
-
 
 
                         // AI1前排流拉流测试出结果
@@ -6420,16 +6436,20 @@ namespace skdl_new_2025_test_tool
                         bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
                         LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI3RTMP右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
 
-                        bool ai1StatusResult = getStreamStatusResult(player_ai1);
-                        LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
-                        bool ai2StatusResult = getStreamStatusResult(player_ai2);
-                        LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
-                        bool ai3StatusResult = getStreamStatusResult(player_ai3);
-                        LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
+                        //bool ai1StatusResult = getStreamStatusResult(player_ai1);
+                        //LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
+                        //bool ai2StatusResult = getStreamStatusResult(player_ai2);
+                        //LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
+                        //bool ai3StatusResult = getStreamStatusResult(player_ai3);
+                        //LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
+
+
+
+
 
                         // 结果呈现，次数增加
                         bool isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
-                        && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1StatusResult && ai2StatusResult && ai3StatusResult;
+                        && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1Ready && ai2Ready && ai3Ready;
 
                         if (isSuccess)
                         {
@@ -6439,6 +6459,18 @@ namespace skdl_new_2025_test_tool
                         else
                         {
                             item.TestResult = "FAIL";
+                            ai1StreanOffBtn_Click(null, null);
+                            await Task.Delay(100);
+                            ai2StreanOffBtn_Click(null, null);
+                            await Task.Delay(100);
+                            ai3StreanOffBtn_Click(null, null);
+                            await Task.Delay(100);
+
+                            clumsyStopLimitSpeedBtn_Click(null, null);
+                            await Task.Delay(3000);
+                            LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
+
+                            LogSaveOutput("测试失败,已经停止测试！！！");
                             break;
                         }
 
@@ -7893,15 +7925,18 @@ namespace skdl_new_2025_test_tool
             float cur_BitRate = status.TotalBitrateKbps / 1024;
             //float cur_CpuUsage = status.CpuUsage;
 
-            bool fpsCheckResult = cur_fps > 0 ? true : false;
-            bool bitRateCheckResult = cur_BitRate > 0 ? true : false;
+            bool fpsCheckResult = cur_fps > 0.1f ? true : false;
+            bool bitRateCheckResult = cur_BitRate > 0.1f ? true : false;
             //bool cpuUsageCheckResult = cur_CpuUsage > 0 ? true : false;
 
-            LogSaveOutput($"当前全景主流帧率、码率、cpu占用情况:fps:{cur_fps:F1} -- bitrate: {cur_BitRate:F2}Mbps,结果为:{fpsCheckResult}");
+            LogSaveOutput($"当前帧率、码率、cpu占用情况:fps:{cur_fps:F1} -- bitrate: {cur_BitRate:F2}Mbps,结果为:{fpsCheckResult}");
             //LogSaveOutput($"当前全景主流帧率、码率、cpu占用情况:fps:{cur_fps:F1} -- cpu:{cur_CpuUsage:F1} -- bitrate: {cur_BitRate / 1024:F2}Mbps,结果为:{fpsCheckResult},{bitRateCheckResult}, {cpuUsageCheckResult}");
-
+            bool isActuallyPlaying = player.IsPlaying
+            && player.GetPlayerStatus().IsPlaying;
+            if (!isActuallyPlaying)
+                LogSaveOutput("请检查视频是否正在播放！");
             //curStreamStatusResult = fpsCheckResult && bitRateCheckResult && cpuUsageCheckResult;
-            curStreamStatusResult = fpsCheckResult && bitRateCheckResult;
+            curStreamStatusResult = fpsCheckResult && isActuallyPlaying;
 
             return curStreamStatusResult;
         }
@@ -17221,6 +17256,136 @@ namespace skdl_new_2025_test_tool
         {
 
         }
+
+        private void RealExit()
+        {
+            try
+            {
+                // 强制释放资源
+                GC.Collect();
+
+                // 杀掉自己 (推荐使用 Environment.Exit 代替 taskkill，更快更干净)
+                System.Environment.Exit(0);
+            }
+            catch
+            {
+                // 如果 Environment.Exit 失败，再尝试暴力查杀
+                Process.GetCurrentProcess().Kill();
+            }
+        }
+        // 定义一个标志位，防止死循环
+        private bool _isCleaningUp = false;
+        //辅助方法: 杀死指定进程
+        public static string executeCMDCommand_Admin(string command)
+        {
+            Process process_cmd = new Process();
+            try
+            {
+                // 以管理员权限启动进程
+                process_cmd.StartInfo.FileName = "cmd.exe";
+                process_cmd.StartInfo.Verb = "runas";  // ← 关键：请求管理员权限
+                process_cmd.StartInfo.Arguments = "/C " + command;  // 直接传命令
+                process_cmd.StartInfo.CreateNoWindow = true;
+                process_cmd.StartInfo.UseShellExecute = true;  // ← 必须为 true 才能配合 Verb=runas
+                process_cmd.Start();
+                process_cmd.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+            finally
+            {
+                process_cmd.Close();
+            }
+            return "";
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // 1. 如果正在清理中，直接允许关闭
+            if (_isCleaningUp)
+            {
+                return;
+            }
+
+            // 2. 拦截关闭事件，防止窗口直接消失
+            e.Cancel = true;
+
+            // 3. 弹出确认框
+            DialogResult result = AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+                "关闭工具提醒确认",
+                "如果工具正在使用中，请勿关闭，您确定要关闭程序吗?",
+                AntdUI.TType.Warn));
+
+            if (result != DialogResult.Yes && result != DialogResult.OK)
+            {
+                pageHeader1.Loading = false;
+                return;
+            }
+
+            // 4. 用户确认关闭
+            pageHeader1.Loading = true;
+            _isCleaningUp = true;  // ← 移到这里，在 Task.Run 之前就设置
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    // === 所有播放器并行 Stop，最多等10秒 ===
+                    var stopTasks = new[]
+                    {
+            Task.Run(() => { try { player_panoramicMain?.Stop(); } catch { } }),
+            Task.Run(() => { try { player_panoramicSub?.Stop(); } catch { } }),
+            Task.Run(() => { try { player_CloseUpMain?.Stop(); } catch { } }),
+            Task.Run(() => { try { player_CloseUpSub?.Stop(); } catch { } }),
+            Task.Run(() => { try { player_ai1?.Stop(); } catch { } }),
+            Task.Run(() => { try { player_ai2?.Stop(); } catch { } }),
+            Task.Run(() => { try { player_ai3?.Stop(); } catch { } }),
+        };
+                    await Task.WhenAll(stopTasks).WaitAsync(TimeSpan.FromSeconds(10));
+                    await Task.Delay(200);  // 缩短等待
+
+                    // === 杀进程：合并成一个简单循环 ===
+                    string[] procs = { "ffmpeg", "ffprobe", "clumsy" };
+                    foreach (var p in procs)
+                    {
+                        try { executeCMDCommand_Admin($"/C taskkill /F /IM {p}.exe"); } catch { }
+                    }
+                    await Task.Delay(200);
+
+                    // === 强制退出 ===
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+                            "关闭操作通知",
+                            "程序关闭已完成",
+                            AntdUI.TType.Success)
+                        {
+                            CancelText = null,
+                            OkText = "退出",
+                            OnOk = (conf) => { RealExit(); return true; }
+                        });
+                        pageHeader1.Loading = false;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("清理异常: " + ex.Message);
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        pageHeader1.Loading = false;
+                        RealExit();
+                    }));
+                }
+            });
+
+
+        }
+
     }
 }
+
+// 真正的退出逻辑
+   
+
 #endregion
