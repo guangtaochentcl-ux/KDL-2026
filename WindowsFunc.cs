@@ -739,5 +739,87 @@ namespace skdl_new_2025_test_tool
 
     }
 
-}
+
+
+    /// <summary>
+    /// 程序启动时自动给ffmpeg/ffprobe加防火墙授权、防Defender误杀
+    /// </summary>
+    public static class FirewallHelper
+    {
+        /// <summary>
+        /// 程序启动时调用：一次性完成所有授权
+        /// </summary>
+        public static void InitFFmpegAuthorization()
+        {
+            // 1. 获取当前exe所在目录（你的ffmpeg就在这里）
+            string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+            string ffmpegPath = Path.Combine(exeDir, "ffmpeg.exe");
+            string ffprobePath = Path.Combine(exeDir, "ffprobe.exe");
+
+            // 2. 给ffmpeg/ffprobe加防火墙白名单
+            if (File.Exists(ffmpegPath))
+                AddFirewallRule(ffmpegPath, "ffmpeg");
+            if (File.Exists(ffprobePath))
+                AddFirewallRule(ffprobePath, "ffprobe");
+
+            // 3. （可选）给ffmpeg目录加Defender排除项，防止误删
+            // AddDefenderExclusion(exeDir);
+        }
+
+        /// <summary>
+        /// 给指定exe添加Windows防火墙入站规则（会弹UAC授权框）
+        /// </summary>
+        private static void AddFirewallRule(string exePath, string ruleName)
+        {
+            try
+            {
+                // 用netsh命令添加防火墙规则，必须管理员权限
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = "netsh",
+                    Arguments = $"advfirewall firewall add rule name=\"{ruleName}\" dir=in action=allow program=\"{exePath}\" enable=yes profile=any",
+                    UseShellExecute = true,
+                    Verb = "runas", // 触发UAC授权
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                using var process = Process.Start(startInfo);
+                process?.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                // 授权失败不影响程序运行，仅记录日志
+                Debug.WriteLine($"防火墙授权失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 给目录添加Windows Defender排除项（需要管理员权限）
+        /// </summary>
+        private static void AddDefenderExclusion(string path)
+        {
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell",
+                    Arguments = $"-Command \"Add-MpPreference -ExclusionPath '{path}'\"",
+                    UseShellExecute = true,
+                    Verb = "runas",
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                using var process = Process.Start(startInfo);
+                process?.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Defender排除项添加失败: {ex.Message}");
+            }
+        }
+    }
+
+    }
    

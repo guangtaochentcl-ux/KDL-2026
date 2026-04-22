@@ -1,3 +1,4 @@
+ï»¿using System.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace skdl_new_2025_test_tool
@@ -10,39 +11,48 @@ namespace skdl_new_2025_test_tool
         [STAThread]
         static void Main()
         {
+
             //// To customize application configuration such as set high DPI settings or default font,
             //// see https://aka.ms/applicationconfiguration.
             //ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());
 
+            //  ç¨‹åºä¸€å¯åŠ¨å°±ç»™ffmpeg/ffprobeæˆæƒ
+            FirewallHelper.InitFFmpegAuthorization();
+
+            Application.ThreadException += (s, e) =>
+         File.AppendAllText("crash.log", $"[ThreadException] {e.Exception}\n");
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                File.AppendAllText("crash.log", $"[UnhandledException] {e.ExceptionObject}\n");
 
             AntdUI.Config.TextRenderingHighQuality = true;
             AntdUI.Config.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-            Application.SetHighDpiMode(HighDpiMode.SystemAware); // Ä¬ÈÏÇ¿ÖÆ°´100% dpi¼æÈİĞÔÔËĞĞÔÚ¸÷ÖÖÏÔÊ¾ÆÁÉÏ
+            Application.SetHighDpiMode(HighDpiMode.SystemAware); // é»˜è®¤å¼ºåˆ¶æŒ‰100% dpiå…¼å®¹æ€§è¿è¡Œåœ¨å„ç§æ˜¾ç¤ºå±ä¸Š
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new CalibAndTestTool());
 
             // ================================================
-            // 1. ÏÔÊ¾Æô¶¯»­Ãæ
+            // 1. æ˜¾ç¤ºå¯åŠ¨ç”»é¢
             // ================================================
             FrmSplash splash = new FrmSplash();
             splash.Show();
-            // Ç¿ÖÆË¢ĞÂ½çÃæ£¬È·±£Í¼Æ¬ÄÜÁ¢¼´ÏÔÊ¾³öÀ´£¬¶ø²»ÊÇ°×°å
+            // å¼ºåˆ¶åˆ·æ–°ç•Œé¢ï¼Œç¡®ä¿å›¾ç‰‡èƒ½ç«‹å³æ˜¾ç¤ºå‡ºæ¥ï¼Œè€Œä¸æ˜¯ç™½æ¿
             Application.DoEvents();
 
             Form1 mainForm = new Form1();
 
             // ================================================
-            // 3. Ö÷´°¿Ú×¼±¸¾ÍĞ÷£¬¹Ø±ÕÆô¶¯»­Ãæ
+            // 3. ä¸»çª—å£å‡†å¤‡å°±ç»ªï¼Œå…³é—­å¯åŠ¨ç”»é¢
             // ================================================
             splash.Close();
             splash.Dispose();
 
             // ================================================
-            // 4. ÔËĞĞÖ÷³ÌĞò
+            // 4. è¿è¡Œä¸»ç¨‹åº
             // ================================================
-            // ´ËÊ± mainForm ÒÑ¾­¼ÓÔØÍê±Ï£¬Show ³öÀ´ÊÇÃë¿ªµÄ
+            // æ­¤æ—¶ mainForm å·²ç»åŠ è½½å®Œæ¯•ï¼ŒShow å‡ºæ¥æ˜¯ç§’å¼€çš„
             Application.Run(mainForm);
         }
     }

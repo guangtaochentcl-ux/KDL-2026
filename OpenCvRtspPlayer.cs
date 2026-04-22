@@ -2,6 +2,7 @@
  * 基于OpenCV的RTSP/FLV视频流播放器类
  * 提供RTSP/HTTP-FLV流媒体播放、帧抓取、性能监控等功能
  */
+using DocumentFormat.OpenXml.Presentation;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System;
@@ -122,7 +123,15 @@ namespace skdl_new_2025_test_tool
         private static string _tempFlvFile = "";
         private long _lastFilePosition = 0;
         private bool _flvCaptureReady = false;
+
+
+        // ========== 新增：双事件信号机制 ==========
+        // 停止请求信号（Stop → PlayLoop）
+        private readonly ManualResetEventSlim _stopRequestedEvent = new ManualResetEventSlim(false);
+        // 播放线程退出信号（PlayLoop → Stop）
+        private readonly ManualResetEventSlim _playThreadExitedEvent = new ManualResetEventSlim(false);
         #endregion
+
 
         #region 静态构造函数 (配置 FFMPEG)
         static OpenCvRtspPlayer()
@@ -379,6 +388,11 @@ namespace skdl_new_2025_test_tool
         {
             lock (_lifecycleLock)
             {
+                // Bug修复：先重置停止事件，确保上次的状态不影响本次启动
+                _stopRequestedEvent?.Reset();
+                _playThreadExitedEvent?.Reset();
+
+
                 if (IsPlaying) Stop();
                 _cts = new CancellationTokenSource();
                 IsPlaying = true;
@@ -410,49 +424,47 @@ namespace skdl_new_2025_test_tool
         {
             DiagLog($"Stop called, IsPlaying={IsPlaying}");
             LogMemoryStatus("Stop Start");
-            
+
             try
             {
                 lock (_lifecycleLock)
                 {
-                    if (!IsPlaying) 
+                    if (!IsPlaying)
                     {
                         DiagLog("Stop: Already stopped");
                         return;
                     }
                     IsPlaying = false;
-                    
-                    DiagLog("Stop: Cancelling _cts");
-                    _cts?.Cancel();
 
-                    DiagLog("Stop: Cancelling _bitrateMonitorCts");
+                    // 1. 请求播放线程停止
+                    _stopRequestedEvent?.Set();
+                    _cts?.Cancel();
                     _bitrateMonitorCts?.Cancel();
-                    _bitrateMonitorCts?.Dispose();
-                    _bitrateMonitorCts = null;
 
-                    _cts?.Cancel();
-                    Thread.Sleep(100);
-
+                    // 2. 等待播放线程自己退出（最多等 5 秒）
                     if (_playThread != null && _playThread.IsAlive)
                     {
-                        _playThread.Join(1500);
-                        if (_playThread.IsAlive)
+                        DiagLog("Stop: Waiting for play thread to exit...");
+                        bool exited = _playThreadExitedEvent.Wait(5000);
+                        if (!exited)
                         {
-                            DiagLog("Stop: Thread not responding, aborting");
+                            DiagLog("Stop: Play thread did not exit gracefully, aborting");
                             try { _playThread.Abort(); } catch { }
                         }
+                        else
+                        {
+                            DiagLog("Stop: Play thread exited gracefully");
+                        }
+                        _playThread = null;
                     }
 
-                    lock (_captureLock)
-                    {
-                        try { if (_capture != null && _capture.IsOpened()) _capture.Release(); } catch { }
-                        try { _capture?.Dispose(); } catch { }
-                        _capture = null;
-                        try { if (_flvCapture != null && _flvCapture.IsOpened()) _flvCapture.Release(); } catch { }
-                        try { _flvCapture?.Dispose(); } catch { }
-                        _flvCapture = null;
-                    }
+                    // 3. 清理其他资源
+                    _bitrateMonitorCts?.Dispose();
+                    _bitrateMonitorCts = null;
+                    _cts?.Dispose();
+                    _cts = null;
 
+                    // 4. 清理 UI 图片（必须在 UI 线程）
                     try
                     {
                         if (_pictureBox.IsHandleCreated && !_pictureBox.IsDisposed)
@@ -465,8 +477,8 @@ namespace skdl_new_2025_test_tool
                         }
                     }
                     catch { }
-                    
 
+                    // 5. 重置状态
                     _currentFps = 0;
                     _smoothedFps = 0;
                     _lastValidFps = 0;
@@ -479,25 +491,12 @@ namespace skdl_new_2025_test_tool
                         _rawBitrateKbps = 0;
                         _lastValidBitrateKbps = 0;
                         _startTime = 0;
-                        _bitrateFromProbe = false;
                     }
 
-                    // 清理FFmpeg进程和临时文件
-                    try { _ffmpegProcess?.Kill(entireProcessTree: true); } catch { }
-                    _ffmpegProcess?.Dispose();
-                    _ffmpegProcess = null;
-                    if (!string.IsNullOrEmpty(_tempFlvFile) && File.Exists(_tempFlvFile))
-                    {
-                        try { File.Delete(_tempFlvFile); } catch { }
-                        _tempFlvFile = "";
-                    }
-                    _snapshotBuffer?.Dispose();
-                    _snapshotBuffer = null;
-                    lock (_snapshotLock)
-                    {
-                        _requestSnapshot = false;
-                    }
-                    
+                    // 6. 重置事件，为下一次 Start 做准备
+                    _stopRequestedEvent?.Reset();
+                    _playThreadExitedEvent?.Reset();
+
                     DiagLog("Stop: Cleanup complete");
                     LogMemoryStatus("Stop End");
                     FlushDiagLog();
@@ -526,22 +525,27 @@ namespace skdl_new_2025_test_tool
                 Monitor.Exit(_snapshotLock);
                 lockTaken = false;
 
+                // 等待 PlayLoop 填充缓冲区，最多等 2 秒
                 if (!_snapshotEvent.Wait(TimeSpan.FromSeconds(2)))
                 {
+                    // Bug修复：超时时要释放锁，防止死锁
+                    lock (_snapshotLock)
+                    {
+                        _requestSnapshot = false;
+                    }
                     return false;
                 }
 
+                // 克隆并释放原缓冲区
                 lock (_snapshotLock)
                 {
-                    if (_snapshotBuffer != null)
+                    if (_snapshotBuffer != null && !_snapshotBuffer.Empty())
                     {
                         try
                         {
-                            if (!_snapshotBuffer.Empty())
-                            {
-                                localFrame = _snapshotBuffer;
-                                _snapshotBuffer = null;
-                            }
+                            localFrame = _snapshotBuffer.Clone(); // 克隆一份给调用方
+                            _snapshotBuffer.Dispose();          // 立即释放原缓冲区
+                            _snapshotBuffer = null;
                         }
                         catch
                         {
@@ -550,16 +554,21 @@ namespace skdl_new_2025_test_tool
                         }
                     }
                 }
+
                 if (localFrame != null)
                 {
-                    string dir = Path.GetDirectoryName(savePath);
-                    if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                        Directory.CreateDirectory(dir);
-
-                    bool ret = false;
-                    try { ret = localFrame.SaveImage(savePath, new ImageEncodingParam(ImwriteFlags.JpegQuality, 95)); } catch { }
-                    localFrame.Dispose();
-                    return ret;
+                    try
+                    {
+                        string dir = Path.GetDirectoryName(savePath);
+                        if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                            Directory.CreateDirectory(dir);
+                        return localFrame.SaveImage(savePath, new ImageEncodingParam(ImwriteFlags.JpegQuality, 95));
+                    }
+                    finally
+                    {
+                        // Bug修复：保存后无论成功失败都要释放 localFrame
+                        localFrame.Dispose();
+                    }
                 }
             }
             catch { }
@@ -580,6 +589,9 @@ namespace skdl_new_2025_test_tool
             FlushDiagLog();
             Stop();
             _cts?.Dispose();
+            _stopRequestedEvent?.Dispose();
+            _playThreadExitedEvent?.Dispose();
+            _snapshotEvent?.Dispose();
         }
 
         public string GetDiagLogPath()
@@ -1063,7 +1075,7 @@ namespace skdl_new_2025_test_tool
                     bool useProcessMode = false;
 
                     // 传统VideoCapture方式（优先，直接打开FLV流）
-                    while (!token.IsCancellationRequested && IsPlaying)
+                    while (!token.IsCancellationRequested && IsPlaying && !_stopRequestedEvent.Wait(0))
                     {
                         if (TryReopenCapture(url, token, 10000))
                         {
@@ -1309,20 +1321,32 @@ namespace skdl_new_2025_test_tool
                         _fpsSampleFrameCount = 0;
                     }
 
-                    // 获取元数据帧率
                     int width = 1920, height = 1080;
-                    if (!_useFFmpegProcess && _capture != null)
+
+                    /// Bug修复：用锁保护 _capture 的访问，防止 Stop() 导致的 race condition
+                    lock (_captureLock)
                     {
-                        double metaFps = _capture.Get(VideoCaptureProperties.Fps);
-                        if (metaFps > 0 && metaFps < 120)
-                            _streamFpsFromMeta = metaFps;
-                        width = (int)_capture.Get(VideoCaptureProperties.FrameWidth);
-                        height = (int)_capture.Get(VideoCaptureProperties.FrameHeight);
-                    }
-                    else if (_useFFmpegProcess)
-                    {
-                        // 从ffprobe结果解析（简化处理）
-                        _streamFpsFromMeta = 60;
+                        // 获取元数据帧率
+                        
+                        if (!_useFFmpegProcess && _capture != null)
+                        {
+                            try
+                            {
+                                double metaFps = _capture.Get(VideoCaptureProperties.Fps);
+                                if (metaFps > 0 && metaFps < 120)
+                                    _streamFpsFromMeta = metaFps;
+                                width = (int)_capture.Get(VideoCaptureProperties.FrameWidth);
+                                height = (int)_capture.Get(VideoCaptureProperties.FrameHeight);
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                DiagLog("PlayLoop: _capture was disposed during metadata init");
+                            }
+                        }
+                        else if (_useFFmpegProcess)
+                        {
+                            _streamFpsFromMeta = 60;
+                        }
                     }
 
                     if (_streamFpsFromMeta > 0 && _streamFpsFromMeta < 120)
@@ -1658,19 +1682,43 @@ namespace skdl_new_2025_test_tool
                     DiagLog("=== PlayLoop END ===");
                     LogMemoryStatus("PlayLoop End");
                     FlushDiagLog();
-                    
+
+                    // 关键：在 finally 块中，由播放线程自己释放 VideoCapture
+                    DiagLog("PlayLoop finally: releasing VideoCapture on play thread");
+                    lock (_captureLock)
+                    {
+                        try
+                        {
+                            if (_capture != null)
+                            {
+                                if (_capture.IsOpened())
+                                    _capture.Release();
+                                _capture.Dispose();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            DiagLog($"Error releasing VideoCapture: {ex.Message}");
+                        }
+                        _capture = null;
+                    }
+
+                    // 同样释放 flvCapture
                     try
                     {
-                        if (_capture != null && _capture.IsOpened()) { _capture.Release(); }
+                        if (_flvCapture != null)
+                        {
+                            if (_flvCapture.IsOpened())
+                                _flvCapture.Release();
+                            _flvCapture.Dispose();
+                        }
                     }
                     catch { }
-                    try { _capture?.Dispose(); _capture = null; } catch { }
-                    try
-                    {
-                        if (_flvCapture != null && _flvCapture.IsOpened()) { _flvCapture.Release(); }
-                    }
-                    catch { }
-                    try { _flvCapture?.Dispose(); _flvCapture = null; } catch { }
+                    _flvCapture = null;
+
+                    // ========== 新增：通知 Stop() 线程已退出 ==========
+                    _playThreadExitedEvent.Set();
+                    DiagLog("PlayLoop: thread exit signaled");
                 }
             }
         }
