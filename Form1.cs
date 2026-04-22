@@ -4,6 +4,7 @@ using BaseProjejct;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Emgu.CV.Cuda;
 using Emgu.CV.Dnn;
@@ -433,7 +434,7 @@ namespace skdl_new_2025_test_tool
                 string token = await _api.LoginAsync(); // 假设 HttpApi_stu 已按之前建议优化
                 if (!string.IsNullOrEmpty(token))
                 {
-                    token_input.Text = token;
+                    try { token_input.Text = token; } catch { }
                     LogSaveOutput("Token 获取成功");
                 }
                 else
@@ -443,7 +444,7 @@ namespace skdl_new_2025_test_tool
             }
             catch (Exception ex)
             {
-                LogSaveOutput($"登录异常: {ex.Message}");
+                LogSaveOutput($"登录异常: {ex?.Message}");
             }
             //}
             //else
@@ -492,7 +493,7 @@ namespace skdl_new_2025_test_tool
                 LogSaveOutput($"正在截图 {name}...");
 
                 // 最多尝试 5 次，每次间隔 500ms，防止死循环
-                for (int i = 0; i < 300; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     if (player.Snapshot(fullPath)) // 假设使用了上一轮优化后的 Snapshot 方法
                     {
@@ -559,10 +560,10 @@ namespace skdl_new_2025_test_tool
             player.Stop();
             LogSaveOutput($"【{streamName}】已停止");
             await Task.Delay(100);
-            if (player != null)
-            {
-                player.Dispose();
-            }
+            //if (player != null)
+            //{
+            //    player.Dispose();
+            //}
         }
 
         //-----------------------统一的拉流方法 - 自动根据4K模式决定是否拉AI流----------------
@@ -598,13 +599,9 @@ namespace skdl_new_2025_test_tool
             }
         }
 
-
+        /// <summary>
         /// 统一的测试执行方法 - 自动处理拉流、截图、验证、AI流开关
         /// </summary>
-        /// <param name="testFolder">测试文件夹路径</param>
-        /// <param name="isFirstTest">是否是第一次测试（第一次用自对比，后续用前后对比）</param>
-        /// <param name="previousPics">上一轮的截图结果（第一次测试传null）</param>
-        /// <returns>是否通过，同时返回本轮截图结果用于下一轮</returns>
         private async Task<(bool isPass, Dictionary<string, string> currentPics)> ExecuteOneTestRound(
             string testFolder,
             bool isFirstTest,
@@ -612,11 +609,9 @@ namespace skdl_new_2025_test_tool
         {
             var results = new Dictionary<string, string>();
             bool is4KMode = IsCurrentResolution4K();
-
             // ========== 第一步：拉流 ==========
             if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
-
-            // 拉主辅流
+            // 4路主辅流并行拉流
             player_panoramicMain.Start($"rtsp://{_currentIp}/2", checkBoxDecodeTest.Checked);
             await Task.Delay(100);
             player_panoramicSub.Start($"rtsp://{_currentIp}/4", checkBoxDecodeTest.Checked);
@@ -625,7 +620,6 @@ namespace skdl_new_2025_test_tool
             await Task.Delay(100);
             player_CloseUpSub.Start($"rtsp://{_currentIp}/3", checkBoxDecodeTest.Checked);
             await Task.Delay(100);
-
             // AI流根据4K模式决定
             if (is4KMode)
             {
@@ -636,114 +630,314 @@ namespace skdl_new_2025_test_tool
             }
             else
             {
-                LogSaveOutput("【非4K模式】正常拉取AI流");
-                player_ai1.Start($"rtsp://{_currentIp}/ai1", checkBoxDecodeTest.Checked);
-                await Task.Delay(100);
-                player_ai2.Start($"rtsp://{_currentIp}/ai2", checkBoxDecodeTest.Checked);
-                await Task.Delay(100);
-                player_ai3.Start($"rtsp://{_currentIp}/ai3", checkBoxDecodeTest.Checked);
+                LogSaveOutput("【非4K模式】AI流将在4路主辅流测试完后串行测试");
             }
-
-            // ========== 第二步：截图 ==========
+            // ========== 第二步：4路主辅流截图（并行） ==========
             LogSaveOutput("开始截图验证...");
             await Task.Delay(3000); // 等待流稳定
-
-            // 主辅流截图（总是执行）
+            // 4路主辅流并行截图
             string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
             results["全景主流"] = panoramicMain_pic;
             LogSaveOutput(panoramicMain_pic);
-
             string panoramicSub_pic = await SafeSnapshotAsync(player_panoramicSub, testFolder, "全景辅流");
             results["全景辅流"] = panoramicSub_pic;
             LogSaveOutput(panoramicSub_pic);
-
             string closeUpMain_pic = await SafeSnapshotAsync(player_CloseUpMain, testFolder, "特写主流");
             results["特写主流"] = closeUpMain_pic;
             LogSaveOutput(closeUpMain_pic);
-
             string closeUpSub_pic = await SafeSnapshotAsync(player_CloseUpSub, testFolder, "特写辅流");
             results["特写辅流"] = closeUpSub_pic;
             LogSaveOutput(closeUpSub_pic);
-
-            // AI流截图（仅在非4K模式下）
-            if (!is4KMode)
-            {
-                string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
-                results["AI1前排流"] = ai1_pic;
-                LogSaveOutput(ai1_pic);
-
-                string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
-                results["AI2左后排流"] = ai2_pic;
-                LogSaveOutput(ai2_pic);
-
-                string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
-                results["AI3右后排流"] = ai3_pic;
-                LogSaveOutput(ai3_pic);
-            }
-            else
-            {
-                // 4K模式下标记为跳过
-                results["AI1前排流"] = "SKIP_4K_MODE";
-                results["AI2左后排流"] = "SKIP_4K_MODE";
-                results["AI3右后排流"] = "SKIP_4K_MODE";
-                LogSaveOutput("【4K模式】跳过AI流截图验证");
-            }
-
-            // ========== 第三步：验证 ==========
+            // ========== 第三步：4路主辅流验证（并行） ==========
             bool allPass = true;
-
+            string[] mainStreams = { "全景主流", "全景辅流", "特写主流", "特写辅流" };
             if (isFirstTest)
             {
-                // 第一次测试：自对比，验证画面是否有效
-                LogSaveOutput("第一次测试，进行自对比验证...");
-                string[] allStreams = { "全景主流", "全景辅流", "特写主流", "特写辅流" };
-                if (!is4KMode) allStreams = allStreams.Concat(new[] { "AI1前排流", "AI2左后排流", "AI3右后排流" }).ToArray();
-
-                foreach (var stream in allStreams)
+                LogSaveOutput("第一次测试，进行4路主辅流自对比验证...");
+                foreach (var stream in mainStreams)
                 {
-                    if (results.ContainsKey(stream) && results[stream] != "SKIP_4K_MODE")
-                    {
-                        bool pass = checkPICValid(results[stream], results[stream]);
-                        LogSaveOutput($"{stream}画面有效性验证：{(pass ? "PASS" : "FAIL")}");
-                        if (!pass) allPass = false;
-                    }
+                    bool pass = checkPICValid(results[stream], results[stream]);
+                    LogSaveOutput($"{stream}画面有效性验证：{(pass ? "PASS" : "FAIL")}");
+                    if (!pass) allPass = false;
                 }
             }
             else
             {
-                // 后续测试：和上一轮对比
-                LogSaveOutput("与上一轮结果进行对比验证...");
-                string[] allStreams = { "全景主流", "全景辅流", "特写主流", "特写辅流" };
-                if (!is4KMode) allStreams = allStreams.Concat(new[] { "AI1前排流", "AI2左后排流", "AI3右后排流" }).ToArray();
-
-                foreach (var stream in allStreams)
+                LogSaveOutput("与上一轮结果进行4路主辅流对比验证...");
+                foreach (var stream in mainStreams)
                 {
-                    if (results.ContainsKey(stream) && previousPics.ContainsKey(stream) &&
-                        results[stream] != "SKIP_4K_MODE" && previousPics[stream] != "SKIP_4K_MODE")
+                    if (previousPics.ContainsKey(stream))
                     {
                         bool pass = checkPICValid(previousPics[stream], results[stream]);
                         LogSaveOutput($"{stream}对比结果：{(pass ? "PASS" : "FAIL")}");
                         if (!pass) allPass = false;
                     }
-                    else if (results[stream] == "SKIP_4K_MODE")
-                    {
-                        LogSaveOutput($"{stream}在4K模式下跳过验证");
-                    }
                 }
             }
-
-            // ========== 第四步：关流 ==========
+            // 如果4路主辅流有任何一个FAIL，直接返回（不测试AI流）
+            if (!allPass)
+            {
+                LogSaveOutput("【4路主辅流测试FAIL，跳过AI流测试】");
+                player_panoramicMain.Stop();
+                player_panoramicSub.Stop();
+                player_CloseUpMain.Stop();
+                player_CloseUpSub.Stop();
+                results["AI1前排流"] = "SKIP_4K_MODE";
+                results["AI2左后排流"] = "SKIP_4K_MODE";
+                results["AI3右后排流"] = "SKIP_4K_MODE";
+                await Task.Delay(500);
+                return (false, results);
+            }
+            // ========== 关掉4路主辅流 ==========
+            LogSaveOutput("4路主辅流测试完成，开始关流...");
             player_panoramicMain.Stop();
             player_panoramicSub.Stop();
             player_CloseUpMain.Stop();
             player_CloseUpSub.Stop();
-            player_ai1.Stop();
-            player_ai2.Stop();
-            player_ai3.Stop();
             await Task.Delay(500);
-
+            // ========== 第四步：AI流串行测试（仅非4K模式） ==========
+            if (!is4KMode)
+            {
+                // ---------- AI1前排流 ----------
+                LogSaveOutput("【AI流测试】开始测试AI1前排流...");
+                player_ai1.Start($"rtsp://{_currentIp}/ai1", checkBoxDecodeTest.Checked);
+                await Task.Delay(3000);
+                string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                results["AI1前排流"] = ai1_pic;
+                LogSaveOutput(ai1_pic);
+                bool ai1Result;
+                if (isFirstTest)
+                {
+                    ai1Result = checkPICValid(ai1_pic, ai1_pic);
+                }
+                else
+                {
+                    ai1Result = previousPics.ContainsKey("AI1前排流")
+                        ? checkPICValid(previousPics["AI1前排流"], ai1_pic)
+                        : checkPICValid(ai1_pic, ai1_pic);
+                }
+                LogSaveOutput($"AI1前排流测试结果：{(ai1Result ? "PASS" : "FAIL")}");
+                player_ai1.Stop();
+                await Task.Delay(200);
+                if (!ai1Result)
+                {
+                    LogSaveOutput("【AI1测试FAIL，跳过后续AI流测试】");
+                    results["AI2左后排流"] = "SKIP_4K_MODE";
+                    results["AI3右后排流"] = "SKIP_4K_MODE";
+                    return (false, results);
+                }
+                // ---------- AI2左后排流 ----------
+                LogSaveOutput("【AI流测试】开始测试AI2左后排流...");
+                player_ai2.Start($"rtsp://{_currentIp}/ai2", checkBoxDecodeTest.Checked);
+                await Task.Delay(3000);
+                string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI2左后排流");
+                results["AI2左后排流"] = ai2_pic;
+                LogSaveOutput(ai2_pic);
+                bool ai2Result;
+                if (isFirstTest)
+                {
+                    ai2Result = checkPICValid(ai2_pic, ai2_pic);
+                }
+                else
+                {
+                    ai2Result = previousPics.ContainsKey("AI2左后排流")
+                        ? checkPICValid(previousPics["AI2左后排流"], ai2_pic)
+                        : checkPICValid(ai2_pic, ai2_pic);
+                }
+                LogSaveOutput($"AI2左后排流测试结果：{(ai2Result ? "PASS" : "FAIL")}");
+                player_ai2.Stop();
+                await Task.Delay(200);
+                if (!ai2Result)
+                {
+                    LogSaveOutput("【AI2测试FAIL，跳过AI3测试】");
+                    results["AI3右后排流"] = "SKIP_4K_MODE";
+                    return (false, results);
+                }
+                // ---------- AI3右后排流 ----------
+                LogSaveOutput("【AI流测试】开始测试AI3右后排流...");
+                player_ai3.Start($"rtsp://{_currentIp}/ai3", checkBoxDecodeTest.Checked);
+                await Task.Delay(3000);
+                string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI3右后排流");
+                results["AI3右后排流"] = ai3_pic;
+                LogSaveOutput(ai3_pic);
+                bool ai3Result;
+                if (isFirstTest)
+                {
+                    ai3Result = checkPICValid(ai3_pic, ai3_pic);
+                }
+                else
+                {
+                    ai3Result = previousPics.ContainsKey("AI3右后排流")
+                        ? checkPICValid(previousPics["AI3右后排流"], ai3_pic)
+                        : checkPICValid(ai3_pic, ai3_pic);
+                }
+                LogSaveOutput($"AI3右后排流测试结果：{(ai3Result ? "PASS" : "FAIL")}");
+                player_ai3.Stop();
+                await Task.Delay(200);
+                if (!ai3Result)
+                {
+                    return (false, results);
+                }
+            }
+            else
+            {
+                // 4K模式下标记AI流为跳过
+                results["AI1前排流"] = "SKIP_4K_MODE";
+                results["AI2左后排流"] = "SKIP_4K_MODE";
+                results["AI3右后排流"] = "SKIP_4K_MODE";
+                LogSaveOutput("【4K模式】跳过AI流测试");
+            }
+            await Task.Delay(500);
             return (allPass, results);
         }
+
+
+        /// 统一的测试执行方法 - 自动处理拉流、截图、验证、AI流开关
+        /// </summary>
+        /// <param name="testFolder">测试文件夹路径</param>
+        /// <param name="isFirstTest">是否是第一次测试（第一次用自对比，后续用前后对比）</param>
+        /// <param name="previousPics">上一轮的截图结果（第一次测试传null）</param>
+        /// <returns>是否通过，同时返回本轮截图结果用于下一轮</returns> 
+        /// 这一版是并行拉流七路,带宽问题,暂时不用该方式!
+        //private async Task<(bool isPass, Dictionary<string, string> currentPics)> ExecuteOneTestRound(
+        //    string testFolder,
+        //    bool isFirstTest,
+        //    Dictionary<string, string> previousPics = null)
+        //{
+        //    var results = new Dictionary<string, string>();
+        //    bool is4KMode = IsCurrentResolution4K();
+
+        //    // ========== 第一步：拉流 ==========
+        //    if (string.IsNullOrEmpty(_currentIp)) _currentIp = textBox_ip.Text;
+
+        //    // 拉主辅流
+        //    player_panoramicMain.Start($"rtsp://{_currentIp}/2", checkBoxDecodeTest.Checked);
+        //    await Task.Delay(100);
+        //    player_panoramicSub.Start($"rtsp://{_currentIp}/4", checkBoxDecodeTest.Checked);
+        //    await Task.Delay(100);
+        //    player_CloseUpMain.Start($"rtsp://{_currentIp}/1", checkBoxDecodeTest.Checked);
+        //    await Task.Delay(100);
+        //    player_CloseUpSub.Start($"rtsp://{_currentIp}/3", checkBoxDecodeTest.Checked);
+        //    await Task.Delay(100);
+
+        //    // AI流根据4K模式决定
+        //    if (is4KMode)
+        //    {
+        //        LogSaveOutput("【4K模式】AI流不支持，跳过拉流");
+        //        player_ai1.Stop();
+        //        player_ai2.Stop();
+        //        player_ai3.Stop();
+        //    }
+        //    else
+        //    {
+        //        LogSaveOutput("【非4K模式】正常拉取AI流");
+        //        player_ai1.Start($"rtsp://{_currentIp}/ai1", checkBoxDecodeTest.Checked);
+        //        await Task.Delay(100);
+        //        player_ai2.Start($"rtsp://{_currentIp}/ai2", checkBoxDecodeTest.Checked);
+        //        await Task.Delay(100);
+        //        player_ai3.Start($"rtsp://{_currentIp}/ai3", checkBoxDecodeTest.Checked);
+        //    }
+
+        //    // ========== 第二步：截图 ==========
+        //    LogSaveOutput("开始截图验证...");
+        //    await Task.Delay(3000); // 等待流稳定
+
+        //    // 主辅流截图（总是执行）
+        //    string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
+        //    results["全景主流"] = panoramicMain_pic;
+        //    LogSaveOutput(panoramicMain_pic);
+
+        //    string panoramicSub_pic = await SafeSnapshotAsync(player_panoramicSub, testFolder, "全景辅流");
+        //    results["全景辅流"] = panoramicSub_pic;
+        //    LogSaveOutput(panoramicSub_pic);
+
+        //    string closeUpMain_pic = await SafeSnapshotAsync(player_CloseUpMain, testFolder, "特写主流");
+        //    results["特写主流"] = closeUpMain_pic;
+        //    LogSaveOutput(closeUpMain_pic);
+
+        //    string closeUpSub_pic = await SafeSnapshotAsync(player_CloseUpSub, testFolder, "特写辅流");
+        //    results["特写辅流"] = closeUpSub_pic;
+        //    LogSaveOutput(closeUpSub_pic);
+
+        //    // AI流截图（仅在非4K模式下）
+        //    if (!is4KMode)
+        //    {
+        //        string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+        //        results["AI1前排流"] = ai1_pic;
+        //        LogSaveOutput(ai1_pic);
+
+        //        string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
+        //        results["AI2左后排流"] = ai2_pic;
+        //        LogSaveOutput(ai2_pic);
+
+        //        string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
+        //        results["AI3右后排流"] = ai3_pic;
+        //        LogSaveOutput(ai3_pic);
+        //    }
+        //    else
+        //    {
+        //        // 4K模式下标记为跳过
+        //        results["AI1前排流"] = "SKIP_4K_MODE";
+        //        results["AI2左后排流"] = "SKIP_4K_MODE";
+        //        results["AI3右后排流"] = "SKIP_4K_MODE";
+        //        LogSaveOutput("【4K模式】跳过AI流截图验证");
+        //    }
+
+        //    // ========== 第三步：验证 ==========
+        //    bool allPass = true;
+
+        //    if (isFirstTest)
+        //    {
+        //        // 第一次测试：自对比，验证画面是否有效
+        //        LogSaveOutput("第一次测试，进行自对比验证...");
+        //        string[] allStreams = { "全景主流", "全景辅流", "特写主流", "特写辅流" };
+        //        if (!is4KMode) allStreams = allStreams.Concat(new[] { "AI1前排流", "AI2左后排流", "AI3右后排流" }).ToArray();
+
+        //        foreach (var stream in allStreams)
+        //        {
+        //            if (results.ContainsKey(stream) && results[stream] != "SKIP_4K_MODE")
+        //            {
+        //                bool pass = checkPICValid(results[stream], results[stream]);
+        //                LogSaveOutput($"{stream}画面有效性验证：{(pass ? "PASS" : "FAIL")}");
+        //                if (!pass) allPass = false;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // 后续测试：和上一轮对比
+        //        LogSaveOutput("与上一轮结果进行对比验证...");
+        //        string[] allStreams = { "全景主流", "全景辅流", "特写主流", "特写辅流" };
+        //        if (!is4KMode) allStreams = allStreams.Concat(new[] { "AI1前排流", "AI2左后排流", "AI3右后排流" }).ToArray();
+
+        //        foreach (var stream in allStreams)
+        //        {
+        //            if (results.ContainsKey(stream) && previousPics.ContainsKey(stream) &&
+        //                results[stream] != "SKIP_4K_MODE" && previousPics[stream] != "SKIP_4K_MODE")
+        //            {
+        //                bool pass = checkPICValid(previousPics[stream], results[stream]);
+        //                LogSaveOutput($"{stream}对比结果：{(pass ? "PASS" : "FAIL")}");
+        //                if (!pass) allPass = false;
+        //            }
+        //            else if (results[stream] == "SKIP_4K_MODE")
+        //            {
+        //                LogSaveOutput($"{stream}在4K模式下跳过验证");
+        //            }
+        //        }
+        //    }
+
+        //    // ========== 第四步：关流 ==========
+        //    player_panoramicMain.Stop();
+        //    player_panoramicSub.Stop();
+        //    player_CloseUpMain.Stop();
+        //    player_CloseUpSub.Stop();
+        //    player_ai1.Stop();
+        //    player_ai2.Stop();
+        //    player_ai3.Stop();
+        //    await Task.Delay(500);
+
+        //    return (allPass, results);
+        //}
 
 
         // === 全景主流 ===
@@ -1643,13 +1837,23 @@ namespace skdl_new_2025_test_tool
                 curPicPath = await SafeSnapshotAsync(player, testFolder, $"视频流{streamType}");
                 await Task.Delay(3000);
                 LogSaveOutput(curPicPath);
-                if (WindowsFunc.IsImageValid(curPicPath))
+
+                // 图片有效性检查
+                bool picOk = WindowsFunc.IsImageValid(curPicPath);
+
+                // FPS 状态检查（5次采样取最大值，避免瞬时 FPS=0 误判）
+                bool fpsOk = getStreamStatusResult(player);
+
+                // 关流
+                rtspStreamOff(player, $"视频流{streamType}");
+
+                if (picOk && fpsOk)
                 {
-                    rtspStreamOff(player, $"视频流{streamType}");
                     return true;
                 }
                 else
                 {
+                    LogSaveOutput($"流 {streamType} 测试失败：图片有效={picOk}, FPS检查={fpsOk}");
                     return false;
                 }
             }
@@ -1898,6 +2102,11 @@ namespace skdl_new_2025_test_tool
                         bool logic6 = false;
                         bool logic7 = false;
 
+                        // 流结果变量声明（供所有Logic使用）
+                        string stream1Result = "", stream2Result = "", stream3Result = "", stream4Result = "";
+                        string streamAI1Result = "", streamAI2Result = "", streamAI3Result = "";
+                        List<string> streamResults = new List<string>();
+
                         // 逻辑测试开始
                         //Logic 1 -  切到高分模式：高分模式-拉7路 [1、2、3、4、ai1、ai2、ai3]
                         hiResModeBtn_Click(null, null);
@@ -1908,24 +2117,72 @@ namespace skdl_new_2025_test_tool
                         buttonGetToken_Click(null, null);
                         await Task.Delay(1000);
 
-                        string stream1Result = await CheckStreamPlayedOK("1", _currentIp, player_CloseUpMain, testFolder) ? "PASS" : "FAIL";
+                        // ========== 阶段1：4路主辅流并行测试 ==========
+                        LogSaveOutput($"========== Logic1 阶段1：4路主辅流并行测试开始 ==========");
+                        stream1Result = await CheckStreamPlayedOK("1", _currentIp, player_CloseUpMain, testFolder) ? "PASS" : "FAIL";
                         LogSaveOutput($"视频流 - 1 测试结果为：{stream1Result}");
-                        string stream2Result = await CheckStreamPlayedOK("2", _currentIp, player_panoramicMain, testFolder) ? "PASS" : "FAIL";
+                        stream2Result = await CheckStreamPlayedOK("2", _currentIp, player_panoramicMain, testFolder) ? "PASS" : "FAIL";
                         LogSaveOutput($"视频流 - 2 测试结果为：{stream2Result}");
-                        string stream3Result = await CheckStreamPlayedOK("3", _currentIp, player_CloseUpSub, testFolder) ? "PASS" : "FAIL";
+                        stream3Result = await CheckStreamPlayedOK("3", _currentIp, player_CloseUpSub, testFolder) ? "PASS" : "FAIL";
                         LogSaveOutput($"视频流 - 3 测试结果为：{stream3Result}");
-                        string stream4Result = await CheckStreamPlayedOK("4", _currentIp, player_panoramicSub, testFolder) ? "PASS" : "FAIL";
+                        stream4Result = await CheckStreamPlayedOK("4", _currentIp, player_panoramicSub, testFolder) ? "PASS" : "FAIL";
                         LogSaveOutput($"视频流 - 4 测试结果为：{stream4Result}");
-                        string streamAI1Result = await CheckStreamPlayedOK("ai1", _currentIp, player_ai1, testFolder) ? "PASS" : "FAIL";
-                        LogSaveOutput($"视频流 - AI1 测试结果为：{streamAI1Result}");
-                        string streamAI2Result = await CheckStreamPlayedOK("ai2", _currentIp, player_ai2, testFolder) ? "PASS" : "FAIL";
-                        LogSaveOutput($"视频流 - AI2 测试结果为：{streamAI2Result}");
-                        string streamAI3Result = await CheckStreamPlayedOK("ai3", _currentIp, player_ai3, testFolder) ? "PASS" : "FAIL";
-                        LogSaveOutput($"视频流 - AI3 测试结果为：{streamAI3Result}");
 
-                        List<string> streamResults = new List<string>() { stream1Result, stream2Result, stream3Result, stream4Result, streamAI1Result, streamAI2Result, streamAI3Result };
+                        // 4路主辅流关流
+                        rtspStreamOff(player_CloseUpMain, "特写主流");
+                        rtspStreamOff(player_panoramicMain, "全景主流");
+                        rtspStreamOff(player_CloseUpSub, "特写辅流");
+                        rtspStreamOff(player_panoramicSub, "全景辅流");
+                        await Task.Delay(200);
 
-                        logic1 = streamResults.Any(r => r.Contains("FAIL")) ? false : true;
+                        // 阶段1判定
+                        List<string> phase1Results = new List<string>() { stream1Result, stream2Result, stream3Result, stream4Result };
+                        bool phase1Pass = !phase1Results.Any(r => r.Contains("FAIL"));
+                        if (!phase1Pass)
+                        {
+                            LogSaveOutput($"========== Logic1 阶段1（4路主辅流）测试FAIL，跳过AI流测试 ==========");
+                            logic1 = false;
+                        }
+                        else
+                        {
+                            LogSaveOutput($"========== Logic1 阶段1完成，4路主辅流全部PASS ==========");
+
+                            // ========== 阶段2：AI流串行测试 ==========
+                            LogSaveOutput($"========== Logic1 阶段2：AI流串行测试开始 ==========");
+                            streamAI1Result = await CheckStreamPlayedOK("ai1", _currentIp, player_ai1, testFolder) ? "PASS" : "FAIL";
+                            LogSaveOutput($"视频流 - AI1 测试结果为：{streamAI1Result}");
+                            if (streamAI1Result == "FAIL")
+                            {
+                                rtspStreamOff(player_ai2, "ai2");
+                                rtspStreamOff(player_ai3, "ai3");
+                                LogSaveOutput($"========== Logic1 AI1测试FAIL，跳过AI2/AI3 ==========");
+                                logic1 = false;
+                            }
+                            else
+                            {
+                                streamAI2Result = await CheckStreamPlayedOK("ai2", _currentIp, player_ai2, testFolder) ? "PASS" : "FAIL";
+                                LogSaveOutput($"视频流 - AI2 测试结果为：{streamAI2Result}");
+                                if (streamAI2Result == "FAIL")
+                                {
+                                    rtspStreamOff(player_ai3, "ai3");
+                                    LogSaveOutput($"========== Logic1 AI2测试FAIL，跳过AI3 ==========");
+                                    logic1 = false;
+                                }
+                                else
+                                {
+                                    streamAI3Result = await CheckStreamPlayedOK("ai3", _currentIp, player_ai3, testFolder) ? "PASS" : "FAIL";
+                                    LogSaveOutput($"视频流 - AI3 测试结果为：{streamAI3Result}");
+                                    rtspStreamOff(player_ai1, "ai1");
+                                    rtspStreamOff(player_ai2, "ai2");
+                                    rtspStreamOff(player_ai3, "ai3");
+
+                                    streamResults = new List<string>() { stream1Result, stream2Result, stream3Result, stream4Result, streamAI1Result, streamAI2Result, streamAI3Result };
+                                    logic1 = !streamResults.Any(r => r.Contains("FAIL"));
+                                    LogSaveOutput($"========== Logic1 阶段2完成，AI流全部PASS ==========");
+                                }
+                            }
+                        }
+
                         LogSaveOutput($"逻辑1测试结果为：{(logic1 ? "PASS" : "FAIL")}");
 
                         if (logic1)
@@ -1987,6 +2244,8 @@ namespace skdl_new_2025_test_tool
                                     buttonGetToken_Click(null, null);
                                     await Task.Delay(1000);
 
+                                    // ========== 阶段1：4路主辅流并行测试 ==========
+                                    LogSaveOutput($"========== Logic4 阶段1：4路主辅流并行测试开始 ==========");
                                     stream1Result = await CheckStreamPlayedOK("1", _currentIp, player_CloseUpMain, testFolder) ? "PASS" : "FAIL";
                                     LogSaveOutput($"视频流 - 1 测试结果为：{stream1Result}");
                                     stream2Result = await CheckStreamPlayedOK("2", _currentIp, player_panoramicMain, testFolder) ? "PASS" : "FAIL";
@@ -1995,16 +2254,62 @@ namespace skdl_new_2025_test_tool
                                     LogSaveOutput($"视频流 - 3 测试结果为：{stream3Result}");
                                     stream4Result = await CheckStreamPlayedOK("4", _currentIp, player_panoramicSub, testFolder) ? "PASS" : "FAIL";
                                     LogSaveOutput($"视频流 - 4 测试结果为：{stream4Result}");
-                                    streamAI1Result = await CheckStreamPlayedOK("ai1", _currentIp, player_ai1, testFolder) ? "PASS" : "FAIL";
-                                    LogSaveOutput($"视频流 - AI1 测试结果为：{streamAI1Result}");
-                                    streamAI2Result = await CheckStreamPlayedOK("ai2", _currentIp, player_ai2, testFolder) ? "PASS" : "FAIL";
-                                    LogSaveOutput($"视频流 - AI2 测试结果为：{streamAI2Result}");
-                                    streamAI3Result = await CheckStreamPlayedOK("ai3", _currentIp, player_ai3, testFolder) ? "PASS" : "FAIL";
-                                    LogSaveOutput($"视频流 - AI3 测试结果为：{streamAI3Result}");
 
-                                    streamResults = new List<string>() { stream1Result, stream2Result, stream3Result, stream4Result, streamAI1Result, streamAI2Result, streamAI3Result };
+                                    // 4路主辅流关流
+                                    rtspStreamOff(player_CloseUpMain, "特写主流");
+                                    rtspStreamOff(player_panoramicMain, "全景主流");
+                                    rtspStreamOff(player_CloseUpSub, "特写辅流");
+                                    rtspStreamOff(player_panoramicSub, "全景辅流");
+                                    await Task.Delay(200);
 
-                                    logic4 = streamResults.Any(r => r.Contains("FAIL")) ? false : true;
+                                    // 阶段1判定
+                                    List<string> phase1ResultsL4 = new List<string>() { stream1Result, stream2Result, stream3Result, stream4Result };
+                                    bool phase1PassL4 = !phase1ResultsL4.Any(r => r.Contains("FAIL"));
+                                    if (!phase1PassL4)
+                                    {
+                                        LogSaveOutput($"========== Logic4 阶段1（4路主辅流）测试FAIL，跳过AI流测试 ==========");
+                                        logic4 = false;
+                                    }
+                                    else
+                                    {
+                                        LogSaveOutput($"========== Logic4 阶段1完成，4路主辅流全部PASS ==========");
+
+                                        // ========== 阶段2：AI流串行测试 ==========
+                                        LogSaveOutput($"========== Logic4 阶段2：AI流串行测试开始 ==========");
+                                        streamAI1Result = await CheckStreamPlayedOK("ai1", _currentIp, player_ai1, testFolder) ? "PASS" : "FAIL";
+                                        LogSaveOutput($"视频流 - AI1 测试结果为：{streamAI1Result}");
+                                        if (streamAI1Result == "FAIL")
+                                        {
+                                            rtspStreamOff(player_ai2, "ai2");
+                                            rtspStreamOff(player_ai3, "ai3");
+                                            LogSaveOutput($"========== Logic4 AI1测试FAIL，跳过AI2/AI3 ==========");
+                                            logic4 = false;
+                                        }
+                                        else
+                                        {
+                                            streamAI2Result = await CheckStreamPlayedOK("ai2", _currentIp, player_ai2, testFolder) ? "PASS" : "FAIL";
+                                            LogSaveOutput($"视频流 - AI2 测试结果为：{streamAI2Result}");
+                                            if (streamAI2Result == "FAIL")
+                                            {
+                                                rtspStreamOff(player_ai3, "ai3");
+                                                LogSaveOutput($"========== Logic4 AI2测试FAIL，跳过AI3 ==========");
+                                                logic4 = false;
+                                            }
+                                            else
+                                            {
+                                                streamAI3Result = await CheckStreamPlayedOK("ai3", _currentIp, player_ai3, testFolder) ? "PASS" : "FAIL";
+                                                LogSaveOutput($"视频流 - AI3 测试结果为：{streamAI3Result}");
+                                                rtspStreamOff(player_ai1, "ai1");
+                                                rtspStreamOff(player_ai2, "ai2");
+                                                rtspStreamOff(player_ai3, "ai3");
+
+                                                streamResults = new List<string>() { stream1Result, stream2Result, stream3Result, stream4Result, streamAI1Result, streamAI2Result, streamAI3Result };
+                                                logic4 = !streamResults.Any(r => r.Contains("FAIL"));
+                                                LogSaveOutput($"========== Logic4 阶段2完成，AI流全部PASS ==========");
+                                            }
+                                        }
+                                    }
+
                                     LogSaveOutput($"逻辑4测试结果为：{(logic4 ? "PASS" : "FAIL")}");
 
                                     if (logic4)
@@ -3853,60 +4158,37 @@ namespace skdl_new_2025_test_tool
                                             pb7 = CreateHiddenPb(); ai3 = new OpenCvRtspPlayer(pb7);
                                         }));
 
-                                        // 每一路拉流，并比对结果
+                                        // ========== 阶段1：4路主辅流并行测试 ==========
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段1：4路主辅流并行测试开始 ==========");
+
+                                        // 4路主辅流并行拉流
                                         await rtspStreamOn(curTestIP_now, pm, "2", "全景主流");
                                         await rtspStreamOn(curTestIP_now, ps, "4", "全景辅流");
                                         await rtspStreamOn(curTestIP_now, cm, "1", "特写主流");
                                         await rtspStreamOn(curTestIP_now, cs, "3", "特写辅流");
-                                        await rtspStreamOn(curTestIP_now, ai1, "ai1", "ai1");
-                                        await rtspStreamOn(curTestIP_now, ai2, "ai2", "ai2");
-                                        await rtspStreamOn(curTestIP_now, ai3, "ai3", "ai3");
+                                        await Task.Delay(100);
+                                        // AI流先停止（因为AI流需要串行测试，先确保状态干净）
+                                        rtspStreamOff(ai1, "ai1流");
+                                        rtspStreamOff(ai2, "ai2流");
+                                        rtspStreamOff(ai3, "ai3流");
 
-
-                                        // 全景主流拉流测试出结果
+                                        // 4路主辅流并行截图
                                         string panoramicMain_pic = await SafeSnapshotAsync(pm, testFolder_item, "全景主流");
                                         LogSaveOutput(panoramicMain_pic);
-                                        await Task.Delay(100);
-
-                                        // 全景辅流拉流测试出结果
                                         string panoramicSub_pic = await SafeSnapshotAsync(ps, testFolder_item, "全景辅流");
                                         LogSaveOutput(panoramicSub_pic);
-                                        await Task.Delay(100);
-
-                                        // 特写主流拉流测试出结果
                                         string closeUpMain_pic = await SafeSnapshotAsync(cm, testFolder_item, "特写主流");
                                         LogSaveOutput(closeUpMain_pic);
-                                        await Task.Delay(100);
-
-                                        // 特写辅流拉流测试出结果
                                         string closeUpSub_pic = await SafeSnapshotAsync(cs, testFolder_item, "特写辅流");
                                         LogSaveOutput(closeUpSub_pic);
-                                        await Task.Delay(100);
 
-                                        // AI1前排流拉流测试出结果
-                                        string ai1_pic = await SafeSnapshotAsync(ai1, testFolder_item, "AI1前排流");
-                                        LogSaveOutput(ai1_pic);
-                                        await Task.Delay(100);
-
-                                        // AI左后排流拉流测试出结果
-                                        string ai2_pic = await SafeSnapshotAsync(ai2, testFolder_item, "AI左后排流");
-                                        LogSaveOutput(ai2_pic);
-                                        await Task.Delay(100);
-
-                                        // AI右后排流拉流测试出结果
-                                        string ai3_pic = await SafeSnapshotAsync(ai3, testFolder_item, "AI右后排流");
-                                        LogSaveOutput(ai3_pic);
-                                        await Task.Delay(100);
-
+                                        // 初始化ori和next（阶段1完成后更新）
                                         if (testCount == 1)
                                         {
                                             ori_panoramicMain_pic = panoramicMain_pic; next_panoramicMain_pic = panoramicMain_pic;
                                             ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                             ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                             ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
                                         }
                                         else
                                         {
@@ -3914,31 +4196,21 @@ namespace skdl_new_2025_test_tool
                                             ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                             ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                             ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
                                         }
 
-
+                                        // 4路主辅流并行验证截图
                                         bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前间歇时间上下电重启设备，全视频流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 全景主流测试结果：{panoramicMainResult}");
                                         bool panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前间歇时间上下电重启设备，全视频流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 全景辅流测试结果：{panoramicSubResult}");
                                         bool closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前间歇时间上下电重启设备，全视频流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 特写主流测试结果：{closeUpMainResult}");
                                         bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前间歇时间上下电重启设备，全视频流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前间歇时间上下电重启设备，全视频流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前间歇时间上下电重启设备，全视频流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前间歇时间上下电重启设备，全视频流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 特写辅流测试结果：{closeUpSubResult}");
 
-                                        LogSaveOutput($"【{curTestIP_now}】 - 等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
+                                        // 4路主辅流状态检查
+                                        LogSaveOutput($"【{curTestIP_now}】 - 等待{checkStreamStatusWaitingTime / 1000}秒，检查4路主辅流状态……");
                                         await Task.Delay(checkStreamStatusWaitingTime);
-                                        // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
-                                        // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
                                         bool panoramicMainStatusResult = getStreamStatusResult(pm);
                                         LogSaveOutput($"当前全景主流状态测试结果：{panoramicMainStatusResult}");
                                         bool panoramicSubStatusResult = getStreamStatusResult(ps);
@@ -3947,27 +4219,160 @@ namespace skdl_new_2025_test_tool
                                         LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
                                         bool closeUpSubStatusResult = getStreamStatusResult(cs);
                                         LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
-                                        bool ai1StatusResult = getStreamStatusResult(ai1);
-                                        LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
-                                        bool ai2StatusResult = getStreamStatusResult(ai2);
-                                        LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
-                                        bool ai3StatusResult = getStreamStatusResult(ai3);
-                                        LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
 
-
-                                        // 结果呈现，次数增加
-                                        isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
-                                        && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1StatusResult && ai2StatusResult && ai3StatusResult;
-
-                                        // 所有流关流
-
+                                        // 4路主辅流关流
                                         rtspStreamOff(pm, "全景主流");
                                         rtspStreamOff(ps, "全景辅流");
                                         rtspStreamOff(cm, "特写主流");
                                         rtspStreamOff(cs, "特写辅流");
+                                        await Task.Delay(200);
+
+                                        // 阶段1判定：任一FAIL则整体结束
+                                        bool stage1Pass = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult
+                                                        && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult;
+                                        if (!stage1Pass)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - 阶段1（4路主辅流）测试FAIL，跳过AI流测试");
+                                            rtspStreamOff(ai1, "ai1流");
+                                            rtspStreamOff(ai2, "ai2流");
+                                            rtspStreamOff(ai3, "ai3流");
+                                            isSuccess = false;
+                                            goto END_TEST;
+                                        }
+
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段1完成，4路流全部PASS ==========");
+
+                                        // ========== 阶段2：AI流单独测试（AI1→截图验证关流→AI2→AI3）==========
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段2：AI流单独测试开始 ==========");
+
+                                        // 阶段2结果变量
+                                        bool ai1Result = false, ai2Result = false, ai3Result = false;
+                                        bool ai1StatusResult = false, ai2StatusResult = false, ai3StatusResult = false;
+
+                                        // ---------- AI1前排流 ----------
+                                        LogSaveOutput($"【{curTestIP_now}】 - 阶段2-1：测试AI1前排流");
+                                        await rtspStreamOn(curTestIP_now, ai1, "ai1", "ai1");
+                                        await Task.Delay(3000);
+                                        string ai1_pic = await SafeSnapshotAsync(ai1, testFolder_item, "AI1前排流");
+                                        LogSaveOutput(ai1_pic);
+                                        string this_ai1_pic = ai1_pic;
+                                        if (testCount == 1)
+                                        {
+                                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
+                                        }
+                                        else
+                                        {
+                                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
+                                        }
+                                        ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+                                        LogSaveOutput($"【{curTestIP_now}】 - AI1前排流测试结果：{ai1Result}");
+                                        ai1StatusResult = getStreamStatusResult(ai1);
+                                        LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
                                         rtspStreamOff(ai1, "ai1流");
+                                        await Task.Delay(200);
+                                        if (!ai1Result || !ai1StatusResult)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - AI1前排流测试FAIL，阶段2失败");
+                                            isSuccess = false;
+                                            rtspStreamOff(ai2, "ai2流");
+                                            rtspStreamOff(ai3, "ai3流");
+                                            goto END_TEST;
+                                        }
+
+                                        // ---------- AI2左后排流 ----------
+                                        LogSaveOutput($"【{curTestIP_now}】 - 阶段2-2：测试AI2左后排流");
+                                        await rtspStreamOn(curTestIP_now, ai2, "ai2", "ai2");
+                                        await Task.Delay(3000);
+                                        string ai2_pic = await SafeSnapshotAsync(ai2, testFolder_item, "AI左后排流");
+                                        LogSaveOutput(ai2_pic);
+                                        string this_ai2_pic = ai2_pic;
+                                        if (testCount == 1)
+                                        {
+                                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+                                        }
+                                        else
+                                        {
+                                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+                                        }
+                                        ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                                        LogSaveOutput($"【{curTestIP_now}】 - AI2左后排流测试结果：{ai2Result}");
+                                        ai2StatusResult = getStreamStatusResult(ai2);
+                                        LogSaveOutput($"当前AI2流状态测试结果：{ai2StatusResult}");
                                         rtspStreamOff(ai2, "ai2流");
+                                        await Task.Delay(200);
+                                        if (!ai2Result || !ai2StatusResult)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - AI2左后排流测试FAIL，阶段2失败");
+                                            isSuccess = false;
+                                            rtspStreamOff(ai3, "ai3流");
+                                            goto END_TEST;
+                                        }
+
+                                        // ---------- AI3右后排流 ----------
+                                        LogSaveOutput($"【{curTestIP_now}】 - 阶段2-3：测试AI3右后排流");
+                                        await rtspStreamOn(curTestIP_now, ai3, "ai3", "ai3");
+                                        await Task.Delay(3000);
+                                        string ai3_pic = await SafeSnapshotAsync(ai3, testFolder_item, "AI右后排流");
+                                        LogSaveOutput(ai3_pic);
+                                        string this_ai3_pic = ai3_pic;
+                                        if (testCount == 1)
+                                        {
+                                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                                        }
+                                        else
+                                        {
+                                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                                        }
+                                        ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                                        LogSaveOutput($"【{curTestIP_now}】 - AI3右后排流测试结果：{ai3Result}");
+                                        ai3StatusResult = getStreamStatusResult(ai3);
+                                        LogSaveOutput($"当前AI3流状态测试结果：{ai3StatusResult}");
                                         rtspStreamOff(ai3, "ai3流");
+                                        await Task.Delay(200);
+                                        if (!ai3Result || !ai3StatusResult)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - AI3右后排流测试FAIL，阶段2失败");
+                                            isSuccess = false;
+                                            goto END_TEST;
+                                        }
+
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段2完成，AI流全部PASS ==========");
+
+                                        // 更新ori_pic为下一轮做准备（testCount>1时滚动）
+                                        if (testCount > 1)
+                                        {
+                                            ori_panoramicMain_pic = next_panoramicMain_pic;
+                                            ori_panoramicSub_pic = next_panoramicSub_pic;
+                                            ori_closeUpMain_pic = next_closeUpMain_pic;
+                                            ori_closeUpSub_pic = next_closeUpSub_pic;
+                                            ori_ai1_pic = next_ai1_pic;
+                                            ori_ai2_pic = next_ai2_pic;
+                                            ori_ai3_pic = next_ai3_pic;
+                                        }
+
+                                        next_panoramicMain_pic = panoramicMain_pic;
+                                        next_panoramicSub_pic = panoramicSub_pic;
+                                        next_closeUpMain_pic = closeUpMain_pic;
+                                        next_closeUpSub_pic = closeUpSub_pic;
+                                        next_ai1_pic = this_ai1_pic;
+                                        next_ai2_pic = this_ai2_pic;
+                                        next_ai3_pic = this_ai3_pic;
+
+                                        // 整体结果
+                                        isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult
+                                                 && ai1Result && ai2Result && ai3Result
+                                                 && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult
+                                                 && ai1StatusResult && ai2StatusResult && ai3StatusResult;
+
+                                        END_TEST:
+                                        // 统一关流（确保所有流都关闭）
+                                        try { rtspStreamOff(pm, "全景主流"); } catch { }
+                                        try { rtspStreamOff(ps, "全景辅流"); } catch { }
+                                        try { rtspStreamOff(cm, "特写主流"); } catch { }
+                                        try { rtspStreamOff(cs, "特写辅流"); } catch { }
+                                        try { rtspStreamOff(ai1, "ai1流"); } catch { }
+                                        try { rtspStreamOff(ai2, "ai2流"); } catch { }
+                                        try { rtspStreamOff(ai3, "ai3流"); } catch { }
                                     }
                                     finally
                                     {
@@ -4077,7 +4482,7 @@ namespace skdl_new_2025_test_tool
                     }
                 }
             }
-
+    
             item.TestCount++;
             if (result == DialogResult.Yes || result == DialogResult.OK)
             {
@@ -4340,60 +4745,37 @@ namespace skdl_new_2025_test_tool
                                             pb7 = CreateHiddenPb(); ai3 = new OpenCvRtspPlayer(pb7);
                                         }));
 
-                                        // 每一路拉流，并比对结果
+                                        // ========== 阶段1：4路主辅流并行测试 ==========
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段1：4路主辅流并行测试开始 ==========");
+
+                                        // 4路主辅流并行拉流
                                         await rtspStreamOn(curTestIP_now, pm, "2", "全景主流");
                                         await rtspStreamOn(curTestIP_now, ps, "4", "全景辅流");
                                         await rtspStreamOn(curTestIP_now, cm, "1", "特写主流");
                                         await rtspStreamOn(curTestIP_now, cs, "3", "特写辅流");
-                                        await rtspStreamOn(curTestIP_now, ai1, "ai1", "ai1");
-                                        await rtspStreamOn(curTestIP_now, ai2, "ai2", "ai2");
-                                        await rtspStreamOn(curTestIP_now, ai3, "ai3", "ai3");
+                                        await Task.Delay(100);
+                                        // AI流先停止（因为AI流需要串行测试，先确保状态干净）
+                                        rtspStreamOff(ai1, "ai1流");
+                                        rtspStreamOff(ai2, "ai2流");
+                                        rtspStreamOff(ai3, "ai3流");
 
-
-                                        // 全景主流拉流测试出结果
+                                        // 4路主辅流并行截图
                                         string panoramicMain_pic = await SafeSnapshotAsync(pm, testFolder_item, "全景主流");
                                         LogSaveOutput(panoramicMain_pic);
-                                        await Task.Delay(100);
-
-                                        // 全景辅流拉流测试出结果
                                         string panoramicSub_pic = await SafeSnapshotAsync(ps, testFolder_item, "全景辅流");
                                         LogSaveOutput(panoramicSub_pic);
-                                        await Task.Delay(100);
-
-                                        // 特写主流拉流测试出结果
                                         string closeUpMain_pic = await SafeSnapshotAsync(cm, testFolder_item, "特写主流");
                                         LogSaveOutput(closeUpMain_pic);
-                                        await Task.Delay(100);
-
-                                        // 特写辅流拉流测试出结果
                                         string closeUpSub_pic = await SafeSnapshotAsync(cs, testFolder_item, "特写辅流");
                                         LogSaveOutput(closeUpSub_pic);
-                                        await Task.Delay(100);
 
-                                        // AI1前排流拉流测试出结果
-                                        string ai1_pic = await SafeSnapshotAsync(ai1, testFolder_item, "AI1前排流");
-                                        LogSaveOutput(ai1_pic);
-                                        await Task.Delay(100);
-
-                                        // AI左后排流拉流测试出结果
-                                        string ai2_pic = await SafeSnapshotAsync(ai2, testFolder_item, "AI左后排流");
-                                        LogSaveOutput(ai2_pic);
-                                        await Task.Delay(100);
-
-                                        // AI右后排流拉流测试出结果
-                                        string ai3_pic = await SafeSnapshotAsync(ai3, testFolder_item, "AI右后排流");
-                                        LogSaveOutput(ai3_pic);
-                                        await Task.Delay(100);
-
+                                        // 初始化ori和next（阶段1完成后更新）
                                         if (testCount == 1)
                                         {
                                             ori_panoramicMain_pic = panoramicMain_pic; next_panoramicMain_pic = panoramicMain_pic;
                                             ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                             ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                             ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
                                         }
                                         else
                                         {
@@ -4401,30 +4783,21 @@ namespace skdl_new_2025_test_tool
                                             ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                             ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                             ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
                                         }
 
-
+                                        // 4路主辅流并行验证截图
                                         bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前上下电重启设备，全视频流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 全景主流测试结果：{panoramicMainResult}");
                                         bool panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前上下电重启设备，全视频流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 全景辅流测试结果：{panoramicSubResult}");
                                         bool closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前上下电重启设备，全视频流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 特写主流测试结果：{closeUpMainResult}");
                                         bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前上下电重启设备，全视频流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前上下电重启设备，全视频流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前上下电重启设备，全视频流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                                        LogSaveOutput($"【{curTestIP_now}】 - 当前上下电重启设备，全视频流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
+                                        LogSaveOutput($"【{curTestIP_now}】 - 特写辅流测试结果：{closeUpSubResult}");
 
-                                        LogSaveOutput($"【{curTestIP_now}】 - 等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
+                                        // 4路主辅流状态检查
+                                        LogSaveOutput($"【{curTestIP_now}】 - 等待{checkStreamStatusWaitingTime / 1000}秒，检查4路主辅流状态……");
                                         await Task.Delay(checkStreamStatusWaitingTime);
-                                        // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
                                         bool panoramicMainStatusResult = getStreamStatusResult(pm);
                                         LogSaveOutput($"当前全景主流状态测试结果：{panoramicMainStatusResult}");
                                         bool panoramicSubStatusResult = getStreamStatusResult(ps);
@@ -4433,26 +4806,133 @@ namespace skdl_new_2025_test_tool
                                         LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
                                         bool closeUpSubStatusResult = getStreamStatusResult(cs);
                                         LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
-                                        bool ai1StatusResult = getStreamStatusResult(ai1);
-                                        LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
-                                        bool ai2StatusResult = getStreamStatusResult(ai2);
-                                        LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
-                                        bool ai3StatusResult = getStreamStatusResult(ai3);
-                                        LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
 
-                                        // 结果呈现，次数增加
-                                        isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
-                                        && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1StatusResult && ai2StatusResult && ai3StatusResult;
-
-                                        // 所有流关流
-
+                                        // 4路主辅流关流
                                         rtspStreamOff(pm, "全景主流");
                                         rtspStreamOff(ps, "全景辅流");
                                         rtspStreamOff(cm, "特写主流");
                                         rtspStreamOff(cs, "特写辅流");
+                                        await Task.Delay(200);
+
+                                        // 阶段1判定：任一FAIL则整体结束
+                                        bool stage1Pass = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult
+                                                        && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult;
+                                        if (!stage1Pass)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - 阶段1（4路主辅流）测试FAIL，跳过AI流测试");
+                                            rtspStreamOff(ai1, "ai1流");
+                                            rtspStreamOff(ai2, "ai2流");
+                                            rtspStreamOff(ai3, "ai3流");
+                                            isSuccess = false;
+                                            goto END_TEST;
+                                        }
+
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段1完成，4路主辅流全部PASS ==========");
+
+                                        // ========== 阶段2：AI流串行测试 ==========
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段2：AI流串行测试开始 ==========");
+
+                                        bool ai1Result = false, ai2Result = false, ai3Result = false;
+                                        bool ai1StatusResult = false, ai2StatusResult = false, ai3StatusResult = false;
+
+                                        // ---------- AI1前排流 ----------
+                                        LogSaveOutput($"【{curTestIP_now}】 - 阶段2-1：测试AI1前排流");
+                                        await rtspStreamOn(curTestIP_now, ai1, "ai1", "ai1");
+                                        await Task.Delay(3000);
+                                        string ai1_pic = await SafeSnapshotAsync(ai1, testFolder_item, "AI1前排流");
+                                        LogSaveOutput(ai1_pic);
+                                        if (testCount == 1)
+                                        {
+                                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
+                                        }
+                                        else
+                                        {
+                                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
+                                        }
+                                        ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+                                        LogSaveOutput($"【{curTestIP_now}】 - AI1前排流测试结果：{ai1Result}");
+                                        ai1StatusResult = getStreamStatusResult(ai1);
+                                        LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
                                         rtspStreamOff(ai1, "ai1流");
+                                        await Task.Delay(200);
+                                        if (!ai1Result || !ai1StatusResult)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - AI1前排流测试FAIL，阶段2失败");
+                                            rtspStreamOff(ai2, "ai2流");
+                                            rtspStreamOff(ai3, "ai3流");
+                                            isSuccess = false;
+                                            goto END_TEST;
+                                        }
+
+                                        // ---------- AI2左后排流 ----------
+                                        LogSaveOutput($"【{curTestIP_now}】 - 阶段2-2：测试AI2左后排流");
+                                        await rtspStreamOn(curTestIP_now, ai2, "ai2", "ai2");
+                                        await Task.Delay(3000);
+                                        string ai2_pic = await SafeSnapshotAsync(ai2, testFolder_item, "AI2左后排流");
+                                        LogSaveOutput(ai2_pic);
+                                        if (testCount == 1)
+                                        {
+                                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+                                        }
+                                        else
+                                        {
+                                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+                                        }
+                                        ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                                        LogSaveOutput($"【{curTestIP_now}】 - AI2左后排流测试结果：{ai2Result}");
+                                        ai2StatusResult = getStreamStatusResult(ai2);
+                                        LogSaveOutput($"当前AI2流状态测试结果：{ai2StatusResult}");
                                         rtspStreamOff(ai2, "ai2流");
+                                        await Task.Delay(200);
+                                        if (!ai2Result || !ai2StatusResult)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - AI2左后排流测试FAIL，阶段2失败");
+                                            rtspStreamOff(ai3, "ai3流");
+                                            isSuccess = false;
+                                            goto END_TEST;
+                                        }
+
+                                        // ---------- AI3右后排流 ----------
+                                        LogSaveOutput($"【{curTestIP_now}】 - 阶段2-3：测试AI3右后排流");
+                                        await rtspStreamOn(curTestIP_now, ai3, "ai3", "ai3");
+                                        await Task.Delay(3000);
+                                        string ai3_pic = await SafeSnapshotAsync(ai3, testFolder_item, "AI3右后排流");
+                                        LogSaveOutput(ai3_pic);
+                                        if (testCount == 1)
+                                        {
+                                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                                        }
+                                        else
+                                        {
+                                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                                        }
+                                        ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                                        LogSaveOutput($"【{curTestIP_now}】 - AI3右后排流测试结果：{ai3Result}");
+                                        ai3StatusResult = getStreamStatusResult(ai3);
+                                        LogSaveOutput($"当前AI3流状态测试结果：{ai3StatusResult}");
                                         rtspStreamOff(ai3, "ai3流");
+                                        await Task.Delay(200);
+                                        if (!ai3Result || !ai3StatusResult)
+                                        {
+                                            LogSaveOutput($"【{curTestIP_now}】 - AI3右后排流测试FAIL，阶段2失败");
+                                            isSuccess = false;
+                                            goto END_TEST;
+                                        }
+
+                                        LogSaveOutput($"【{curTestIP_now}】 - ========== 阶段2完成，AI流全部PASS ==========");
+
+                                        // 整体结果
+                                        isSuccess = true;
+
+                                        END_TEST:
+                                        // 统一关流（确保所有流都关闭）
+                                        try { rtspStreamOff(pm, "全景主流"); } catch { }
+                                        try { rtspStreamOff(ps, "全景辅流"); } catch { }
+                                        try { rtspStreamOff(cm, "特写主流"); } catch { }
+                                        try { rtspStreamOff(cs, "特写辅流"); } catch { }
+                                        try { rtspStreamOff(ai1, "ai1流"); } catch { }
+                                        try { rtspStreamOff(ai2, "ai2流"); } catch { }
+                                        try { rtspStreamOff(ai3, "ai3流"); } catch { }
                                     }
                                     finally
                                     {
@@ -4619,8 +5099,11 @@ namespace skdl_new_2025_test_tool
 
 
                     await Task.Delay(5000);
-                    // 进行拉流压测
-                    // 每一路拉流，并比对结果
+
+                    // ========== 阶段1：4路主辅流并行测试 ==========
+                    LogSaveOutput($"========== 阶段1：4路主辅流并行测试开始 ==========");
+
+                    // 4路主辅流并行拉流
                     panoramicMainStreamOnBtn_Click(null, null);
                     await Task.Delay(100);
                     panoramicSubStreamOnBtn_Click(null, null);
@@ -4629,57 +5112,28 @@ namespace skdl_new_2025_test_tool
                     await Task.Delay(100);
                     closeUpSubStreamOnBtn_Click(null, null);
                     await Task.Delay(100);
-                    ai1StreanOnBtn_Click(null, null);
-                    await Task.Delay(100);
-                    ai2StreanOnBtn_Click(null, null);
-                    await Task.Delay(100);
-                    ai3StreanOnBtn_Click(null, null);
-                    await Task.Delay(100);
+                    // AI流先停止（确保状态干净）
+                    ai1StreanOffBtn_Click(null, null);
+                    ai2StreanOffBtn_Click(null, null);
+                    ai3StreanOffBtn_Click(null, null);
 
-                    // 全景主流拉流测试出结果
+                    // 4路主辅流并行截图
                     string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
                     LogSaveOutput(panoramicMain_pic);
-                    await Task.Delay(100);
-
-                    // 全景辅流拉流测试出结果
                     string panoramicSub_pic = await SafeSnapshotAsync(player_panoramicSub, testFolder, "全景辅流");
                     LogSaveOutput(panoramicSub_pic);
-                    await Task.Delay(100);
-
-                    // 特写主流拉流测试出结果
                     string closeUpMain_pic = await SafeSnapshotAsync(player_CloseUpMain, testFolder, "特写主流");
                     LogSaveOutput(closeUpMain_pic);
-                    await Task.Delay(100);
-
-                    // 特写辅流拉流测试出结果
                     string closeUpSub_pic = await SafeSnapshotAsync(player_CloseUpSub, testFolder, "特写辅流");
                     LogSaveOutput(closeUpSub_pic);
-                    await Task.Delay(100);
 
-                    // AI1前排流拉流测试出结果
-                    string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
-                    LogSaveOutput(ai1_pic);
-                    await Task.Delay(100);
-
-                    // AI左后排流拉流测试出结果
-                    string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
-                    LogSaveOutput(ai2_pic);
-                    await Task.Delay(100);
-
-                    // AI右后排流拉流测试出结果
-                    string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
-                    LogSaveOutput(ai3_pic);
-                    await Task.Delay(100);
-
+                    // 初始化ori和next（阶段1完成后更新）
                     if (item.TestCount == 1)
                     {
                         ori_panoramicMain_pic = panoramicMain_pic; next_panoramicMain_pic = panoramicMain_pic;
                         ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                         ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                         ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                        ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                        ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                        ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
                     }
                     else
                     {
@@ -4687,30 +5141,21 @@ namespace skdl_new_2025_test_tool
                         ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                         ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                         ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                        ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                        ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                        ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
                     }
 
-
+                    // 4路主辅流并行验证截图
                     bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
-                    LogSaveOutput($"重启5000次后拉流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
+                    LogSaveOutput($"重启5000次后拉流压测 -- 全景主流测试结果：{panoramicMainResult}");
                     bool panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
-                    LogSaveOutput($"重启5000次后拉流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
+                    LogSaveOutput($"重启5000次后拉流压测 -- 全景辅流测试结果：{panoramicSubResult}");
                     bool closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
-                    LogSaveOutput($"重启5000次后拉流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
+                    LogSaveOutput($"重启5000次后拉流压测 -- 特写主流测试结果：{closeUpMainResult}");
                     bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
-                    LogSaveOutput($"重启5000次后拉流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                    bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                    LogSaveOutput($"重启5000次后拉流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                    bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                    LogSaveOutput($"重启5000次后拉流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                    bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                    LogSaveOutput($"重启5000次后拉流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
+                    LogSaveOutput($"重启5000次后拉流压测 -- 特写辅流测试结果：{closeUpSubResult}");
 
-                    LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
+                    // 4路主辅流状态检查
+                    LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查4路主辅流状态……");
                     await Task.Delay(checkStreamStatusWaitingTime);
-                    // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
                     bool panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
                     LogSaveOutput($"当前全景主流状态测试结果：{panoramicMainStatusResult}");
                     bool panoramicSubStatusResult = getStreamStatusResult(player_panoramicSub);
@@ -4719,18 +5164,8 @@ namespace skdl_new_2025_test_tool
                     LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
                     bool closeUpSubStatusResult = getStreamStatusResult(player_CloseUpSub);
                     LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
-                    bool ai1StatusResult = getStreamStatusResult(player_ai1);
-                    LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
-                    bool ai2StatusResult = getStreamStatusResult(player_ai2);
-                    LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
-                    bool ai3StatusResult = getStreamStatusResult(player_ai3);
-                    LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
 
-                    // 结果呈现，次数增加
-                    bool isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
-                    && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1StatusResult && ai2StatusResult && ai3StatusResult;
-
-                    // 所有流关流
+                    // 4路主辅流关流
                     panoramicMainStreamOffBtn_Click(null, null);
                     await Task.Delay(100);
                     panoramicSubStreamOffBtn_Click(null, null);
@@ -4738,32 +5173,120 @@ namespace skdl_new_2025_test_tool
                     closeUpMainStreamOffBtn_Click(null, null);
                     await Task.Delay(100);
                     closeUpSubStreamOffBtn_Click(null, null);
-                    await Task.Delay(100);
-                    ai1StreanOffBtn_Click(null, null);
-                    await Task.Delay(100);
-                    ai2StreanOffBtn_Click(null, null);
-                    await Task.Delay(100);
-                    ai3StreanOffBtn_Click(null, null);
-                    await Task.Delay(100);
+                    await Task.Delay(200);
 
-                    LogSaveOutput($"{item.Name} 第{item.TestCount}次 重启后拉流结束，测试结果为：{item.TestResult}");
-                    if (stopTest)
+                    // 阶段1判定：任一FAIL则整体结束
+                    bool stage1Pass = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult
+                                    && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult;
+                    if (!stage1Pass)
                     {
-                        LogSaveOutput("手动停止测试！");
+                        LogSaveOutput($"阶段1（4路主辅流）测试FAIL，跳过AI流测试");
+                        ai1StreanOffBtn_Click(null, null);
+                        ai2StreanOffBtn_Click(null, null);
+                        ai3StreanOffBtn_Click(null, null);
+                        item.TestResult = "FAIL";
+                        return;
                     }
 
-                    if (isSuccess)
+                    LogSaveOutput($"========== 阶段1完成，4路主辅流全部PASS ==========");
+
+                    // ========== 阶段2：AI流串行测试 ==========
+                    LogSaveOutput($"========== 阶段2：AI流串行测试开始 ==========");
+
+                    bool ai1Result = false, ai2Result = false, ai3Result = false;
+                    bool ai1StatusResult = false, ai2StatusResult = false, ai3StatusResult = false;
+
+                    // ---------- AI1前排流 ----------
+                    LogSaveOutput($"阶段2-1：测试AI1前排流");
+                    ai1StreanOnBtn_Click(null, null);
+                    await Task.Delay(3000);
+                    string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                    LogSaveOutput(ai1_pic);
+                    if (item.TestCount == 1)
                     {
-                        item.TestCount++;
-                        item.TestResult = "PASS";
-                        LogSaveOutput($"【第{item.TestCount}次重启后拉流测试结束】");
+                        ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
                     }
                     else
                     {
-                        item.TestResult = "FAIL";
+                        ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
                     }
-                });
-            }
+                    ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+                    LogSaveOutput($"重启5000次后拉流压测 -- AI1流测试结果：{ai1Result}");
+                    ai1StatusResult = getStreamStatusResult(player_ai1);
+                    LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
+                    ai1StreanOffBtn_Click(null, null);
+                    await Task.Delay(200);
+                    if (!ai1Result || !ai1StatusResult)
+                    {
+                        LogSaveOutput($"AI1前排流测试FAIL，跳过后续AI流测试");
+                        ai2StreanOffBtn_Click(null, null);
+                        ai3StreanOffBtn_Click(null, null);
+                        item.TestResult = "FAIL";
+                        return;
+                    }
+
+                    // ---------- AI2左后排流 ----------
+                    LogSaveOutput($"阶段2-2：测试AI2左后排流");
+                    ai2StreanOnBtn_Click(null, null);
+                    await Task.Delay(3000);
+                    string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI2左后排流");
+                    LogSaveOutput(ai2_pic);
+                    if (item.TestCount == 1)
+                    {
+                        ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+                    }
+                    else
+                    {
+                        ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+                    }
+                    ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                    LogSaveOutput($"重启5000次后拉流压测 -- AI2左后排流测试结果：{ai2Result}");
+                    ai2StatusResult = getStreamStatusResult(player_ai2);
+                    LogSaveOutput($"当前AI2流状态测试结果：{ai2StatusResult}");
+                    ai2StreanOffBtn_Click(null, null);
+                    await Task.Delay(200);
+                    if (!ai2Result || !ai2StatusResult)
+                    {
+                        LogSaveOutput($"AI2左后排流测试FAIL，跳过AI3测试");
+                        ai3StreanOffBtn_Click(null, null);
+                        item.TestResult = "FAIL";
+                        return;
+                    }
+
+                    // ---------- AI3右后排流 ----------
+                    LogSaveOutput($"阶段2-3：测试AI3右后排流");
+                    ai3StreanOnBtn_Click(null, null);
+                    await Task.Delay(3000);
+                    string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI3右后排流");
+                    LogSaveOutput(ai3_pic);
+                    if (item.TestCount == 1)
+                    {
+                        ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                    }
+                    else
+                    {
+                        ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                    }
+                    ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                    LogSaveOutput($"重启5000次后拉流压测 -- AI3右后排流测试结果：{ai3Result}");
+                    ai3StatusResult = getStreamStatusResult(player_ai3);
+                    LogSaveOutput($"当前AI3流状态测试结果：{ai3StatusResult}");
+                    ai3StreanOffBtn_Click(null, null);
+                    await Task.Delay(200);
+                    if (!ai3Result || !ai3StatusResult)
+                    {
+                        LogSaveOutput($"AI3右后排流测试FAIL");
+                        item.TestResult = "FAIL";
+                        return;
+                    }
+
+                    LogSaveOutput($"========== 阶段2完成，AI流全部PASS ==========");
+
+                    // 整体结果
+                    item.TestResult = "PASS";
+                    LogSaveOutput($"{item.Name} 第{item.TestCount}次 重启后拉流结束，测试结果为：{item.TestResult}");
+                    });
+                }
             else
             {
                 item.TestResult = "待测试";
@@ -4869,6 +5392,10 @@ namespace skdl_new_2025_test_tool
                                                 LogSaveOutput(closeUpSub_pic);
                                                 await Task.Delay(100);
 
+                                                bool panoramicMainResult = true;
+                                                bool panoramicSubResult = true;
+                                                bool closeUpMainResult = true;
+                                                bool closeUpSubResult = true;
 
                                                 if (item.TestCount == 1)
                                                 {
@@ -4883,17 +5410,16 @@ namespace skdl_new_2025_test_tool
                                                     ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                                     ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                                     ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
+                                                    panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
+                                                    panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
+                                                    closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
+                                                    closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
                                                 }
 
-
-                                                bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
-                                                bool panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
-                                                bool closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
-                                                bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
 
                                                 LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
                                                 await Task.Delay(checkStreamStatusWaitingTime);
@@ -4985,6 +5511,11 @@ namespace skdl_new_2025_test_tool
                     string ori_ai2_pic, next_ai2_pic = "";
                     string ori_ai3_pic, next_ai3_pic = "";
 
+                    bool panoramicMainResult = true;
+                    bool panoramicSubResult = true;
+                    bool closeUpMainResult = true;
+                    bool closeUpSubResult = true;
+
                     this.BeginInvoke(async () =>
                     {
                         while (true)
@@ -5026,13 +5557,7 @@ namespace skdl_new_2025_test_tool
                                                 await Task.Delay(100);
                                                 closeUpSubStreamOnBtn_Click(null, null);
                                                 await Task.Delay(100);
-                                                ai1StreanOnBtn_Click(null, null);
-                                                await Task.Delay(100);
-                                                ai2StreanOnBtn_Click(null, null);
-                                                await Task.Delay(100);
-                                                ai3StreanOnBtn_Click(null, null);
-                                                await Task.Delay(100);
-
+                                               
                                                 // 全景主流拉流测试出结果
                                                 string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
                                                 LogSaveOutput(panoramicMain_pic);
@@ -5053,20 +5578,8 @@ namespace skdl_new_2025_test_tool
                                                 LogSaveOutput(closeUpSub_pic);
                                                 await Task.Delay(100);
 
-                                                // AI1前排流拉流测试出结果
-                                                string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
-                                                LogSaveOutput(ai1_pic);
-                                                await Task.Delay(100);
 
-                                                // AI左后排流拉流测试出结果
-                                                string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
-                                                LogSaveOutput(ai2_pic);
-                                                await Task.Delay(100);
-
-                                                // AI右后排流拉流测试出结果
-                                                string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
-                                                LogSaveOutput(ai3_pic);
-                                                await Task.Delay(100);
+                                             
 
                                                 if (item.TestCount == 1)
                                                 {
@@ -5074,9 +5587,7 @@ namespace skdl_new_2025_test_tool
                                                     ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                                     ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                                     ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                                    ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                                                    ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                                                    ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                                                    
                                                 }
                                                 else
                                                 {
@@ -5084,50 +5595,57 @@ namespace skdl_new_2025_test_tool
                                                     ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                                                     ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                                                     ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                                                    ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                                                    ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                                                    ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                                                    panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
+                                                    panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
+                                                    closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
+                                                    closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
+                                                    LogSaveOutput($"u盘升级后拉流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
+
                                                 }
-
-
-                                                bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
-                                                bool panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
-                                                bool closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
-                                                bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                                                bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                                                bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                                                bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                                                LogSaveOutput($"u盘升级后拉流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
 
                                                 LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
                                                 await Task.Delay(checkStreamStatusWaitingTime);
+
                                                 // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
                                                 bool panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
                                                 LogSaveOutput($"当前全景主流状态测试结果：{panoramicMainStatusResult}");
+                                                if (!panoramicMainStatusResult && getStreamFps(player_panoramicMain) == 0f)
+                                                {
+                                                    LogSaveOutput("【警告】全景主流 fps=0，等待2秒后再次检查...");
+                                                    await Task.Delay(2000);
+                                                    panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
+                                                }
+
                                                 bool panoramicSubStatusResult = getStreamStatusResult(player_panoramicSub);
-                                                LogSaveOutput($"当前全景辅流状态测试结果：{panoramicMainStatusResult}");
+                                                LogSaveOutput($"当前全景辅流状态测试结果：{panoramicSubStatusResult}");
+                                                if (!panoramicSubStatusResult && getStreamFps(player_panoramicSub) == 0f)
+                                                {
+                                                    LogSaveOutput("【警告】全景辅流 fps=0，等待2秒后再次检查...");
+                                                    await Task.Delay(2000);
+                                                    panoramicSubStatusResult = getStreamStatusResult(player_panoramicSub);
+                                                }
+
                                                 bool closeUpMainStatusResult = getStreamStatusResult(player_CloseUpMain);
-                                                LogSaveOutput($"当前特写主流状态测试结果：{panoramicMainStatusResult}");
+                                                LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
+                                                // 特写主流
+                                                if (!closeUpMainStatusResult && getStreamFps(player_CloseUpMain) == 0f)
+                                                {
+                                                    LogSaveOutput("【警告】特写主流 fps=0，等待2秒后再次检查...");
+                                                    await Task.Delay(2000);
+                                                    closeUpMainStatusResult = getStreamStatusResult(player_CloseUpMain);
+                                                }
+
                                                 bool closeUpSubStatusResult = getStreamStatusResult(player_CloseUpSub);
-                                                LogSaveOutput($"当前特写辅流状态测试结果：{panoramicMainStatusResult}");
-                                                bool ai1StatusResult = getStreamStatusResult(player_ai1);
-                                                LogSaveOutput($"当前AI1流状态测试结果：{panoramicMainStatusResult}");
-                                                bool ai2StatusResult = getStreamStatusResult(player_ai2);
-                                                LogSaveOutput($"当前AI2左后排流状态测试结果：{panoramicMainStatusResult}");
-                                                bool ai3StatusResult = getStreamStatusResult(player_ai3);
-                                                LogSaveOutput($"当前AI3右后排流状态测试结果：{panoramicMainStatusResult}");
-
-                                                // 结果呈现，次数增加
-                                                bool isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
-                                                && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1StatusResult && ai2StatusResult && ai3StatusResult;
-
-                                                // 所有流关流
+                                                if (!closeUpSubStatusResult && getStreamFps(player_CloseUpSub) == 0f)
+                                                {
+                                                    LogSaveOutput("【警告】特写辅流 fps=0，等待2秒后再次检查...");
+                                                    await Task.Delay(2000);
+                                                    closeUpSubStatusResult = getStreamStatusResult(player_CloseUpSub);
+                                                }
+                                                LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
                                                 panoramicMainStreamOffBtn_Click(null, null);
                                                 await Task.Delay(100);
                                                 panoramicSubStreamOffBtn_Click(null, null);
@@ -5136,13 +5654,92 @@ namespace skdl_new_2025_test_tool
                                                 await Task.Delay(100);
                                                 closeUpSubStreamOffBtn_Click(null, null);
                                                 await Task.Delay(100);
-                                                ai1StreanOffBtn_Click(null, null);
-                                                await Task.Delay(100);
-                                                ai2StreanOffBtn_Click(null, null);
-                                                await Task.Delay(100);
-                                                ai3StreanOffBtn_Click(null, null);
-                                                await Task.Delay(100);
 
+
+                                                //ai1单独拉流
+                                                bool ai1Result = true;
+                                                ai1StreanOnBtn_Click(null, null);
+                                                await Task.Delay(100);
+                                                // AI1前排流拉流测试出结果
+                                                string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                                                LogSaveOutput(ai1_pic);
+                                                await Task.Delay(100);
+                                                if (item.TestCount == 1)
+                                                {
+                                                    ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
+                                                }
+                                                else
+                                                {
+                                                    ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
+                                                     ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+                                                }
+                                               
+                                                LogSaveOutput($"u盘升级后拉流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
+
+                                                bool ai1StatusResult = getStreamStatusResult(player_ai1);
+                                                LogSaveOutput($"当前AI1流状态测试结果：{panoramicMainStatusResult}");
+
+                                                ai1StreanOffBtn_Click(null, null);
+                                                await Task.Delay(2000);
+
+                                                //ai2单独拉流
+                                                // AI左后排流拉流测试出结果
+                                                bool ai2Result = true;
+                                                ai2StreanOnBtn_Click(null, null);
+                                                await Task.Delay(100);
+                                                string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
+                                                LogSaveOutput(ai2_pic);
+                                                await Task.Delay(100);
+                                                if(item.TestCount == 1)
+                                                {
+                                                    ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+                                                }
+                                                else
+                                                {
+                                                    ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+                                                    ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                                                }
+                                                
+                                                LogSaveOutput($"u盘升级后拉流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
+                                                bool ai2StatusResult = getStreamStatusResult(player_ai2);
+                                                LogSaveOutput($"当前AI2左后排流状态测试结果：{panoramicMainStatusResult}");
+
+                                                ai2StreanOffBtn_Click(null, null);
+                                                await Task.Delay(2000);
+
+                                                //ai3单独拉流
+                                                bool ai3Result = true; 
+                                                ai3StreanOnBtn_Click(null, null);
+                                                await Task.Delay(100);
+                                                // AI右后排流拉流测试出结果
+                                                string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
+                                                LogSaveOutput(ai3_pic);
+                                                await Task.Delay(100);
+                                                if(item.TestCount == 1)
+                                                {
+
+                                                    ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                                                }
+                                                else
+                                                {
+                                                    ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                                                    ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                                                }
+
+                                                LogSaveOutput($"u盘升级后拉流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
+
+                                                LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
+                                                await Task.Delay(checkStreamStatusWaitingTime);
+
+                                                bool ai3StatusResult = getStreamStatusResult(player_ai3);
+                                                LogSaveOutput($"当前AI3右后排流状态测试结果：{panoramicMainStatusResult}");
+
+                                                ai3StreanOffBtn_Click(null, null);
+                                                await Task.Delay(2000);
+
+                                                // 结果呈现，次数增加
+                                                bool isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
+                                                && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1StatusResult && ai2StatusResult && ai3StatusResult;
                                                 LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
                                                 if (stopTest)
                                                 {
@@ -5209,12 +5806,15 @@ namespace skdl_new_2025_test_tool
 
         private async void TestCase21(TestCases item)
         {
+            DialogResult result = AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+                "请选择测试模式",
+                "【Yes/确认】= 模式1：仅OTA升降级\n【No/取消】= 模式2：OTA升降级+拉流测试",
+                AntdUI.TType.Info));
+
             LogSaveOutput($"{_currentIp} - 测试用例：【{item.Name}】运行中");
-            // 3. 更新测试结果
-            item.TestCount++; // 次数+1
+            item.TestCount++;
 
             string testFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testData", _currentIp.Replace(".", "_").Replace(":", "_"), item.Name);
-            LogSaveOutput($"{_currentIp} - 测试文件夹：{testFolder}");
             if (Directory.Exists(testFolder))
             {
                 Directory.Delete(testFolder, true);
@@ -5230,336 +5830,522 @@ namespace skdl_new_2025_test_tool
             setUdhcpcBtn_Click(null, null);
             await Task.Delay(100);
 
-            //测试ai流先设置 高分辨率模式
-            hiResModeBtn_Click(null, null);
-            LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
-            await Task.Delay(50000);
+            //// 设置高分辨率模式
+            //hiResModeBtn_Click(null, null);
+            //LogSaveOutput("正在切换为高分辨率模式,等待50秒..");
+            //await Task.Delay(50000);
 
-            string ori_panoramicMain_pic, next_panoramicMain_pic = "";
-            string ori_panoramicSub_pic, next_panoramicSub_pic = "";
-            string ori_closeUpMain_pic, next_closeUpMain_pic = "";
-            string ori_closeUpSub_pic, next_closeUpSub_pic = "";
-            string ori_ai1_pic, next_ai1_pic = "";
-            string ori_ai2_pic, next_ai2_pic = "";
-            string ori_ai3_pic, next_ai3_pic = "";
+            string ota1Path = input_otaPacketPath1.Text;
+            string ota2Path = input_otaPacketPath2.Text;
 
-            this.BeginInvoke(async () =>
+            
+
+            if (result == DialogResult.Yes)
             {
-                while (true)
+                // ========== 模式1：仅OTA升降级 ==========
+                this.BeginInvoke(async () =>
                 {
-                    try
+                    while (true)
                     {
-                        // 获取token
-                        buttonGetToken_Click(null, null);
-                        await Task.Delay(1000);
-
-                        // 双版本循环分区OTA升级流程
-                        string curSysVersion = await getSysVersion();
-                        string ota1Path = input_otaPacketPath1.Text;
-                        string ota2Path = input_otaPacketPath2.Text;
-                        string nextUpgradePath = "";
                         bool upgradeResult = false;
+                        try
+                        {
+                            // 获取token
+                            buttonGetToken_Click(null, null);
+                            await Task.Delay(1000);
 
-                        LogSaveOutput($"{_currentIp} - 【OTA1：{ota1Path}】");
-                        LogSaveOutput($"{_currentIp} - 【OTA2：{ota2Path}】");
-                        if (ota1Path.Contains(curSysVersion))
-                        {
-                            LogSaveOutput($"{_currentIp} - Ready to : OTA2PATH : {ota2Path} -- {curSysVersion}");
-                            nextUpgradePath = ota2Path;
-                        }
-                        else if (ota2Path.Contains(curSysVersion))
-                        {
-                            LogSaveOutput($"{_currentIp} - Ready to : OTA1PATH : {ota1Path} -- {curSysVersion}");
-                            nextUpgradePath = ota1Path;
-                        }
-                        else
-                        {
-                            LogSaveOutput($"{_currentIp} - 停止测试 - 没有找到能够升级的版本，当前版本：{curSysVersion} 不在您所选择的2种版本中");
-                            item.TestResult = "FAIL";
-                            break;
-                        }
+                            // 双版本循环交替OTA升级流程
+                            string curSysVersion = await getSysVersion();
+                            string nextUpgradePath = "";
 
-                        if (nextUpgradePath != "")
-                        {
-                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
-                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
-                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
-                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
-                            LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
-                            // 上传ota包
-                            if (await _api.UploadFirmwareAsync_SKDL_new(nextUpgradePath) == "success")
+                            LogSaveOutput($"{_currentIp} - 【OTA1：{ota1Path}】");
+                            LogSaveOutput($"{_currentIp} - 【OTA2：{ota2Path}】");
+                            if (ota1Path.Contains(curSysVersion))
                             {
-                                // 触发升级
-                                if (await _api.StartUpdate() == "success")
+                                LogSaveOutput($"{_currentIp} - Ready to : OTA2PATH : {ota2Path} -- {curSysVersion}");
+                                nextUpgradePath = ota2Path;
+                            }
+                            else if (ota2Path.Contains(curSysVersion))
+                            {
+                                LogSaveOutput($"{_currentIp} - Ready to : OTA1PATH : {ota1Path} -- {curSysVersion}");
+                                nextUpgradePath = ota1Path;
+                            }
+                            else
+                            {
+                                LogSaveOutput($"{_currentIp} - 停止测试 - 没有找到能够升级的版本，当前版本：{curSysVersion} 不在您所选择的2种版本中");
+                                item.TestResult = "FAIL";
+                                break;
+                            }
+
+                            // 停止检查
+                            if (stopTest)
+                            {
+                                item.TestResult = "已停止";
+                                LogSaveOutput($"{_currentIp} - 手动停止升级测试！");
+                                break;
+                            }
+
+                            if (nextUpgradePath != "")
+                            {
+                                LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
+
+                                // 上传ota包
+                                if (await _api.UploadFirmwareAsync_SKDL_new(nextUpgradePath) == "success")
                                 {
-                                    int update_checkCount = 0;
-                                    // 检测升级版本和设备升级状态
-                                    while (true)
+                                    // 触发升级
+                                    if (await _api.StartUpdate() == "success")
                                     {
-                                        // 获取token
-                                        buttonGetToken_Click(null, null);
-                                        await Task.Delay(1000);
-                                        update_checkCount += 1;
-                                        string progress = await _api.CheckUpgradeStaus("progress");
-                                        string status = await _api.CheckUpgradeStaus("status");
-                                        LogSaveOutput($"{_currentIp} - 当前升级进度【{progress}】 -- 升级状态 【{status}】");
-                                        if ((progress == "100" && status == "completed"))
+                                        int update_checkCount = 0;
+                                        bool upgradeStarted = false;
+
+                                        while (true)
                                         {
-                                            LogSaveOutput($"{_currentIp} - 升级流程结束，等待设备启动完成！");
-                                            upgradeResult = true;
-                                            break;
+                                            // 停止检查
+                                            if (stopTest)
+                                            {
+                                                item.TestResult = "已停止";
+                                                LogSaveOutput($"{_currentIp} - 手动停止升级测试！");
+                                                break;
+                                            }
+
+                                            string progress = await _api.CheckUpgradeStaus("progress");
+                                            string status = await _api.CheckUpgradeStaus("status");
+
+                                            // 一旦 progress > 0 或 status 不是 not_start，就认为升级已真正开始
+                                            if (!upgradeStarted && (int.TryParse(progress, out int p) && p > 0 || status != "not start"))
+                                            {
+                                                upgradeStarted = true;
+                                            }
+
+                                            LogSaveOutput($"{_currentIp} - 当前升级进度【{progress}】 -- 升级状态 【{status}】");
+
+                                            if (progress == "100" || status == "completed")
+                                            {
+                                                LogSaveOutput($"{_currentIp} - 升级完成，等待设备重启...");
+                                                await Task.Delay(60000);
+                                                upgradeResult = true;
+                                                break;
+                                            }
+
+                                            // 只有升级真正开始后，才认为 progress=0 / status=not_start 是重启
+                                            if (upgradeStarted && (
+                                                (progress == "99" && (status == "update" || status == "fail")) ||
+                                                (progress == "0" && status == "not start")
+                                            ))
+                                            {
+                                                LogSaveOutput($"{_currentIp} - 检测到设备在重启，等待60秒...");
+                                                await Task.Delay(60000);
+                                                upgradeResult = true;
+                                                break;
+                                            }
+
+                                            if (update_checkCount >= 120)
+                                            {
+                                                upgradeResult = false;
+                                                item.TestResult = "FAIL";
+                                                LogSaveOutput($"{_currentIp} - 升级流程超时！");
+                                                break;
+                                            }
+                                            await Task.Delay(1000);
+                                            update_checkCount += 1;
                                         }
-                                        if (progress == "99" && status == "update" || progress == "99" && status == "fail" || progress == "0" && status == "not start")
-                                        {
-                                            LogSaveOutput($"{_currentIp} - 升级流程结束，等待60秒设备启动完成！异端流程执行");
-                                            await Task.Delay(60000);
-                                            upgradeResult = true;
-                                            break;
-                                        }
-                                        if (update_checkCount >= 60)
-                                        {
-                                            upgradeResult = false;
-                                            item.TestResult = "FAIL";
-                                            LogSaveOutput($"{_currentIp} - 升级流程超时！");
-                                            break;
-                                        }
-                                        await Task.Delay(3000);
+                                    }
+                                    else
+                                    {
+                                        LogSaveOutput($"{_currentIp} - 触发升级失败，请检查设备状态！");
+                                        item.TestResult = "FAIL";
+                                        upgradeResult = false;
+                                        break;
                                     }
                                 }
                                 else
                                 {
-                                    LogSaveOutput($"{_currentIp} - 触发升级失败，请检查设备状态！");
+                                    LogSaveOutput($"{_currentIp} - ota包上传失败，请检查！\n{nextUpgradePath}");
                                     item.TestResult = "FAIL";
                                     upgradeResult = false;
                                     break;
                                 }
                             }
-                            else
-                            {
-                                LogSaveOutput($"{_currentIp} - ota包上传失败，请检查！\n{nextUpgradePath}");
-                                item.TestResult = "FAIL";
-                                upgradeResult = false;
-                                break;
-                            }
-                        }
 
-                        int update_checkVersionCount = 0;
-                        // ota升级测试结果更新
-                        if (upgradeResult)
-                        {
-                            // ota升级进度完成，等待重启完成
-                            LogSaveOutput($"{_currentIp} - ota升级进度完成，等待重启后进行拉流检测……");
-                            while (true)
+                            // OTA升级包校验结果处理
+                            if (upgradeResult)
                             {
-                                update_checkVersionCount += 1;
-                                await Task.Delay(3000);
-                                // 获取token
+                                LogSaveOutput($"{_currentIp} - ota升级完成，正在获取token并验证版本...");
                                 buttonGetToken_Click(null, null);
-                                await Task.Delay(1000);
+                                await Task.Delay(2000);
+                                string token = "";
+                                try { token = token_input?.Text ?? ""; } catch { token = ""; }
+
                                 string upgradeDoneVersion = await _api.GetSysVerison();
                                 string diskStatus = await _api.GetDiskStatus();
-                                if (upgradeDoneVersion != null)
+
+                                if (!string.IsNullOrEmpty(upgradeDoneVersion) && !string.IsNullOrEmpty(token)
+                                    && upgradeDoneVersion != curSysVersion && nextUpgradePath.Contains(upgradeDoneVersion))
                                 {
-                                    if (nextUpgradePath.Contains(upgradeDoneVersion) && diskStatus.Contains("SUCCESS"))
-                                    {
-                                        item.TestResult = "PASS";
-                                        upgradeResult = true;
-                                        LogSaveOutput($"设备【{_currentIp}】升级完成，当前版本：{upgradeDoneVersion}, 期望版本：{nextUpgradePath}");
-
-                                        // 升级成功，即将开始拉流压测
-                                        // 每一路拉流，并比对结果
-                                        panoramicMainStreamOnBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        panoramicSubStreamOnBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        closeUpMainStreamOnBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        closeUpSubStreamOnBtn_Click(null, null);
-                                        await Task.Delay(100);
-
-
-                                        // 全景主流拉流测试出结果
-                                        string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
-                                        LogSaveOutput(panoramicMain_pic);
-                                        await Task.Delay(100);
-
-                                        // 全景辅流拉流测试出结果
-                                        string panoramicSub_pic = await SafeSnapshotAsync(player_panoramicSub, testFolder, "全景辅流");
-                                        LogSaveOutput(panoramicSub_pic);
-                                        await Task.Delay(100);
-
-                                        // 特写主流拉流测试出结果
-                                        string closeUpMain_pic = await SafeSnapshotAsync(player_CloseUpMain, testFolder, "特写主流");
-                                        LogSaveOutput(closeUpMain_pic);
-                                        await Task.Delay(100);
-
-                                        // 特写辅流拉流测试出结果
-                                        string closeUpSub_pic = await SafeSnapshotAsync(player_CloseUpSub, testFolder, "特写辅流");
-                                        LogSaveOutput(closeUpSub_pic);
-                                        await Task.Delay(100);
-
-                                        if (item.TestCount == 1)
-                                        {
-                                            ori_panoramicMain_pic = panoramicMain_pic; next_panoramicMain_pic = panoramicMain_pic;
-                                            ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
-                                            ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
-                                            ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-
-                                        }
-                                        else
-                                        {
-                                            ori_panoramicMain_pic = next_panoramicMain_pic; next_panoramicMain_pic = panoramicMain_pic;
-                                            ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
-                                            ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
-                                            ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-
-                                        }
-
-                                        bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
-                                        LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- 全景主流测试结果：{panoramicMainResult} -- {ori_panoramicMain_pic} : {next_panoramicMain_pic}");
-                                        bool panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
-                                        LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- 全景辅流测试结果：{panoramicSubResult} -- {ori_panoramicSub_pic} : {next_panoramicSub_pic}");
-                                        bool closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
-                                        LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
-                                        bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
-                                        LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-
-
-
-                                        LogSaveOutput($"{_currentIp} - 等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
-                                        await Task.Delay(checkStreamStatusWaitingTime);
-                                        // 根据每个拉流的player获取对应fps、bitrate、cpuusage并判断结果
-                                        bool panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
-                                        LogSaveOutput($"当前全景主流状态测试结果：{panoramicMainStatusResult}");
-                                        bool panoramicSubStatusResult = getStreamStatusResult(player_panoramicSub);
-                                        LogSaveOutput($"当前全景辅流状态测试结果：{panoramicSubStatusResult}");
-                                        bool closeUpMainStatusResult = getStreamStatusResult(player_CloseUpMain);
-                                        LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
-                                        bool closeUpSubStatusResult = getStreamStatusResult(player_CloseUpSub);
-                                        LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
-                                        //所有流关流
-                                        panoramicMainStreamOffBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        panoramicSubStreamOffBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        closeUpMainStreamOffBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        closeUpSubStreamOffBtn_Click(null, null);
-                                        await Task.Delay(100);
-
-                                        //开始检测ai流
-
-                                        ai1StreanOnBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        ai2StreanOnBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        ai3StreanOnBtn_Click(null, null);
-                                        await Task.Delay(100);
-
-                                        // AI1前排流拉流测试出结果
-                                        string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
-                                        LogSaveOutput(ai1_pic);
-                                        await Task.Delay(100);
-
-                                        // AI左后排流拉流测试出结果
-                                        string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
-                                        LogSaveOutput(ai2_pic);
-                                        await Task.Delay(100);
-
-                                        // AI右后排流拉流测试出结果
-                                        string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
-                                        LogSaveOutput(ai3_pic);
-                                        await Task.Delay(100);
-                                        if (item.TestCount == 1)
-                                        {
-                                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
-                                        }
-                                        else
-                                        {
-                                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
-                                        }
-                                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                                        LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                                        LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                                        LogSaveOutput($"{_currentIp} - ota双版本互刷升级后拉流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
-                                        bool ai1StatusResult = getStreamStatusResult(player_ai1);
-                                        LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
-                                        bool ai2StatusResult = getStreamStatusResult(player_ai2);
-                                        LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
-                                        bool ai3StatusResult = getStreamStatusResult(player_ai3);
-                                        LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
-                                        ai1StreanOffBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        ai2StreanOffBtn_Click(null, null);
-                                        await Task.Delay(100);
-                                        ai3StreanOffBtn_Click(null, null);
-                                        await Task.Delay(100);
-
-                                        // 结果呈现，次数增加
-                                        bool isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
-                                        && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult && ai1StatusResult && ai2StatusResult && ai3StatusResult;
-
-                                        LogSaveOutput($"{_currentIp} - {item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
-                                        if (stopTest)
-                                        {
-                                            LogSaveOutput($"{_currentIp} - 手动停止测试！");
-                                            return;
-                                        }
-
-                                        if (isSuccess)
-                                        {
-                                            item.TestCount++;
-                                            item.TestResult = "PASS";
-                                            LogSaveOutput($"{_currentIp} - 【第{item.TestCount}次测试结束，下一次测试即将开始……】");
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            item.TestResult = "FAIL";
-                                            return;
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        LogSaveOutput($"{_currentIp} - 设备【{_currentIp}】升级失败，当前版本：{upgradeDoneVersion}, 期望版本：{nextUpgradePath}");
-                                        item.TestResult = "FAIL";
-                                        upgradeResult = false;
-                                        return;
-                                    }
+                                    item.TestResult = "PASS";
+                                    item.TestCount++;
+                                    LogSaveOutput($"设备【{_currentIp}】升级成功！当前版本：{upgradeDoneVersion}, 期望版本：{nextUpgradePath}");
                                 }
-                                if (update_checkVersionCount >= 30)
+                                else
                                 {
                                     item.TestResult = "FAIL";
                                     upgradeResult = false;
-                                    LogSaveOutput($"{_currentIp} - 长时间没有起来，当前设备 【{_currentIp}】 OTA升级失败，期望版本：【{nextUpgradePath}】");
-                                    return;
+                                    LogSaveOutput($"{_currentIp} - 版本或token验证失败，OTA升级失败！当前版本：{upgradeDoneVersion}");
+                                }
+
+                                // 每轮结束后检查停止
+                                if (stopTest)
+                                {
+                                    item.TestResult = "已停止";
+                                    LogSaveOutput($"{_currentIp} - 手动停止升级测试！");
+                                    break;
+                                }
+
+                                // 升级轮次完成后，等待10秒再进入下一轮
+                                if (upgradeResult)
+                                {
+                                    LogSaveOutput($"{_currentIp} - 第{item.TestCount}轮升级完成，等待10秒后进入下一轮升级...");
+                                    await Task.Delay(10000);
                                 }
                             }
+                            else
+                            {
+                                item.TestResult = "FAIL";
+                                break;
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            upgradeResult = false;
-                            item.TestResult = "FAIL";
-                            break;
+                            LogSaveOutput($"{_currentIp} - case本次测试存在部分异常，跳过并开始下一次测试！\n{ex?.ToString()}");
+                            item.TestResult = "异常，跳过本轮";
+                            await Task.Delay(3000);
                         }
                     }
-                    catch (Exception ex)
+                });
+            }
+            else if (result == DialogResult.No)
+            {
+                // ========== 模式2：OTA升降级+拉流测试 ==========
+                string ori_panoramicMain_pic, next_panoramicMain_pic = "";
+                string ori_panoramicSub_pic, next_panoramicSub_pic = "";
+                string ori_closeUpMain_pic, next_closeUpMain_pic = "";
+                string ori_closeUpSub_pic, next_closeUpSub_pic = "";
+                string ori_ai1_pic, next_ai1_pic = "";
+                string ori_ai2_pic, next_ai2_pic = "";
+                string ori_ai3_pic, next_ai3_pic = "";
+                this.BeginInvoke(async () =>
+                {
+                    while (true)
                     {
-                        LogSaveOutput($"{_currentIp} - case本次测试存在部分异常，跳过并开始下一次测试！\n{ex.ToString()}");
+                        bool upgradeResult = false;
+                        try
+                        {
+                            buttonGetToken_Click(null, null);
+                            await Task.Delay(1000);
+                            string curSysVersion = await getSysVersion();
+                            string nextUpgradePath = "";
+                            LogSaveOutput($"{_currentIp} - 【OTA1：{ota1Path}】");
+                            LogSaveOutput($"{_currentIp} - 【OTA2：{ota2Path}】");
+                            if (ota1Path.Contains(curSysVersion))
+                            {
+                                LogSaveOutput($"{_currentIp} - Ready to : OTA2PATH : {ota2Path} -- {curSysVersion}");
+                                nextUpgradePath = ota2Path;
+                            }
+                            else if (ota2Path.Contains(curSysVersion))
+                            {
+                                LogSaveOutput($"{_currentIp} - Ready to : OTA1PATH : {ota1Path} -- {curSysVersion}");
+                                nextUpgradePath = ota1Path;
+                            }
+                            else
+                            {
+                                LogSaveOutput($"{_currentIp} - 停止测试 - 没有找到能够升级的版本，当前版本：{curSysVersion} 不在您所选择的2种版本中");
+                                item.TestResult = "FAIL";
+                                break;
+                            }
+                            if (stopTest)
+                            {
+                                item.TestResult = "已停止";
+                                LogSaveOutput($"{_currentIp} - 手动停止升级测试！");
+                                break;
+                            }
+                            if (nextUpgradePath != "")
+                            {
+                                LogSaveOutput($"{_currentIp} - 当前版本：{curSysVersion}，即将升级的版本：{nextUpgradePath}");
+                                if (await _api.UploadFirmwareAsync_SKDL_new(nextUpgradePath) == "success")
+                                {
+                                    if (await _api.StartUpdate() == "success")
+                                    {
+                                        int update_checkCount = 0;
+                                        bool upgradeStarted = false;
+                                        while (true)
+                                        {
+                                            if (stopTest)
+                                            {
+                                                item.TestResult = "已停止";
+                                                LogSaveOutput($"{_currentIp} - 手动停止升级测试！");
+                                                break;
+                                            }
+                                            string progress = await _api.CheckUpgradeStaus("progress");
+                                            string status = await _api.CheckUpgradeStaus("status");
+                                            if (!upgradeStarted && (int.TryParse(progress, out int p) && p > 0 || status != "not start"))
+                                            {
+                                                upgradeStarted = true;
+                                            }
+                                            LogSaveOutput($"{_currentIp} - 当前升级进度【{progress}】 -- 升级状态 【{status}】");
+                                            if (progress == "100" || status == "completed")
+                                            {
+                                                LogSaveOutput($"{_currentIp} - 升级完成，等待设备重启...");
+                                                await Task.Delay(60000);
+                                                upgradeResult = true;
+                                                break;
+                                            }
+                                            if (upgradeStarted && (
+                                                (progress == "99" && (status == "update" || status == "fail")) ||
+                                                (progress == "0" && status == "not start")
+                                            ))
+                                            {
+                                                LogSaveOutput($"{_currentIp} - 检测到设备在重启，等待60秒...");
+                                                await Task.Delay(60000);
+                                                upgradeResult = true;
+                                                break;
+                                            }
+                                            if (update_checkCount >= 120)
+                                            {
+                                                upgradeResult = false;
+                                                item.TestResult = "FAIL";
+                                                LogSaveOutput($"{_currentIp} - 升级流程超时！");
+                                                break;
+                                            }
+                                            await Task.Delay(1000);
+                                            update_checkCount += 1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        LogSaveOutput($"{_currentIp} - 触发升级失败，请检查设备状态！");
+                                        item.TestResult = "FAIL";
+                                        upgradeResult = false;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    LogSaveOutput($"{_currentIp} - ota包上传失败，请检查！\n{nextUpgradePath}");
+                                    item.TestResult = "FAIL";
+                                    upgradeResult = false;
+                                    break;
+                                }
+                            }
+                            if (upgradeResult)
+                            {
+                                LogSaveOutput($"{_currentIp} - ota升级完成，正在获取token并验证版本...");
+                                buttonGetToken_Click(null, null);
+                                await Task.Delay(2000);
+                                string token = "";
+                                try { token = token_input?.Text ?? ""; } catch { token = ""; }
+                                string upgradeDoneVersion = await _api.GetSysVerison();
+                                if (!string.IsNullOrEmpty(upgradeDoneVersion) && !string.IsNullOrEmpty(token)
+                                    && upgradeDoneVersion != curSysVersion && nextUpgradePath.Contains(upgradeDoneVersion))
+                                {
+                                    item.TestResult = "PASS";
+                                    item.TestCount++;
+                                    LogSaveOutput($"设备【{_currentIp}】升级成功！当前版本：{upgradeDoneVersion}, 期望版本：{nextUpgradePath}");
+                                }
+                                else
+                                {
+                                    item.TestResult = "FAIL";
+                                    upgradeResult = false;
+                                    LogSaveOutput($"{_currentIp} - 版本或token验证失败，OTA升级失败！当前版本：{upgradeDoneVersion}");
+                                }
+                                if (stopTest)
+                                {
+                                    item.TestResult = "已停止";
+                                    LogSaveOutput($"{_currentIp} - 手动停止升级测试！");
+                                    break;
+                                }
+                                if (upgradeResult)
+                                {
+                                    LogSaveOutput($"{_currentIp} - ========== OTA升级成功，开始拉流测试 ==========");
+                                    await Task.Delay(5000);
+                                    // ========== 阶段1：4路主辅流并行测试 ==========
+                                    LogSaveOutput($"========== 阶段1：4路主辅流并行测试开始 ==========");
+                                    panoramicMainStreamOnBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    panoramicSubStreamOnBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    closeUpMainStreamOnBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    closeUpSubStreamOnBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    ai1StreanOffBtn_Click(null, null);
+                                    ai2StreanOffBtn_Click(null, null);
+                                    ai3StreanOffBtn_Click(null, null);
+                                    string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
+                                    LogSaveOutput(panoramicMain_pic);
+                                    string panoramicSub_pic = await SafeSnapshotAsync(player_panoramicSub, testFolder, "全景辅流");
+                                    LogSaveOutput(panoramicSub_pic);
+                                    string closeUpMain_pic = await SafeSnapshotAsync(player_CloseUpMain, testFolder, "特写主流");
+                                    LogSaveOutput(closeUpMain_pic);
+                                    string closeUpSub_pic = await SafeSnapshotAsync(player_CloseUpSub, testFolder, "特写辅流");
+                                    LogSaveOutput(closeUpSub_pic);
+                                    if (item.TestCount == 1)
+                                    {
+                                        ori_panoramicMain_pic = panoramicMain_pic; next_panoramicMain_pic = panoramicMain_pic;
+                                        ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
+                                        ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
+                                        ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
+                                    }
+                                    else
+                                    {
+                                        ori_panoramicMain_pic = next_panoramicMain_pic; next_panoramicMain_pic = panoramicMain_pic;
+                                        ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
+                                        ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
+                                        ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
+                                    }
+                                    bool panoramicMainResult = checkPICValid(ori_panoramicMain_pic, next_panoramicMain_pic);
+                                    LogSaveOutput($"OTA后拉流压测 -- 全景主流测试结果：{panoramicMainResult}");
+                                    bool panoramicSubResult = checkPICValid(ori_panoramicSub_pic, next_panoramicSub_pic);
+                                    LogSaveOutput($"OTA后拉流压测 -- 全景辅流测试结果：{panoramicSubResult}");
+                                    bool closeUpMainResult = checkPICValid(ori_closeUpMain_pic, next_closeUpMain_pic);
+                                    LogSaveOutput($"OTA后拉流压测 -- 特写主流测试结果：{closeUpMainResult}");
+                                    bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
+                                    LogSaveOutput($"OTA后拉流压测 -- 特写辅流测试结果：{closeUpSubResult}");
+                                    LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查4路主辅流状态……");
+                                    await Task.Delay(checkStreamStatusWaitingTime);
+                                    bool panoramicMainStatusResult = getStreamStatusResult(player_panoramicMain);
+                                    LogSaveOutput($"当前全景主流状态测试结果：{panoramicMainStatusResult}");
+                                    bool panoramicSubStatusResult = getStreamStatusResult(player_panoramicSub);
+                                    LogSaveOutput($"当前全景辅流状态测试结果：{panoramicSubStatusResult}");
+                                    bool closeUpMainStatusResult = getStreamStatusResult(player_CloseUpMain);
+                                    LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
+                                    bool closeUpSubStatusResult = getStreamStatusResult(player_CloseUpSub);
+                                    LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
+                                    panoramicMainStreamOffBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    panoramicSubStreamOffBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    closeUpMainStreamOffBtn_Click(null, null);
+                                    await Task.Delay(100);
+                                    closeUpSubStreamOffBtn_Click(null, null);
+                                    await Task.Delay(200);
+                                    bool stage1Pass = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult
+                                                    && panoramicMainStatusResult && panoramicSubStatusResult && closeUpMainStatusResult && closeUpSubStatusResult;
+                                    if (!stage1Pass)
+                                    {
+                                        LogSaveOutput($"阶段1（4路主辅流）测试FAIL，跳过AI流测试");
+                                        ai1StreanOffBtn_Click(null, null);
+                                        ai2StreanOffBtn_Click(null, null);
+                                        ai3StreanOffBtn_Click(null, null);
+                                        item.TestResult = "FAIL";
+                                        break;
+                                    }
+                                    LogSaveOutput($"========== 阶段1完成，4路主辅流全部PASS ==========");
+                                    // ========== 阶段2：AI流串行测试 ==========
+                                    LogSaveOutput($"========== 阶段2：AI流串行测试开始 ==========");
+                                    bool ai1Result = false, ai2Result = false, ai3Result = false;
+                                    bool ai1StatusResult = false, ai2StatusResult = false, ai3StatusResult = false;
+                                    // AI1
+                                    LogSaveOutput($"阶段2-1：测试AI1前排流");
+                                    ai1StreanOnBtn_Click(null, null);
+                                    await Task.Delay(3000);
+                                    string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                                    LogSaveOutput(ai1_pic);
+                                    if (item.TestCount == 1)
+                                    {
+                                        ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
+                                    }
+                                    else
+                                    {
+                                        ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
+                                    }
+                                    ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+                                    LogSaveOutput($"OTA后拉流压测 -- AI1流测试结果：{ai1Result}");
+                                    ai1StatusResult = getStreamStatusResult(player_ai1);
+                                    LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
+                                    ai1StreanOffBtn_Click(null, null);
+                                    await Task.Delay(200);
+                                    if (!ai1Result || !ai1StatusResult)
+                                    {
+                                        LogSaveOutput($"AI1前排流测试FAIL，跳过后续AI流测试");
+                                        ai2StreanOffBtn_Click(null, null);
+                                        ai3StreanOffBtn_Click(null, null);
+                                        item.TestResult = "FAIL";
+                                        break;
+                                    }
+                                    // AI2
+                                    LogSaveOutput($"阶段2-2：测试AI2左后排流");
+                                    ai2StreanOnBtn_Click(null, null);
+                                    await Task.Delay(3000);
+                                    string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI2左后排流");
+                                    LogSaveOutput(ai2_pic);
+                                    if (item.TestCount == 1)
+                                    {
+                                        ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+                                    }
+                                    else
+                                    {
+                                        ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+                                    }
+                                    ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                                    LogSaveOutput($"OTA后拉流压测 -- AI2左后排流测试结果：{ai2Result}");
+                                    ai2StatusResult = getStreamStatusResult(player_ai2);
+                                    LogSaveOutput($"当前AI2流状态测试结果：{ai2StatusResult}");
+                                    ai2StreanOffBtn_Click(null, null);
+                                    await Task.Delay(200);
+                                    if (!ai2Result || !ai2StatusResult)
+                                    {
+                                        LogSaveOutput($"AI2左后排流测试FAIL，跳过AI3测试");
+                                        ai3StreanOffBtn_Click(null, null);
+                                        item.TestResult = "FAIL";
+                                        break;
+                                    }
+                                    // AI3
+                                    LogSaveOutput($"阶段2-3：测试AI3右后排流");
+                                    ai3StreanOnBtn_Click(null, null);
+                                    await Task.Delay(3000);
+                                    string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI3右后排流");
+                                    LogSaveOutput(ai3_pic);
+                                    if (item.TestCount == 1)
+                                    {
+                                        ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                                    }
+                                    else
+                                    {
+                                        ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                                    }
+                                    ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                                    LogSaveOutput($"OTA后拉流压测 -- AI3右后排流测试结果：{ai3Result}");
+                                    ai3StatusResult = getStreamStatusResult(player_ai3);
+                                    LogSaveOutput($"当前AI3流状态测试结果：{ai3StatusResult}");
+                                    ai3StreanOffBtn_Click(null, null);
+                                    await Task.Delay(200);
+                                    if (!ai3Result || !ai3StatusResult)
+                                    {
+                                        LogSaveOutput($"AI3右后排流测试FAIL");
+                                        item.TestResult = "FAIL";
+                                        break;
+                                    }
+                                    LogSaveOutput($"========== 阶段2完成，AI流全部PASS ==========");
+                                    LogSaveOutput($"{item.Name} 第{item.TestCount}次 OTA升降级+拉流测试结束，测试结果为：{item.TestResult}");
+                                    await Task.Delay(10000);
+                                }
+                            }
+                            else
+                            {
+                                item.TestResult = "FAIL";
+                                break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogSaveOutput($"{_currentIp} - case本次测试存在部分异常，跳过并开始下一次测试！\n{ex?.ToString()}");
+                            item.TestResult = "异常，跳过本轮";
+                            await Task.Delay(3000);
+                        }
                     }
-
-                }
-            });
+                });
+            }
         }
-
-
         private async void TestCase20(TestCases item)
         {
 
@@ -5638,12 +6424,7 @@ namespace skdl_new_2025_test_tool
                         await Task.Delay(100);
                         closeUpSubStreamOnBtn_Click(null, null);
                         await Task.Delay(100);
-                        ai1StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai2StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai3StreanOnBtn_Click(null, null);
-                        await Task.Delay(100);
+                        
 
                         // 全景主流拉流测试出结果
                         string panoramicMain_pic = await SafeSnapshotAsync(player_panoramicMain, testFolder, "全景主流");
@@ -5665,20 +6446,6 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput(closeUpSub_pic);
                         await Task.Delay(100);
 
-                        // AI1前排流拉流测试出结果
-                        string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
-                        LogSaveOutput(ai1_pic);
-                        await Task.Delay(100);
-
-                        // AI左后排流拉流测试出结果
-                        string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
-                        LogSaveOutput(ai2_pic);
-                        await Task.Delay(100);
-
-                        // AI右后排流拉流测试出结果
-                        string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
-                        LogSaveOutput(ai3_pic);
-                        await Task.Delay(100);
 
                         if (item.TestCount == 1)
                         {
@@ -5686,9 +6453,7 @@ namespace skdl_new_2025_test_tool
                             ori_panoramicSub_pic = panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                             ori_closeUpMain_pic = closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                             ori_closeUpSub_pic = closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                           
                         }
                         else
                         {
@@ -5696,9 +6461,7 @@ namespace skdl_new_2025_test_tool
                             ori_panoramicSub_pic = next_panoramicSub_pic; next_panoramicSub_pic = panoramicSub_pic;
                             ori_closeUpMain_pic = next_closeUpMain_pic; next_closeUpMain_pic = closeUpMain_pic;
                             ori_closeUpSub_pic = next_closeUpSub_pic; next_closeUpSub_pic = closeUpSub_pic;
-                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                          
                         }
 
 
@@ -5710,12 +6473,6 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"当前重启设备，全视频流压测 -- 特写主流测试结果：{closeUpMainResult} -- {ori_closeUpMain_pic} : {next_closeUpMain_pic}");
                         bool closeUpSubResult = checkPICValid(ori_closeUpSub_pic, next_closeUpSub_pic);
                         LogSaveOutput($"当前重启设备，全视频流压测 -- 特写辅流测试结果：{closeUpSubResult} -- {ori_closeUpSub_pic} : {next_closeUpSub_pic}");
-                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                        LogSaveOutput($"当前重启设备，全视频流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                        LogSaveOutput($"当前重启设备，全视频流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                        LogSaveOutput($"当前重启设备，全视频流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
 
                         LogSaveOutput($"等待{checkStreamStatusWaitingTime / 1000}秒，检查所有拉流状态……");
                         await Task.Delay(checkStreamStatusWaitingTime);
@@ -5728,12 +6485,94 @@ namespace skdl_new_2025_test_tool
                         LogSaveOutput($"当前特写主流状态测试结果：{closeUpMainStatusResult}");
                         bool closeUpSubStatusResult = getStreamStatusResult(player_CloseUpSub);
                         LogSaveOutput($"当前特写辅流状态测试结果：{closeUpSubStatusResult}");
-                        bool ai1StatusResult = getStreamStatusResult(player_ai1);
+                        
+                        panoramicMainStreamOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        panoramicSubStreamOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        closeUpMainStreamOffBtn_Click(null, null);
+                        await Task.Delay(100);
+                        closeUpSubStreamOffBtn_Click(null, null);
+                        await Task.Delay(2000);
+
+
+                        //ai单独拉流
+                        ai1StreanOnBtn_Click(null, null);
+                        await Task.Delay(1000);
+                        // AI1前排流拉流测试出结果
+                        string ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                        LogSaveOutput(ai1_pic);
+                        await Task.Delay(100);
+                        if (item.TestCount == 1)
+                        {
+                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
+                        }
+                        else
+                        {
+                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
+                        }
+
+                            bool ai1StatusResult = getStreamStatusResult(player_ai1);
                         LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
+
+
+                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+                        LogSaveOutput($"当前重启设备，全视频流压测 -- AI1流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
+
+                        await Task.Delay(100);
+                        ai1StreanOffBtn_Click(null, null);
+                        await Task.Delay(3000);
+
+                        //ai2单独拉流
+                        ai2StreanOnBtn_Click(null, null);
+                        await Task.Delay(2000);
+                        // AI左后排流拉流测试出结果
+                        string ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI左后排流");
+                        LogSaveOutput(ai2_pic);
+                        await Task.Delay(100);
+                        if(item.TestCount == 1)
+                        {
+                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+                        }
+                        else
+                        {
+                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+                        }
+                            bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                        LogSaveOutput($"当前重启设备，全视频流压测 -- AI2左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
+
                         bool ai2StatusResult = getStreamStatusResult(player_ai2);
                         LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
+
+                        await Task.Delay(100);
+                        ai2StreanOffBtn_Click(null, null);
+                        await Task.Delay(3000);
+
+                        //ai3单独拉流
+                        ai3StreanOnBtn_Click(null, null);
+                        await Task.Delay(100);
+                        // AI右后排流拉流测试出结果
+                        string ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI右后排流");
+                        LogSaveOutput(ai3_pic);
+                        await Task.Delay(100);
+                        if (item.TestCount == 1)
+                        {
+
+                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                        }
+                        else
+                        {
+                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                        }
+                            bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                        LogSaveOutput($"当前重启设备，全视频流压测 -- AI3右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
+
                         bool ai3StatusResult = getStreamStatusResult(player_ai3);
                         LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
+
+                        await Task.Delay(100);
+                        ai3StreanOffBtn_Click(null, null);
+                        await Task.Delay(3000);
 
                         // 结果呈现，次数增加
                         bool isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
@@ -5749,22 +6588,6 @@ namespace skdl_new_2025_test_tool
                             item.TestResult = "FAIL";
                             break;
                         }
-
-                        // 所有流关流
-                        panoramicMainStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        panoramicSubStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        closeUpMainStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        closeUpSubStreamOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai1StreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai2StreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai3StreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
 
                         LogSaveOutput($"{item.Name} 第{item.TestCount}次 结束，测试结果为：{item.TestResult}");
                         if (stopTest)
@@ -6541,28 +7364,79 @@ namespace skdl_new_2025_test_tool
 
                         //等所有的流关闭后再执行ai流的测试
                         LogSaveOutput("AI流已启动，等待稳定中（3秒）...");
-                        await Task.Delay(3000);
+                        await Task.Delay(2000);
                         ai1StreanOnBtn_Click(null, null);
-                        await Task.Delay(1000);
-                        ai2StreanOnBtn_Click(null, null);
-                        await Task.Delay(3000);
-                        ai3StreanOnBtn_Click(null, null);
                         await Task.Delay(5000);
 
-                        //ai1
+                        string ai1_pic = "", ai2_pic = "", ai3_pic = "";
+                        ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                        LogSaveOutput(ai1_pic);
+
+                        if(ai1_pic == "")
+                        {
+                            ai1StreanOnBtn_Click(null, null);
+                            LogSaveOutput("截图失败,触发重试!");
+                            await Task.Delay(3000);
+                            ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
+                        }
+
+                        if (item.TestCount == 1)
+                        {
+                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
+                        }
+                        else
+                        {
+                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
+                        }
+                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
+
                         bool ai1Ready = getStreamStatusResult(player_ai1);
                         LogSaveOutput($"AI1就绪状态: {ai1Ready}, FPS={player_ai1.GetPlayerStatus().Fps}, Bitrate={player_ai1.GetPlayerStatus().TotalBitrateKbps}Kbps");
                         if (!ai1Ready)
                         {
-                            for (int i = 0; i < 3; i++)
+                            for (int i = 0; i < 5; i++)
                             {
-                                await Task.Delay(1000);
+                                await Task.Delay(3000);
                                 ai1Ready = getStreamStatusResult(player_ai1);
                                 LogSaveOutput($"AI1第{i + 1}次重检: {ai1Ready}, FPS={player_ai1.GetPlayerStatus().Fps}");
                                 if (ai1Ready) break;
                             }
                         }
+                        // AI1前排流拉流测试出结果
+                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI1RTMP流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
+                        ai1StreanOffBtn_Click(null, null);
+                        await Task.Delay(5000);
 
+
+
+                        //ai2开始
+                        ai2StreanOnBtn_Click(null, null);
+                        await Task.Delay(3000);
+                        ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI2左后排流");
+                        LogSaveOutput(ai2_pic);
+                        if(ai2_pic == "")
+                        {
+                            ai2StreanOnBtn_Click(null, null);
+                            await Task.Delay(3000);
+                            ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI2左后排流");
+                            LogSaveOutput(ai2_pic);
+                        }
+
+                        if (item.TestCount == 1)
+                        {
+
+                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
+
+                        }
+                        else
+                        {
+
+                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
+
+                        }
+                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
+                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI2RTMP左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
+                        
                         // AI2
                         bool ai2Ready = getStreamStatusResult(player_ai2);
                         LogSaveOutput($"AI2就绪状态: {ai2Ready}, FPS={player_ai2.GetPlayerStatus().Fps}, Bitrate={player_ai2.GetPlayerStatus().TotalBitrateKbps}Kbps");
@@ -6570,14 +7444,43 @@ namespace skdl_new_2025_test_tool
                         {
                             for (int i = 0; i < 5; i++)
                             {
-                                await Task.Delay(3000);
+                                await Task.Delay(5000);
                                 ai2Ready = getStreamStatusResult(player_ai2);
                                 LogSaveOutput($"AI2第{i + 1}次重检: {ai2Ready}, FPS={player_ai2.GetPlayerStatus().Fps}");
-                                if (i == 2) ai2StreanOnBtn_Click(null, null);
+                                
                                 if (ai2Ready) break;
                             }
                         }
+                        ai2StreanOffBtn_Click(null, null);
+                        await Task.Delay(5000);
 
+
+                        //单独测试ai3
+                        ai3StreanOnBtn_Click(null, null);
+                        await Task.Delay(3000);
+
+                        ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI3右后排流");
+                        LogSaveOutput(ai3_pic);
+                        if (ai3_pic == "")
+                        {
+                            ai3StreanOnBtn_Click(null, null);
+                            LogSaveOutput("截图失败，触发重试！");
+                            await Task.Delay(3000);
+                            ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI3右后排流");
+                        }
+
+                        if (item.TestCount == 1)
+                        {
+
+                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
+                        }
+                        else
+                        {
+
+                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
+                        }
+                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
+                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI3RTMP右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
                         // AI3
                         bool ai3Ready = getStreamStatusResult(player_ai3);
                         LogSaveOutput($"AI3就绪状态: {ai3Ready}, FPS={player_ai3.GetPlayerStatus().Fps}, Bitrate={player_ai3.GetPlayerStatus().TotalBitrateKbps}Kbps");
@@ -6588,75 +7491,12 @@ namespace skdl_new_2025_test_tool
                                 await Task.Delay(5000);
                                 ai3Ready = getStreamStatusResult(player_ai3);
                                 LogSaveOutput($"AI3第{i + 1}次重检: {ai3Ready}, FPS={player_ai3.GetPlayerStatus().Fps}");
-                                if (i == 2) ai3StreanOnBtn_Click(null, null);
+                                
                                 if (ai3Ready) break;
                             }
                         }
-
-
-                        // AI1前排流拉流测试出结果
-                        string ai1_pic = "", ai2_pic = "", ai3_pic = "";
-                        if (ai1Ready)
-                        {
-                            ai1_pic = await SafeSnapshotAsync(player_ai1, testFolder, "AI1前排流");
-                            LogSaveOutput(ai1_pic);
-                        }
-                        else
-                        {
-                            LogSaveOutput("【AI1未就绪，已跳过截图】");
-                        }
-
-                        if (ai2Ready)
-                        {
-                            ai2_pic = await SafeSnapshotAsync(player_ai2, testFolder, "AI2左后排流");
-                            LogSaveOutput(ai2_pic);
-                        }
-                        else
-                        {
-                            LogSaveOutput("【AI2未就绪，已跳过截图】");
-                        }
-
-                        if (ai3Ready)
-                        {
-                            ai3_pic = await SafeSnapshotAsync(player_ai3, testFolder, "AI3右后排流");
-                            LogSaveOutput(ai3_pic);
-                        }
-                        else
-                        {
-                            LogSaveOutput("【AI3未就绪，已跳过截图】");
-                        }
-
-
-                        if (item.TestCount == 1)
-                        {
-                            ori_ai1_pic = ai1_pic; next_ai1_pic = ai1_pic;
-                            ori_ai2_pic = ai2_pic; next_ai2_pic = ai2_pic;
-                            ori_ai3_pic = ai3_pic; next_ai3_pic = ai3_pic;
-                        }
-                        else
-                        {
-                            ori_ai1_pic = next_ai1_pic; next_ai1_pic = ai1_pic;
-                            ori_ai2_pic = next_ai2_pic; next_ai2_pic = ai2_pic;
-                            ori_ai3_pic = next_ai3_pic; next_ai3_pic = ai3_pic;
-                        }
-
-                        bool ai1Result = checkPICValid(ori_ai1_pic, next_ai1_pic);
-                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI1RTMP流测试结果：{ai1Result} -- {ori_ai1_pic} : {next_ai1_pic}");
-                        bool ai2Result = checkPICValid(ori_ai2_pic, next_ai2_pic);
-                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI2RTMP左后排流测试结果：{ai2Result} -- {ori_ai2_pic} : {next_ai2_pic}");
-                        bool ai3Result = checkPICValid(ori_ai3_pic, next_ai3_pic);
-                        LogSaveOutput($"当前Clumsy限速{input1_clumsyLimit.Text}%后 -- AI3RTMP右后排流测试结果：{ai3Result} -- {ori_ai3_pic} : {next_ai3_pic}");
-
-                        //bool ai1StatusResult = getStreamStatusResult(player_ai1);
-                        //LogSaveOutput($"当前AI1流状态测试结果：{ai1StatusResult}");
-                        //bool ai2StatusResult = getStreamStatusResult(player_ai2);
-                        //LogSaveOutput($"当前AI2左后排流状态测试结果：{ai2StatusResult}");
-                        //bool ai3StatusResult = getStreamStatusResult(player_ai3);
-                        //LogSaveOutput($"当前AI3右后排流状态测试结果：{ai3StatusResult}");
-
-
-
-
+                        ai3StreanOffBtn_Click(null, null);
+                        await Task.Delay(2000);
 
                         // 结果呈现，次数增加
                         bool isSuccess = panoramicMainResult && panoramicSubResult && closeUpMainResult && closeUpSubResult && ai1Result && ai2Result && ai3Result
@@ -6685,12 +7525,7 @@ namespace skdl_new_2025_test_tool
                             break;
                         }
 
-                        ai1StreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai2StreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
-                        ai3StreanOffBtn_Click(null, null);
-                        await Task.Delay(100);
+                       
 
                         clumsyStopLimitSpeedBtn_Click(null, null);
                         await Task.Delay(3000);
@@ -7653,7 +8488,7 @@ namespace skdl_new_2025_test_tool
             });
         }
 
-
+        //只测试前四路
         private async void TestCase3_1(TestCases item)
         {
             LogSaveOutput($"测试用例：【{item.Name}】运行中");
@@ -7788,7 +8623,7 @@ namespace skdl_new_2025_test_tool
             });
         }
 
-
+        //只测试ai流
         private async void TestCase3(TestCases item)
         {
             LogSaveOutput($"测试用例：【{item.Name}】运行中");
@@ -8129,27 +8964,41 @@ namespace skdl_new_2025_test_tool
 
         private bool getStreamStatusResult(OpenCvRtspPlayer player)
         {
-            bool curStreamStatusResult = false;
+            float maxFps = 0;
+            float maxBitRate = 0;
+            bool isActuallyPlaying = false;
 
-            var status = player.GetPlayerStatus();
-            float cur_fps = status.Fps;
-            float cur_BitRate = status.TotalBitrateKbps / 1024;
-            //float cur_CpuUsage = status.CpuUsage;
+            for (int i = 0; i < 5; i++)
+            {
+                var status = player.GetPlayerStatus();
+                maxFps = Math.Max(maxFps, status.Fps);
+                maxBitRate = Math.Max(maxBitRate, status.TotalBitrateKbps / 1024);
+                if (player.IsPlaying && status.IsPlaying)
+                {
+                    isActuallyPlaying = true;
+                }
+                if (i < 4) Thread.Sleep(300);
+            }
 
-            bool fpsCheckResult = cur_fps > 0.1f ? true : false;
-            bool bitRateCheckResult = cur_BitRate > 0.1f ? true : false;
-            //bool cpuUsageCheckResult = cur_CpuUsage > 0 ? true : false;
+            bool fpsCheckResult = maxFps > 0.1f;
+            bool bitRateCheckResult = true; // 允许码率为0，不做检查
+            LogSaveOutput($"FPS采样5次取最大值: maxFps={maxFps:F1}, maxBitRate={maxBitRate:F2}Mbps, isPlaying={isActuallyPlaying}, 最终判定={fpsCheckResult && bitRateCheckResult && isActuallyPlaying}");
 
-            LogSaveOutput($"当前帧率、码率、cpu占用情况:fps:{cur_fps:F1} -- bitrate: {cur_BitRate:F2}Mbps,结果为:{fpsCheckResult}");
-            //LogSaveOutput($"当前全景主流帧率、码率、cpu占用情况:fps:{cur_fps:F1} -- cpu:{cur_CpuUsage:F1} -- bitrate: {cur_BitRate / 1024:F2}Mbps,结果为:{fpsCheckResult},{bitRateCheckResult}, {cpuUsageCheckResult}");
-            bool isActuallyPlaying = player.IsPlaying
-            && player.GetPlayerStatus().IsPlaying;
             if (!isActuallyPlaying)
                 LogSaveOutput("请检查视频是否正在播放！");
-            //curStreamStatusResult = fpsCheckResult && bitRateCheckResult && cpuUsageCheckResult;
-            curStreamStatusResult = fpsCheckResult && isActuallyPlaying;
 
-            return curStreamStatusResult;
+            return fpsCheckResult && bitRateCheckResult && isActuallyPlaying;
+        }
+        private float getStreamFps(OpenCvRtspPlayer player)
+        {
+            try
+            {
+                return player?.GetPlayerStatus().Fps ?? 0f;
+            }
+            catch
+            {
+                return 0f;
+            }
         }
 
 
@@ -17468,62 +18317,392 @@ namespace skdl_new_2025_test_tool
 
         }
 
+        //private void RealExit()
+        //{
+        //    try
+        //    {
+        //        // 强制释放资源
+        //        GC.Collect();
+
+        //        // 杀掉自己 (推荐使用 Environment.Exit 代替 taskkill，更快更干净)
+        //        System.Environment.Exit(0);
+        //    }
+        //    catch
+        //    {
+        //        // 如果 Environment.Exit 失败，再尝试暴力查杀
+        //        Process.GetCurrentProcess().Kill();
+        //    }
+        //}
+        //// 定义一个标志位，防止死循环
+        //private bool _isCleaningUp = false;
+        ////辅助方法: 杀死指定进程
+        //public static string executeCMDCommand_Admin(string command)
+        //{
+        //    Process process_cmd = new Process();
+        //    try
+        //    {
+        //        // 以管理员权限启动进程
+        //        process_cmd.StartInfo.FileName = "cmd.exe";
+        //        process_cmd.StartInfo.Verb = "runas";  // ← 关键：请求管理员权限
+        //        process_cmd.StartInfo.Arguments = "/C " + command;  // 直接传命令
+        //        process_cmd.StartInfo.CreateNoWindow = true;
+        //        process_cmd.StartInfo.UseShellExecute = true;  // ← 必须为 true 才能配合 Verb=runas
+        //        process_cmd.Start();
+        //        process_cmd.WaitForExit();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ex.ToString();
+        //    }
+        //    finally
+        //    {
+        //        process_cmd.Close();
+        //    }
+        //    return "";
+        //}
+
+        //private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        //{
+        //    // 1. 如果正在清理中，直接允许关闭
+        //    if (_isCleaningUp)
+        //    {
+        //        return;
+        //    }
+
+        //    // 2. 拦截关闭事件，防止窗口直接消失
+        //    e.Cancel = true;
+
+        //    // 3. 弹出确认框
+        //    DialogResult result = AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+        //        "关闭工具提醒确认",
+        //        "如果工具正在使用中，请勿关闭，您确定要关闭程序吗?",
+        //        AntdUI.TType.Warn));
+
+        //    if (result != DialogResult.Yes && result != DialogResult.OK)
+        //    {
+        //        pageHeader1.Loading = false;
+        //        return;
+        //    }
+
+        //    // 4. 用户确认关闭
+        //    pageHeader1.Loading = true;
+        //    _isCleaningUp = true;
+
+        //    // 5. 启动后台清理
+        //    Task.Run(async () =>
+        //    {
+        //        try
+        //        {
+        //            // === 停止所有播放器（并行，最多等5秒）===
+        //            var stopTasks = new[]
+        //            {
+        //        Task.Run(() => { try { player_panoramicMain?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_panoramicSub?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_CloseUpMain?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_CloseUpSub?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_ai1?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_ai2?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_ai3?.Stop(); } catch { } }),
+        //    };
+
+        //            // 最多等5秒后强制退出
+        //            await Task.WhenAll(stopTasks).WaitAsync(TimeSpan.FromSeconds(5));
+        //        }
+        //        catch { }
+        //        finally
+        //        {
+        //            // === 杀进程 ===
+        //            string[] procs = { "ffmpeg", "ffprobe", "clumsy" };
+        //            foreach (var p in procs)
+        //            {
+        //                try { WindowsFunc.executeCMDCommand($"/C taskkill /F /IM {p}.exe"); } catch { }
+        //            }
+
+        //            // === 5秒超时后强制杀进程 ===
+        //            this.BeginInvoke(new Action(() =>
+        //            {
+        //                AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+        //                    "关闭操作通知",
+        //                    "程序关闭已完成",
+        //                    AntdUI.TType.Success)
+        //                {
+        //                    CancelText = null,
+        //                    OkText = "退出",
+        //                    OnOk = (conf) => { RealExit(); return true; }
+        //                });
+        //                pageHeader1.Loading = false;
+        //            }));
+        //        }
+        //    });
+        //}
+
+        ////将上述三个函数总结成一个函数，方便调用，超时5秒必强制退出,不会卡死ui
+        //// 标志位：防止关闭事件重入
+        //private bool _isClosing = false;
+
+        //private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        //{
+        //    if (_isClosing) return;
+
+        //    DialogResult result = AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+        //        "关闭工具提醒确认",
+        //        "如果工具正在使用中，请勿关闭，您确定要关闭程序吗？",
+        //        AntdUI.TType.Warn));
+
+        //    if (result != DialogResult.Yes && result != DialogResult.OK)
+        //    {
+        //        e.Cancel = true;
+        //        return;
+        //    }
+
+        //    _isClosing = true;
+        //    e.Cancel = false;  // 窗体立即关闭
+
+        //    // 启动清理任务，并设置 5 秒超时
+        //    var cleanupTask = Task.Run(() =>
+        //    {
+        //        try
+        //        {
+        //            // 停止所有播放器
+        //            var players = new OpenCvRtspPlayer[]
+        //            {
+        //        player_panoramicMain, player_panoramicSub,
+        //        player_CloseUpMain, player_CloseUpSub,
+        //        player_ai1, player_ai2, player_ai3,
+        //        player_rtmp_panoramicMain, player_rtmp_panoramicSub,
+        //        player_rtmp_closeUpMain, player_rtmp_closeUpSub,
+        //        player1, vc51_player1, vc51_player2
+        //            };
+        //            foreach (var p in players) try { p?.Stop(); } catch { }
+
+        //            // 停止 UVC
+        //            try { camera1?.Dispose(); pictureBox_uvcStream.Image?.Dispose(); pictureBox_uvcStream.Image = null; } catch { }
+
+        //            // 杀死子进程
+        //            string[] killNames = { "ffmpeg", "ffprobe", "clumsy", "ffplay" };
+        //            foreach (string name in killNames)
+        //            {
+        //                try
+        //                {
+        //                    using var killer = new Process();
+        //                    killer.StartInfo.FileName = "taskkill";
+        //                    killer.StartInfo.Arguments = $"/F /IM {name}.exe";
+        //                    killer.StartInfo.UseShellExecute = false;
+        //                    killer.StartInfo.CreateNoWindow = true;
+        //                    killer.Start();
+        //                    killer.WaitForExit(2000);
+        //                }
+        //                catch { }
+        //            }
+
+        //            // 关闭串口
+        //            try { if (WindowsFunc.comm != null && WindowsFunc.comm.IsOpen) WindowsFunc.comm.Close(); } catch { }
+
+        //            // 清理成功，回到 UI 线程显示成功弹窗
+        //            if (!this.IsDisposed)
+        //            {
+        //                this.BeginInvoke(new Action(() =>
+        //                {
+        //                    AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+        //                        "关闭操作通知",
+        //                        "程序关闭已完成",
+        //                        AntdUI.TType.Success)
+        //                    {
+        //                        CancelText = null,
+        //                        OkText = "退出",
+        //                        OnOk = (conf) => { RealExit(); return true; }
+        //                    });
+        //                }));
+        //            }
+        //            else
+        //            {
+        //                RealExit();
+        //            }
+        //        }
+        //        catch
+        //        {
+        //            RealExit();
+        //        }
+        //    });
+
+        //    // 等待清理任务完成，最多 5 秒
+        //    bool completed = cleanupTask.Wait(5000);
+        //    if (!completed)
+        //    {
+        //        // 超时，直接强制退出（不等待弹窗）
+        //        RealExit();
+        //    }
+        //}
+
+        //private void RealExit()
+        //{
+        //    try
+        //    {
+        //        GC.Collect();
+        //        Environment.Exit(0);
+        //    }
+        //    catch
+        //    {
+        //        Process.GetCurrentProcess().Kill();
+        //    }
+        //}
+
+        //第二版------------
+
+        //private bool _isCleaningUp = false;
+
+        //private void RealExit()
+        //{
+        //    try
+        //    {
+        //        GC.Collect();
+        //        Environment.Exit(0);
+        //    }
+        //    catch
+        //    {
+        //        Process.GetCurrentProcess().Kill();
+        //    }
+        //}
+
+        //public static string executeCMDCommand_Admin(string command)
+        //{
+        //    using Process process_cmd = new Process();
+        //    try
+        //    {
+        //        process_cmd.StartInfo.FileName = "cmd.exe";
+        //        process_cmd.StartInfo.Verb = "runas";
+        //        process_cmd.StartInfo.Arguments = "/C " + command;
+        //        // 关键：隐藏 CMD 窗口
+        //        process_cmd.StartInfo.CreateNoWindow = true;      // 不创建窗口
+        //        process_cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden; // 隐藏显示
+
+
+        //        process_cmd.StartInfo.CreateNoWindow = true;
+        //        process_cmd.StartInfo.UseShellExecute = true;
+        //        process_cmd.Start();
+        //        process_cmd.WaitForExit();
+        //    }
+        //    catch { }
+        //    return "";
+        //}
+
+        //private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        //{
+        //    if (_isCleaningUp)
+        //        return;
+
+        //    e.Cancel = true;
+
+        //    DialogResult result = AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+        //        "关闭工具提醒确认",
+        //        "如果工具正在使用中，请勿关闭，您确定要关闭程序吗?",
+        //        AntdUI.TType.Warn));
+
+        //    if (result != DialogResult.Yes && result != DialogResult.OK)
+        //    {
+        //        pageHeader1.Loading = false;
+        //        return;
+        //    }
+
+        //    pageHeader1.Loading = true;
+        //    _isCleaningUp = true;
+
+        //    // 5 秒超时强制退出
+        //    var cts = new CancellationTokenSource();
+        //    cts.CancelAfter(5000);
+
+        //    Task.Run(async () =>
+        //    {
+        //        try
+        //        {
+        //            var stopTasks = new[]
+        //            {
+        //        Task.Run(() => { try { player_panoramicMain?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_panoramicSub?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_CloseUpMain?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_CloseUpSub?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_ai1?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_ai2?.Stop(); } catch { } }),
+        //        Task.Run(() => { try { player_ai3?.Stop(); } catch { } }),
+        //    };
+
+        //            await Task.WhenAll(stopTasks).WaitAsync(cts.Token);
+        //        }
+        //        catch { }
+        //        finally
+        //        {
+        //            // 杀掉所有进程：ffmpeg、ffprobe、ffplay、clumsy
+        //            string[] procs = { "ffmpeg", "ffprobe", "ffplay", "clumsy" };
+        //            foreach (var p in procs)
+        //            {
+        //                try { executeCMDCommand_Admin($"taskkill /F /IM {p}.exe"); } catch { }
+        //            }
+
+        //            // 回到UI线程弹成功提示
+        //            this.BeginInvoke(new Action(() =>
+        //            {
+        //                pageHeader1.Loading = false;
+
+        //                // 成功弹窗
+        //                AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+        //                    "关闭操作通知",
+        //                    "程序已完成清理，即将退出",
+        //                    AntdUI.TType.Success)
+        //                {
+        //                    CancelText = null,
+        //                    OkText = "确定退出",
+        //                    OnOk = (conf) =>
+        //                    {
+        //                        RealExit(); // 点确定再退出
+        //                        return true;
+        //                    }
+        //                });
+        //            }));
+
+        //            // 超时兜底：5秒不管用户点没点，直接强制退出
+        //            try
+        //            {
+        //                await Task.Delay(5000, cts.Token);
+        //                RealExit();
+        //            }
+        //            catch { }
+        //        }
+        //    });
+        //}
+
+        //第三版:
+        private bool _isCleaningUp = false;
         private void RealExit()
         {
-            try
-            {
-                // 强制释放资源
-                GC.Collect();
-
-                // 杀掉自己 (推荐使用 Environment.Exit 代替 taskkill，更快更干净)
-                System.Environment.Exit(0);
-            }
-            catch
-            {
-                // 如果 Environment.Exit 失败，再尝试暴力查杀
-                Process.GetCurrentProcess().Kill();
-            }
+            try { Environment.Exit(0); }
+            catch { Process.GetCurrentProcess().Kill(); }
         }
-        // 定义一个标志位，防止死循环
-        private bool _isCleaningUp = false;
-        //辅助方法: 杀死指定进程
+
         public static string executeCMDCommand_Admin(string command)
         {
-            Process process_cmd = new Process();
+            using Process process_cmd = new Process();
             try
             {
-                // 以管理员权限启动进程
                 process_cmd.StartInfo.FileName = "cmd.exe";
-                process_cmd.StartInfo.Verb = "runas";  // ← 关键：请求管理员权限
-                process_cmd.StartInfo.Arguments = "/C " + command;  // 直接传命令
+                process_cmd.StartInfo.Verb = "runas";
+                process_cmd.StartInfo.Arguments = "/C " + command;
                 process_cmd.StartInfo.CreateNoWindow = true;
-                process_cmd.StartInfo.UseShellExecute = true;  // ← 必须为 true 才能配合 Verb=runas
+                process_cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process_cmd.StartInfo.UseShellExecute = true;
                 process_cmd.Start();
                 process_cmd.WaitForExit();
             }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-            finally
-            {
-                process_cmd.Close();
-            }
+            catch { }
             return "";
         }
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // 1. 如果正在清理中，直接允许关闭
-            if (_isCleaningUp)
-            {
-                return;
-            }
+            if (_isCleaningUp) return;
 
-            // 2. 拦截关闭事件，防止窗口直接消失
             e.Cancel = true;
 
-            // 3. 弹出确认框
-            DialogResult result = AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+            var result = AntdUI.Modal.open(new AntdUI.Modal.Config(this,
                 "关闭工具提醒确认",
                 "如果工具正在使用中，请勿关闭，您确定要关闭程序吗?",
                 AntdUI.TType.Warn));
@@ -17534,64 +18713,75 @@ namespace skdl_new_2025_test_tool
                 return;
             }
 
-            // 4. 用户确认关闭
             pageHeader1.Loading = true;
-            _isCleaningUp = true;  // ← 移到这里，在 Task.Run 之前就设置
+            _isCleaningUp = true;
 
+            // 核心：启动一个独立超时任务，7秒后强制退出
+            Task.Run(async () =>
+            {
+                await Task.Delay(7000);
+
+                // 7秒到，直接强制退出
+                this.BeginInvoke(() =>
+                {
+                    MessageBox.Show(this, "超时清理，已强制退出！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    RealExit();
+                });
+            });
+
+            // 下面是正常清理逻辑
             Task.Run(async () =>
             {
                 try
                 {
-                    // === 所有播放器并行 Stop，最多等10秒 ===
+                    // 停止播放器
                     var stopTasks = new[]
                     {
-            Task.Run(() => { try { player_panoramicMain?.Stop(); } catch { } }),
-            Task.Run(() => { try { player_panoramicSub?.Stop(); } catch { } }),
-            Task.Run(() => { try { player_CloseUpMain?.Stop(); } catch { } }),
-            Task.Run(() => { try { player_CloseUpSub?.Stop(); } catch { } }),
-            Task.Run(() => { try { player_ai1?.Stop(); } catch { } }),
-            Task.Run(() => { try { player_ai2?.Stop(); } catch { } }),
-            Task.Run(() => { try { player_ai3?.Stop(); } catch { } }),
-        };
-                    await Task.WhenAll(stopTasks).WaitAsync(TimeSpan.FromSeconds(10));
-                    await Task.Delay(200);  // 缩短等待
-
-                    // === 杀进程：合并成一个简单循环 ===
-                    string[] procs = { "ffmpeg", "ffprobe", "clumsy" };
-                    foreach (var p in procs)
-                    {
-                        try { executeCMDCommand_Admin($"/C taskkill /F /IM {p}.exe"); } catch { }
-                    }
-                    await Task.Delay(200);
-
-                    // === 强制退出 ===
-                    this.BeginInvoke(new Action(() =>
-                    {
-                        AntdUI.Modal.open(new AntdUI.Modal.Config(this,
-                            "关闭操作通知",
-                            "程序关闭已完成",
-                            AntdUI.TType.Success)
-                        {
-                            CancelText = null,
-                            OkText = "退出",
-                            OnOk = (conf) => { RealExit(); return true; }
-                        });
-                        pageHeader1.Loading = false;
-                    }));
+                Task.Run(() => { try { player_panoramicMain?.Stop(); } catch { } }),
+                Task.Run(() => { try { player_panoramicSub?.Stop(); } catch { } }),
+                Task.Run(() => { try { player_CloseUpMain?.Stop(); } catch { } }),
+                Task.Run(() => { try { player_CloseUpSub?.Stop(); } catch { } }),
+                Task.Run(() => { try { player_ai1?.Stop(); } catch { } }),
+                Task.Run(() => { try { player_ai2?.Stop(); } catch { } }),
+                Task.Run(() => { try { player_ai3?.Stop(); } catch { } }),
+            };
+                    await Task.WhenAll(stopTasks);
                 }
-                catch (Exception ex)
+                catch { }
+
+                // 关闭继电器串口
+                try { if (WindowsFunc.comm != null && WindowsFunc.comm.IsOpen) { WindowsFunc.comm.Close(); } } catch { }
+
+                // 杀死进程
+                string[] procs = { "ffmpeg", "ffprobe", "ffplay", "clumsy" };
+                foreach (var p in procs)
                 {
-                    Console.WriteLine("清理异常: " + ex.Message);
-                    this.BeginInvoke(new Action(() =>
-                    {
-                        pageHeader1.Loading = false;
-                        RealExit();
-                    }));
+                    try { executeCMDCommand_Admin($"taskkill /F /IM {p}.exe"); } catch { }
                 }
+
+                // 显示成功提示
+                this.BeginInvoke(() =>
+                {
+                    pageHeader1.Loading = false;
+                    AntdUI.Modal.open(new AntdUI.Modal.Config(this,
+                        "关闭操作通知",
+                        "程序已完成清理，即将退出",
+                        AntdUI.TType.Success)
+                    {
+                        CancelText = null,
+                        OkText = "确定退出",
+                        OnOk = (conf) =>
+                        {
+                            RealExit();
+                            return true;
+                        }
+                    });
+                });
             });
-
-
         }
+
+
+
 
     }
 }
