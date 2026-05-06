@@ -18101,9 +18101,15 @@ namespace skdl_new_2025_test_tool
             }
         }
 
-        private void debugBtn_Click(object sender, EventArgs e)
+        private async void debugBtn_Click(object sender, EventArgs e)
         {
-            LogSaveOutput(player1.GetBitrateDebugInfo());
+            PlayerStatus status = player1.GetPlayerStatus();
+
+            // 关流
+            networkStreamOffBtn_Click(null, null);
+            long curBitRate = (long)await player1.GetBitrateAsync(networkUrlInput.Text);
+            string curFps = status.Fps.ToString();
+            LogSaveOutput($"RTSP测试获取当前流状态：\n 码率：{curBitRate}\n 帧率：{curFps}\n");
         }
 
         private async void checkWebPreviewSuccessBtn_Click(object sender, EventArgs e)

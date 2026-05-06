@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace skdl_new_2025_test_tool
@@ -17,14 +18,46 @@ namespace skdl_new_2025_test_tool
             //ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());
 
+
+            // 网络授权
+            string exePath = Process.GetCurrentProcess().MainModule?.FileName;
+            if (string.IsNullOrEmpty(exePath))
+            {
+                Console.WriteLine("Cannot find current executable path.");
+                return;
+            }
+
+
+            Console.WriteLine($"Path: {exePath}");
+            Console.WriteLine();
+
+            if (NetworkAuthorization.CheckNetworkAccess(exePath))
+            {
+                Console.WriteLine("Network access already granted.");
+            }
+            else
+            {
+                Console.WriteLine("Granting network access...");
+                try
+                {
+                    NetworkAuthorization.GrantNetworkAccessByNetsh(exePath, System.IO.Path.GetFileNameWithoutExtension(exePath));
+                    Console.WriteLine("Network access granted successfully!");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+
+
             //  程序一启动就给ffmpeg/ffprobe授权
             FirewallHelper.InitFFmpegAuthorization();
 
             Application.ThreadException += (s, e) =>
-         File.AppendAllText("crash.log", $"[ThreadException] {e.Exception}\n");
+            File.AppendAllText("crash.log", $"[ThreadException] {e.Exception}\n");
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-                File.AppendAllText("crash.log", $"[UnhandledException] {e.ExceptionObject}\n");
+            File.AppendAllText("crash.log", $"[UnhandledException] {e.ExceptionObject}\n");
 
             AntdUI.Config.TextRenderingHighQuality = true;
             AntdUI.Config.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
