@@ -69,8 +69,8 @@
             testProtocolInput = new AntdUI.Input();
             testStreamInput = new AntdUI.Input();
             groupBox7 = new GroupBox();
+            excelSheetNameDropdown = new AntdUI.Dropdown();
             lockTestSheetNameBtn = new AntdUI.Button();
-            excelSheetInput = new AntdUI.Input();
             rowNumberInput = new AntdUI.Input();
             columnContentInput = new AntdUI.Input();
             readWriteContentInput = new AntdUI.Input();
@@ -291,6 +291,7 @@
             divider2 = new AntdUI.Divider();
             txtBoxRcv = new AntdUI.Chat.ChatList();
             divider1 = new AntdUI.Divider();
+            label6 = new Label();
             pageHeader1.SuspendLayout();
             panel1.SuspendLayout();
             tabControl3.SuspendLayout();
@@ -358,7 +359,7 @@
             pageHeader1.Icon = (Image)resources.GetObject("pageHeader1.Icon");
             pageHeader1.IconRatio = 4F;
             pageHeader1.Location = new Point(0, 0);
-            pageHeader1.Margin = new Padding(4, 4, 4, 4);
+            pageHeader1.Margin = new Padding(4);
             pageHeader1.Name = "pageHeader1";
             pageHeader1.ShowButton = true;
             pageHeader1.ShowIcon = true;
@@ -378,7 +379,7 @@
             openCurFolderBtn.Icon = Properties.Resources.folder;
             openCurFolderBtn.IconRatio = 1.1F;
             openCurFolderBtn.Location = new Point(1564, 0);
-            openCurFolderBtn.Margin = new Padding(4, 4, 4, 4);
+            openCurFolderBtn.Margin = new Padding(4);
             openCurFolderBtn.Name = "openCurFolderBtn";
             openCurFolderBtn.Size = new Size(68, 53);
             openCurFolderBtn.TabIndex = 11;
@@ -389,7 +390,7 @@
             labelTime1.Font = new Font("等线", 10F);
             labelTime1.ForeColor = Color.Red;
             labelTime1.Location = new Point(766, 4);
-            labelTime1.Margin = new Padding(4, 4, 4, 4);
+            labelTime1.Margin = new Padding(4);
             labelTime1.Name = "labelTime1";
             labelTime1.Size = new Size(196, 44);
             labelTime1.TabIndex = 10;
@@ -412,7 +413,7 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Font = new Font("等线", 7F);
             panel1.Location = new Point(0, 53);
-            panel1.Margin = new Padding(4, 4, 4, 4);
+            panel1.Margin = new Padding(4);
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 1027);
             panel1.TabIndex = 76;
@@ -428,7 +429,7 @@
             tabControl3.Font = new Font("等线", 8F);
             tabControl3.ItemSize = new Size(800, 36);
             tabControl3.Location = new Point(12, 602);
-            tabControl3.Margin = new Padding(4, 4, 4, 4);
+            tabControl3.Margin = new Padding(4);
             tabControl3.Name = "tabControl3";
             tabControl3.SelectedIndex = 0;
             tabControl3.Size = new Size(1896, 416);
@@ -438,6 +439,7 @@
             // 
             tabPage7.AutoScroll = true;
             tabPage7.BackColor = Color.White;
+            tabPage7.Controls.Add(label6);
             tabPage7.Controls.Add(input_gb2818_4);
             tabPage7.Controls.Add(input_gb2818_3);
             tabPage7.Controls.Add(input_gb2818_2);
@@ -450,7 +452,7 @@
             tabPage7.Controls.Add(groupBox7);
             tabPage7.Controls.Add(groupBox6);
             tabPage7.Location = new Point(4, 40);
-            tabPage7.Margin = new Padding(4, 4, 4, 4);
+            tabPage7.Margin = new Padding(4);
             tabPage7.Name = "tabPage7";
             tabPage7.Size = new Size(1888, 372);
             tabPage7.TabIndex = 2;
@@ -458,8 +460,9 @@
             // 
             // input_gb2818_4
             // 
+            input_gb2818_4.BackColor = Color.FromArgb(250, 173, 20);
             input_gb2818_4.Location = new Point(8, 511);
-            input_gb2818_4.Margin = new Padding(2, 2, 2, 2);
+            input_gb2818_4.Margin = new Padding(2);
             input_gb2818_4.Name = "input_gb2818_4";
             input_gb2818_4.PlaceholderText = "填入待测gbs地址";
             input_gb2818_4.Size = new Size(528, 53);
@@ -470,8 +473,9 @@
             // 
             // input_gb2818_3
             // 
+            input_gb2818_3.BackColor = Color.FromArgb(250, 173, 20);
             input_gb2818_3.Location = new Point(8, 463);
-            input_gb2818_3.Margin = new Padding(2, 2, 2, 2);
+            input_gb2818_3.Margin = new Padding(2);
             input_gb2818_3.Name = "input_gb2818_3";
             input_gb2818_3.PlaceholderText = "填入待测gbs地址";
             input_gb2818_3.Size = new Size(528, 53);
@@ -482,8 +486,9 @@
             // 
             // input_gb2818_2
             // 
+            input_gb2818_2.BackColor = Color.FromArgb(250, 173, 20);
             input_gb2818_2.Location = new Point(8, 416);
-            input_gb2818_2.Margin = new Padding(2, 2, 2, 2);
+            input_gb2818_2.Margin = new Padding(2);
             input_gb2818_2.Name = "input_gb2818_2";
             input_gb2818_2.PlaceholderText = "填入待测gbs地址";
             input_gb2818_2.Size = new Size(528, 53);
@@ -494,8 +499,9 @@
             // 
             // input_gb2818_1
             // 
+            input_gb2818_1.BackColor = Color.FromArgb(250, 173, 20);
             input_gb2818_1.Location = new Point(8, 367);
-            input_gb2818_1.Margin = new Padding(2, 2, 2, 2);
+            input_gb2818_1.Margin = new Padding(2);
             input_gb2818_1.Name = "input_gb2818_1";
             input_gb2818_1.PlaceholderText = "填入待测gbs地址";
             input_gb2818_1.Size = new Size(528, 53);
@@ -507,7 +513,7 @@
             // recoverDefaultRTMPConfigBtn
             // 
             recoverDefaultRTMPConfigBtn.Location = new Point(554, 430);
-            recoverDefaultRTMPConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            recoverDefaultRTMPConfigBtn.Margin = new Padding(4);
             recoverDefaultRTMPConfigBtn.Name = "recoverDefaultRTMPConfigBtn";
             recoverDefaultRTMPConfigBtn.Size = new Size(234, 51);
             recoverDefaultRTMPConfigBtn.TabIndex = 197;
@@ -517,8 +523,8 @@
             // 
             // changeRTMPConfigBtn
             // 
-            changeRTMPConfigBtn.Location = new Point(794, 374);
-            changeRTMPConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            changeRTMPConfigBtn.Location = new Point(554, 489);
+            changeRTMPConfigBtn.Margin = new Padding(4);
             changeRTMPConfigBtn.Name = "changeRTMPConfigBtn";
             changeRTMPConfigBtn.Size = new Size(234, 51);
             changeRTMPConfigBtn.TabIndex = 196;
@@ -529,7 +535,7 @@
             // getCurrentRTMPConfigBtn
             // 
             getCurrentRTMPConfigBtn.Location = new Point(554, 374);
-            getCurrentRTMPConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            getCurrentRTMPConfigBtn.Margin = new Padding(4);
             getCurrentRTMPConfigBtn.Name = "getCurrentRTMPConfigBtn";
             getCurrentRTMPConfigBtn.Size = new Size(234, 51);
             getCurrentRTMPConfigBtn.TabIndex = 195;
@@ -540,10 +546,10 @@
             // input_Rtmp1
             // 
             input_Rtmp1.Location = new Point(544, 315);
-            input_Rtmp1.Margin = new Padding(2, 2, 2, 2);
+            input_Rtmp1.Margin = new Padding(2);
             input_Rtmp1.Name = "input_Rtmp1";
             input_Rtmp1.PlaceholderText = "填入待测rtmp地址";
-            input_Rtmp1.Size = new Size(458, 53);
+            input_Rtmp1.Size = new Size(680, 53);
             input_Rtmp1.SuffixFore = Color.FromArgb(77, 177, 77);
             input_Rtmp1.SuffixText = "rtmp";
             input_Rtmp1.TabIndex = 194;
@@ -572,9 +578,9 @@
             groupBox1.Controls.Add(testProtocolInput);
             groupBox1.Controls.Add(testStreamInput);
             groupBox1.Location = new Point(1224, 7);
-            groupBox1.Margin = new Padding(4, 4, 4, 4);
+            groupBox1.Margin = new Padding(4);
             groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(4, 4, 4, 4);
+            groupBox1.Padding = new Padding(4);
             groupBox1.Size = new Size(620, 556);
             groupBox1.TabIndex = 180;
             groupBox1.TabStop = false;
@@ -583,7 +589,7 @@
             // skipTestContentCheckBox
             // 
             skipTestContentCheckBox.Location = new Point(328, 350);
-            skipTestContentCheckBox.Margin = new Padding(4, 4, 4, 4);
+            skipTestContentCheckBox.Margin = new Padding(4);
             skipTestContentCheckBox.Name = "skipTestContentCheckBox";
             skipTestContentCheckBox.Size = new Size(188, 38);
             skipTestContentCheckBox.TabIndex = 203;
@@ -592,7 +598,7 @@
             // checkWebPreviewSuccessBtn
             // 
             checkWebPreviewSuccessBtn.Location = new Point(8, 489);
-            checkWebPreviewSuccessBtn.Margin = new Padding(4, 4, 4, 4);
+            checkWebPreviewSuccessBtn.Margin = new Padding(4);
             checkWebPreviewSuccessBtn.Name = "checkWebPreviewSuccessBtn";
             checkWebPreviewSuccessBtn.Size = new Size(540, 51);
             checkWebPreviewSuccessBtn.TabIndex = 202;
@@ -666,7 +672,7 @@
             // 
             videoReachTestBtn.Font = new Font("Microsoft YaHei UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 134);
             videoReachTestBtn.Location = new Point(304, 75);
-            videoReachTestBtn.Margin = new Padding(4, 4, 4, 4);
+            videoReachTestBtn.Margin = new Padding(4);
             videoReachTestBtn.Name = "videoReachTestBtn";
             videoReachTestBtn.Size = new Size(308, 146);
             videoReachTestBtn.TabIndex = 193;
@@ -677,7 +683,7 @@
             // testBRControlInput
             // 
             testBRControlInput.Location = new Point(4, 219);
-            testBRControlInput.Margin = new Padding(2, 2, 2, 2);
+            testBRControlInput.Margin = new Padding(2);
             testBRControlInput.Name = "testBRControlInput";
             testBRControlInput.PlaceholderText = "rowNumber";
             testBRControlInput.Size = new Size(292, 49);
@@ -693,7 +699,7 @@
             stackPanel9.Controls.Add(checkbox_RTMP);
             stackPanel9.Controls.Add(checkbox_RTSP);
             stackPanel9.Location = new Point(6, 416);
-            stackPanel9.Margin = new Padding(4, 4, 4, 4);
+            stackPanel9.Margin = new Padding(4);
             stackPanel9.Name = "stackPanel9";
             stackPanel9.Size = new Size(544, 46);
             stackPanel9.TabIndex = 181;
@@ -703,7 +709,7 @@
             // 
             checkbox_Web.Checked = true;
             checkbox_Web.Location = new Point(412, 4);
-            checkbox_Web.Margin = new Padding(4, 4, 4, 4);
+            checkbox_Web.Margin = new Padding(4);
             checkbox_Web.Name = "checkbox_Web";
             checkbox_Web.Size = new Size(128, 38);
             checkbox_Web.TabIndex = 195;
@@ -713,7 +719,7 @@
             // 
             checkbox_GB2818.Checked = true;
             checkbox_GB2818.Location = new Point(276, 4);
-            checkbox_GB2818.Margin = new Padding(4, 4, 4, 4);
+            checkbox_GB2818.Margin = new Padding(4);
             checkbox_GB2818.Name = "checkbox_GB2818";
             checkbox_GB2818.Size = new Size(128, 38);
             checkbox_GB2818.TabIndex = 194;
@@ -723,7 +729,7 @@
             // 
             checkbox_RTMP.Checked = true;
             checkbox_RTMP.Location = new Point(140, 4);
-            checkbox_RTMP.Margin = new Padding(4, 4, 4, 4);
+            checkbox_RTMP.Margin = new Padding(4);
             checkbox_RTMP.Name = "checkbox_RTMP";
             checkbox_RTMP.Size = new Size(128, 38);
             checkbox_RTMP.TabIndex = 193;
@@ -733,7 +739,7 @@
             // 
             checkbox_RTSP.Checked = true;
             checkbox_RTSP.Location = new Point(4, 4);
-            checkbox_RTSP.Margin = new Padding(4, 4, 4, 4);
+            checkbox_RTSP.Margin = new Padding(4);
             checkbox_RTSP.Name = "checkbox_RTSP";
             checkbox_RTSP.Size = new Size(128, 38);
             checkbox_RTSP.TabIndex = 192;
@@ -742,7 +748,7 @@
             // testiGopInput
             // 
             testiGopInput.Location = new Point(4, 359);
-            testiGopInput.Margin = new Padding(2, 2, 2, 2);
+            testiGopInput.Margin = new Padding(2);
             testiGopInput.Name = "testiGopInput";
             testiGopInput.PlaceholderText = "rowNumber";
             testiGopInput.Size = new Size(292, 49);
@@ -755,7 +761,7 @@
             // 
             modifiedTestConfigBtn.Font = new Font("Microsoft YaHei UI", 7F);
             modifiedTestConfigBtn.Location = new Point(432, 18);
-            modifiedTestConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            modifiedTestConfigBtn.Margin = new Padding(4);
             modifiedTestConfigBtn.Name = "modifiedTestConfigBtn";
             modifiedTestConfigBtn.Size = new Size(128, 64);
             modifiedTestConfigBtn.TabIndex = 190;
@@ -767,7 +773,7 @@
             // 
             recoverDefaultConfigBtn.Font = new Font("Microsoft YaHei UI", 7F);
             recoverDefaultConfigBtn.Location = new Point(304, 16);
-            recoverDefaultConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            recoverDefaultConfigBtn.Margin = new Padding(4);
             recoverDefaultConfigBtn.Name = "recoverDefaultConfigBtn";
             recoverDefaultConfigBtn.Size = new Size(128, 64);
             recoverDefaultConfigBtn.TabIndex = 189;
@@ -778,7 +784,7 @@
             // testFPSInput
             // 
             testFPSInput.Location = new Point(4, 312);
-            testFPSInput.Margin = new Padding(2, 2, 2, 2);
+            testFPSInput.Margin = new Padding(2);
             testFPSInput.Name = "testFPSInput";
             testFPSInput.PlaceholderText = "rowNumber";
             testFPSInput.Size = new Size(292, 49);
@@ -790,7 +796,7 @@
             // testBitRateInput
             // 
             testBitRateInput.Location = new Point(4, 266);
-            testBitRateInput.Margin = new Padding(2, 2, 2, 2);
+            testBitRateInput.Margin = new Padding(2);
             testBitRateInput.Name = "testBitRateInput";
             testBitRateInput.PlaceholderText = "rowNumber";
             testBitRateInput.Size = new Size(292, 49);
@@ -802,7 +808,7 @@
             // testResolutionYInput
             // 
             testResolutionYInput.Location = new Point(4, 166);
-            testResolutionYInput.Margin = new Padding(2, 2, 2, 2);
+            testResolutionYInput.Margin = new Padding(2);
             testResolutionYInput.Name = "testResolutionYInput";
             testResolutionYInput.PlaceholderText = "rowNumber";
             testResolutionYInput.Size = new Size(292, 49);
@@ -814,7 +820,7 @@
             // testResolutionXInput
             // 
             testResolutionXInput.Location = new Point(4, 119);
-            testResolutionXInput.Margin = new Padding(2, 2, 2, 2);
+            testResolutionXInput.Margin = new Padding(2);
             testResolutionXInput.Name = "testResolutionXInput";
             testResolutionXInput.PlaceholderText = "rowNumber";
             testResolutionXInput.Size = new Size(292, 49);
@@ -826,7 +832,7 @@
             // testProtocolInput
             // 
             testProtocolInput.Location = new Point(4, 69);
-            testProtocolInput.Margin = new Padding(2, 2, 2, 2);
+            testProtocolInput.Margin = new Padding(2);
             testProtocolInput.Name = "testProtocolInput";
             testProtocolInput.PlaceholderText = "rowNumber";
             testProtocolInput.Size = new Size(292, 49);
@@ -838,7 +844,7 @@
             // testStreamInput
             // 
             testStreamInput.Location = new Point(4, 24);
-            testStreamInput.Margin = new Padding(2, 2, 2, 2);
+            testStreamInput.Margin = new Padding(2);
             testStreamInput.Name = "testStreamInput";
             testStreamInput.PlaceholderText = "rowNumber";
             testStreamInput.Size = new Size(292, 49);
@@ -850,8 +856,8 @@
             // groupBox7
             // 
             groupBox7.BackColor = Color.White;
+            groupBox7.Controls.Add(excelSheetNameDropdown);
             groupBox7.Controls.Add(lockTestSheetNameBtn);
-            groupBox7.Controls.Add(excelSheetInput);
             groupBox7.Controls.Add(rowNumberInput);
             groupBox7.Controls.Add(columnContentInput);
             groupBox7.Controls.Add(readWriteContentInput);
@@ -860,42 +866,45 @@
             groupBox7.Controls.Add(readExcelBtn);
             groupBox7.Controls.Add(writeExcelBtn);
             groupBox7.Location = new Point(546, 7);
-            groupBox7.Margin = new Padding(4, 4, 4, 4);
+            groupBox7.Margin = new Padding(4);
             groupBox7.Name = "groupBox7";
-            groupBox7.Padding = new Padding(4, 4, 4, 4);
+            groupBox7.Padding = new Padding(4);
             groupBox7.Size = new Size(672, 305);
             groupBox7.TabIndex = 179;
             groupBox7.TabStop = false;
             groupBox7.Text = "excel操作";
             // 
+            // excelSheetNameDropdown
+            // 
+            excelSheetNameDropdown.BorderWidth = 1F;
+            excelSheetNameDropdown.DefaultBorderColor = SystemColors.ActiveCaptionText;
+            excelSheetNameDropdown.Items.AddRange(new object[] { "高分辨率模式视频配置组合表", "高帧模式视频配置组合表 ", "性能模式视频配置组合表" });
+            excelSheetNameDropdown.Location = new Point(293, 88);
+            excelSheetNameDropdown.Margin = new Padding(0);
+            excelSheetNameDropdown.Name = "excelSheetNameDropdown";
+            excelSheetNameDropdown.OriginalBackColor = Color.White;
+            excelSheetNameDropdown.Size = new Size(367, 46);
+            excelSheetNameDropdown.TabIndex = 161;
+            excelSheetNameDropdown.Text = "高分辨率模式视频配置组合表";
+            excelSheetNameDropdown.SelectedValueChanged += excelSheetNameDropdown_SelectedValueChanged;
+            // 
             // lockTestSheetNameBtn
             // 
             lockTestSheetNameBtn.Font = new Font("Microsoft YaHei UI", 7F);
+            lockTestSheetNameBtn.ForeColor = Color.Red;
             lockTestSheetNameBtn.Location = new Point(8, 88);
-            lockTestSheetNameBtn.Margin = new Padding(4, 4, 4, 4);
+            lockTestSheetNameBtn.Margin = new Padding(4);
             lockTestSheetNameBtn.Name = "lockTestSheetNameBtn";
             lockTestSheetNameBtn.Size = new Size(278, 49);
             lockTestSheetNameBtn.TabIndex = 184;
             lockTestSheetNameBtn.Text = "锁定测试表名";
-            lockTestSheetNameBtn.Type = AntdUI.TTypeMini.Primary;
+            lockTestSheetNameBtn.Type = AntdUI.TTypeMini.Warn;
             lockTestSheetNameBtn.Click += lockTestSheetNameBtn_Click;
-            // 
-            // excelSheetInput
-            // 
-            excelSheetInput.Location = new Point(292, 86);
-            excelSheetInput.Margin = new Padding(2, 2, 2, 2);
-            excelSheetInput.Name = "excelSheetInput";
-            excelSheetInput.PlaceholderText = "请输入表名";
-            excelSheetInput.Size = new Size(382, 108);
-            excelSheetInput.SuffixFore = Color.FromArgb(77, 177, 77);
-            excelSheetInput.SuffixText = "excel读取表名";
-            excelSheetInput.TabIndex = 183;
-            excelSheetInput.Text = "高分辨率模式视频配置表";
             // 
             // rowNumberInput
             // 
             rowNumberInput.Location = new Point(8, 197);
-            rowNumberInput.Margin = new Padding(2, 2, 2, 2);
+            rowNumberInput.Margin = new Padding(2);
             rowNumberInput.Name = "rowNumberInput";
             rowNumberInput.PlaceholderText = "rowNumber";
             rowNumberInput.Size = new Size(192, 53);
@@ -907,10 +916,10 @@
             // columnContentInput
             // 
             columnContentInput.Location = new Point(4, 150);
-            columnContentInput.Margin = new Padding(2, 2, 2, 2);
+            columnContentInput.Margin = new Padding(2);
             columnContentInput.Name = "columnContentInput";
             columnContentInput.PlaceholderText = "columnContent";
-            columnContentInput.Size = new Size(282, 53);
+            columnContentInput.Size = new Size(656, 53);
             columnContentInput.SuffixFore = Color.FromArgb(77, 177, 77);
             columnContentInput.SuffixText = "列名";
             columnContentInput.TabIndex = 181;
@@ -919,7 +928,7 @@
             // readWriteContentInput
             // 
             readWriteContentInput.Location = new Point(210, 197);
-            readWriteContentInput.Margin = new Padding(2, 2, 2, 2);
+            readWriteContentInput.Margin = new Padding(2);
             readWriteContentInput.Name = "readWriteContentInput";
             readWriteContentInput.PlaceholderText = "读写内容";
             readWriteContentInput.Size = new Size(458, 53);
@@ -929,8 +938,10 @@
             // 
             // excelInput
             // 
+            excelInput.BackColor = Color.FromArgb(250, 173, 20);
+            excelInput.ForeColor = Color.Red;
             excelInput.Location = new Point(188, 27);
-            excelInput.Margin = new Padding(2, 2, 2, 2);
+            excelInput.Margin = new Padding(2);
             excelInput.Name = "excelInput";
             excelInput.PlaceholderText = "请选择文件";
             excelInput.Size = new Size(484, 53);
@@ -941,20 +952,21 @@
             // chooseExcelBtn
             // 
             chooseExcelBtn.Font = new Font("Microsoft YaHei UI", 7F);
+            chooseExcelBtn.ForeColor = Color.Red;
             chooseExcelBtn.Location = new Point(8, 29);
-            chooseExcelBtn.Margin = new Padding(4, 4, 4, 4);
+            chooseExcelBtn.Margin = new Padding(4);
             chooseExcelBtn.Name = "chooseExcelBtn";
             chooseExcelBtn.Size = new Size(176, 49);
             chooseExcelBtn.TabIndex = 178;
             chooseExcelBtn.Text = "选择读写表格";
-            chooseExcelBtn.Type = AntdUI.TTypeMini.Primary;
+            chooseExcelBtn.Type = AntdUI.TTypeMini.Warn;
             chooseExcelBtn.Click += chooseExcelBtn_Click;
             // 
             // readExcelBtn
             // 
             readExcelBtn.Font = new Font("Microsoft YaHei UI", 7F);
             readExcelBtn.Location = new Point(8, 250);
-            readExcelBtn.Margin = new Padding(4, 4, 4, 4);
+            readExcelBtn.Margin = new Padding(4);
             readExcelBtn.Name = "readExcelBtn";
             readExcelBtn.Size = new Size(316, 44);
             readExcelBtn.TabIndex = 176;
@@ -966,7 +978,7 @@
             // 
             writeExcelBtn.Font = new Font("Microsoft YaHei UI", 7F);
             writeExcelBtn.Location = new Point(340, 250);
-            writeExcelBtn.Margin = new Padding(4, 4, 4, 4);
+            writeExcelBtn.Margin = new Padding(4);
             writeExcelBtn.Name = "writeExcelBtn";
             writeExcelBtn.Size = new Size(320, 44);
             writeExcelBtn.TabIndex = 177;
@@ -997,7 +1009,7 @@
             // 
             debugBtn.Font = new Font("Microsoft YaHei UI", 7F);
             debugBtn.Location = new Point(412, 146);
-            debugBtn.Margin = new Padding(4, 4, 4, 4);
+            debugBtn.Margin = new Padding(4);
             debugBtn.Name = "debugBtn";
             debugBtn.OriginalBackColor = Color.Black;
             debugBtn.Size = new Size(92, 49);
@@ -1009,7 +1021,7 @@
             // getActualFPSAndBitRateBtn
             // 
             getActualFPSAndBitRateBtn.Location = new Point(306, 24);
-            getActualFPSAndBitRateBtn.Margin = new Padding(2, 2, 2, 2);
+            getActualFPSAndBitRateBtn.Margin = new Padding(2);
             getActualFPSAndBitRateBtn.Name = "getActualFPSAndBitRateBtn";
             getActualFPSAndBitRateBtn.Size = new Size(222, 53);
             getActualFPSAndBitRateBtn.TabIndex = 171;
@@ -1020,7 +1032,7 @@
             // networkUrlInput
             // 
             networkUrlInput.Location = new Point(6, 22);
-            networkUrlInput.Margin = new Padding(2, 2, 2, 2);
+            networkUrlInput.Margin = new Padding(2);
             networkUrlInput.Name = "networkUrlInput";
             networkUrlInput.PlaceholderText = "test differ";
             networkUrlInput.Size = new Size(308, 53);
@@ -1033,7 +1045,7 @@
             // 
             netWorkStreamPB.BackColor = Color.Black;
             netWorkStreamPB.Location = new Point(6, 126);
-            netWorkStreamPB.Margin = new Padding(4, 4, 4, 4);
+            netWorkStreamPB.Margin = new Padding(4);
             netWorkStreamPB.Name = "netWorkStreamPB";
             netWorkStreamPB.Size = new Size(512, 219);
             netWorkStreamPB.TabIndex = 174;
@@ -1043,7 +1055,7 @@
             // 
             networkStreamSnapshotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             networkStreamSnapshotBtn.Location = new Point(412, 77);
-            networkStreamSnapshotBtn.Margin = new Padding(4, 4, 4, 4);
+            networkStreamSnapshotBtn.Margin = new Padding(4);
             networkStreamSnapshotBtn.Name = "networkStreamSnapshotBtn";
             networkStreamSnapshotBtn.Size = new Size(92, 49);
             networkStreamSnapshotBtn.TabIndex = 173;
@@ -1058,7 +1070,7 @@
             networkStreamOnBtn.IconHoverSvg = "";
             networkStreamOnBtn.IconSvg = "PlayCircleFilled";
             networkStreamOnBtn.Location = new Point(10, 77);
-            networkStreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            networkStreamOnBtn.Margin = new Padding(4);
             networkStreamOnBtn.Name = "networkStreamOnBtn";
             networkStreamOnBtn.Size = new Size(320, 49);
             networkStreamOnBtn.TabIndex = 171;
@@ -1070,7 +1082,7 @@
             // 
             networkStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             networkStreamOffBtn.Location = new Point(328, 77);
-            networkStreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            networkStreamOffBtn.Margin = new Padding(4);
             networkStreamOffBtn.Name = "networkStreamOffBtn";
             networkStreamOffBtn.Size = new Size(92, 49);
             networkStreamOffBtn.TabIndex = 172;
@@ -1083,9 +1095,9 @@
             tabPage5.BackColor = Color.White;
             tabPage5.Controls.Add(table1_testCase);
             tabPage5.Location = new Point(4, 40);
-            tabPage5.Margin = new Padding(4, 4, 4, 4);
+            tabPage5.Margin = new Padding(4);
             tabPage5.Name = "tabPage5";
-            tabPage5.Padding = new Padding(4, 4, 4, 4);
+            tabPage5.Padding = new Padding(4);
             tabPage5.Size = new Size(1888, 372);
             tabPage5.TabIndex = 0;
             tabPage5.Text = "SKDL0402(VC16S)&SKDL0503(VC35P)";
@@ -1097,7 +1109,7 @@
             table1_testCase.Font = new Font("等线", 6F);
             table1_testCase.Gap = 12;
             table1_testCase.Location = new Point(4, 4);
-            table1_testCase.Margin = new Padding(4, 4, 4, 4);
+            table1_testCase.Margin = new Padding(4);
             table1_testCase.Name = "table1_testCase";
             table1_testCase.Size = new Size(1880, 364);
             table1_testCase.TabIndex = 128;
@@ -1108,9 +1120,9 @@
             tabPage6.BackColor = Color.White;
             tabPage6.Controls.Add(table2_testCase);
             tabPage6.Location = new Point(4, 40);
-            tabPage6.Margin = new Padding(4, 4, 4, 4);
+            tabPage6.Margin = new Padding(4);
             tabPage6.Name = "tabPage6";
-            tabPage6.Padding = new Padding(4, 4, 4, 4);
+            tabPage6.Padding = new Padding(4);
             tabPage6.Size = new Size(1888, 372);
             tabPage6.TabIndex = 1;
             tabPage6.Text = "SKDL0104(VC35)&SKDL0105(VC51)";
@@ -1122,7 +1134,7 @@
             table2_testCase.Font = new Font("等线", 6F);
             table2_testCase.Gap = 12;
             table2_testCase.Location = new Point(4, 4);
-            table2_testCase.Margin = new Padding(4, 4, 4, 4);
+            table2_testCase.Margin = new Padding(4);
             table2_testCase.Name = "table2_testCase";
             table2_testCase.Size = new Size(1880, 364);
             table2_testCase.TabIndex = 129;
@@ -1143,7 +1155,7 @@
             tabPage8.Controls.Add(vc51_1StreamOnBtn);
             tabPage8.Controls.Add(vc51_1StreamOffBtn);
             tabPage8.Location = new Point(4, 40);
-            tabPage8.Margin = new Padding(4, 4, 4, 4);
+            tabPage8.Margin = new Padding(4);
             tabPage8.Name = "tabPage8";
             tabPage8.Size = new Size(1888, 372);
             tabPage8.TabIndex = 3;
@@ -1156,7 +1168,7 @@
             VC51_CountLabel.Font = new Font("等线", 20F);
             VC51_CountLabel.ForeColor = Color.Red;
             VC51_CountLabel.Location = new Point(1072, 221);
-            VC51_CountLabel.Margin = new Padding(4, 4, 4, 4);
+            VC51_CountLabel.Margin = new Padding(4);
             VC51_CountLabel.Name = "VC51_CountLabel";
             VC51_CountLabel.Size = new Size(790, 89);
             VC51_CountLabel.TabIndex = 186;
@@ -1170,7 +1182,7 @@
             vc51_1minutesOnlyRotate30sBtn.IconHoverSvg = "";
             vc51_1minutesOnlyRotate30sBtn.IconSvg = "PlayCircleFilled";
             vc51_1minutesOnlyRotate30sBtn.Location = new Point(1072, 71);
-            vc51_1minutesOnlyRotate30sBtn.Margin = new Padding(4, 4, 4, 4);
+            vc51_1minutesOnlyRotate30sBtn.Margin = new Padding(4);
             vc51_1minutesOnlyRotate30sBtn.Name = "vc51_1minutesOnlyRotate30sBtn";
             vc51_1minutesOnlyRotate30sBtn.Size = new Size(552, 142);
             vc51_1minutesOnlyRotate30sBtn.TabIndex = 185;
@@ -1185,7 +1197,7 @@
             vc51_changeConfigBtn.IconHoverSvg = "";
             vc51_changeConfigBtn.IconSvg = "";
             vc51_changeConfigBtn.Location = new Point(1072, 18);
-            vc51_changeConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            vc51_changeConfigBtn.Margin = new Padding(4);
             vc51_changeConfigBtn.Name = "vc51_changeConfigBtn";
             vc51_changeConfigBtn.Size = new Size(552, 58);
             vc51_changeConfigBtn.TabIndex = 184;
@@ -1196,7 +1208,7 @@
             // vc51_2InputStream
             // 
             vc51_2InputStream.Location = new Point(528, 15);
-            vc51_2InputStream.Margin = new Padding(2, 2, 2, 2);
+            vc51_2InputStream.Margin = new Padding(2);
             vc51_2InputStream.Name = "vc51_2InputStream";
             vc51_2InputStream.PlaceholderText = "test differ";
             vc51_2InputStream.Size = new Size(308, 53);
@@ -1208,7 +1220,7 @@
             // 
             pictureBox_VC51_2.BackColor = Color.Black;
             pictureBox_VC51_2.Location = new Point(528, 120);
-            pictureBox_VC51_2.Margin = new Padding(4, 4, 4, 4);
+            pictureBox_VC51_2.Margin = new Padding(4);
             pictureBox_VC51_2.Name = "pictureBox_VC51_2";
             pictureBox_VC51_2.Size = new Size(512, 219);
             pictureBox_VC51_2.TabIndex = 182;
@@ -1221,7 +1233,7 @@
             vc51_2StreamOnBtn.IconHoverSvg = "";
             vc51_2StreamOnBtn.IconSvg = "PlayCircleFilled";
             vc51_2StreamOnBtn.Location = new Point(532, 71);
-            vc51_2StreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            vc51_2StreamOnBtn.Margin = new Padding(4);
             vc51_2StreamOnBtn.Name = "vc51_2StreamOnBtn";
             vc51_2StreamOnBtn.Size = new Size(320, 49);
             vc51_2StreamOnBtn.TabIndex = 180;
@@ -1233,7 +1245,7 @@
             // 
             vc51_2StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             vc51_2StreamOffBtn.Location = new Point(852, 71);
-            vc51_2StreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            vc51_2StreamOffBtn.Margin = new Padding(4);
             vc51_2StreamOffBtn.Name = "vc51_2StreamOffBtn";
             vc51_2StreamOffBtn.Size = new Size(92, 49);
             vc51_2StreamOffBtn.TabIndex = 181;
@@ -1244,7 +1256,7 @@
             // vc51_1InputStream
             // 
             vc51_1InputStream.Location = new Point(12, 15);
-            vc51_1InputStream.Margin = new Padding(2, 2, 2, 2);
+            vc51_1InputStream.Margin = new Padding(2);
             vc51_1InputStream.Name = "vc51_1InputStream";
             vc51_1InputStream.PlaceholderText = "test differ";
             vc51_1InputStream.Size = new Size(308, 53);
@@ -1256,7 +1268,7 @@
             // 
             pictureBox_VC51_1.BackColor = Color.Black;
             pictureBox_VC51_1.Location = new Point(12, 120);
-            pictureBox_VC51_1.Margin = new Padding(4, 4, 4, 4);
+            pictureBox_VC51_1.Margin = new Padding(4);
             pictureBox_VC51_1.Name = "pictureBox_VC51_1";
             pictureBox_VC51_1.Size = new Size(512, 219);
             pictureBox_VC51_1.TabIndex = 178;
@@ -1269,7 +1281,7 @@
             vc51_1StreamOnBtn.IconHoverSvg = "";
             vc51_1StreamOnBtn.IconSvg = "PlayCircleFilled";
             vc51_1StreamOnBtn.Location = new Point(16, 71);
-            vc51_1StreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            vc51_1StreamOnBtn.Margin = new Padding(4);
             vc51_1StreamOnBtn.Name = "vc51_1StreamOnBtn";
             vc51_1StreamOnBtn.Size = new Size(320, 49);
             vc51_1StreamOnBtn.TabIndex = 176;
@@ -1281,7 +1293,7 @@
             // 
             vc51_1StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             vc51_1StreamOffBtn.Location = new Point(336, 71);
-            vc51_1StreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            vc51_1StreamOffBtn.Margin = new Padding(4);
             vc51_1StreamOffBtn.Name = "vc51_1StreamOffBtn";
             vc51_1StreamOffBtn.Size = new Size(92, 49);
             vc51_1StreamOffBtn.TabIndex = 177;
@@ -1294,7 +1306,7 @@
             tabControl2.Controls.Add(tabPage3);
             tabControl2.Controls.Add(tabPage4);
             tabControl2.Location = new Point(700, 370);
-            tabControl2.Margin = new Padding(4, 4, 4, 4);
+            tabControl2.Margin = new Padding(4);
             tabControl2.Name = "tabControl2";
             tabControl2.SelectedIndex = 0;
             tabControl2.Size = new Size(720, 222);
@@ -1334,9 +1346,9 @@
             tabPage3.Controls.Add(connectRelayBtn);
             tabPage3.Controls.Add(testSwitchGroup);
             tabPage3.Location = new Point(8, 34);
-            tabPage3.Margin = new Padding(4, 4, 4, 4);
+            tabPage3.Margin = new Padding(4);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(4, 4, 4, 4);
+            tabPage3.Padding = new Padding(4);
             tabPage3.Size = new Size(704, 180);
             tabPage3.TabIndex = 0;
             tabPage3.Text = "继电器控制";
@@ -1345,7 +1357,7 @@
             // 
             newSwitch5.Font = new Font("Microsoft YaHei UI", 7F);
             newSwitch5.Location = new Point(318, 232);
-            newSwitch5.Margin = new Padding(4, 4, 4, 4);
+            newSwitch5.Margin = new Padding(4);
             newSwitch5.Name = "newSwitch5";
             newSwitch5.PlaceholderText = "";
             newSwitch5.PrefixText = "";
@@ -1359,7 +1371,7 @@
             // 
             newSwitch4.Font = new Font("Microsoft YaHei UI", 7F);
             newSwitch4.Location = new Point(236, 232);
-            newSwitch4.Margin = new Padding(4, 4, 4, 4);
+            newSwitch4.Margin = new Padding(4);
             newSwitch4.Name = "newSwitch4";
             newSwitch4.PlaceholderText = "";
             newSwitch4.PrefixText = "";
@@ -1373,7 +1385,7 @@
             // 
             newSwitch3.Font = new Font("Microsoft YaHei UI", 7F);
             newSwitch3.Location = new Point(158, 232);
-            newSwitch3.Margin = new Padding(4, 4, 4, 4);
+            newSwitch3.Margin = new Padding(4);
             newSwitch3.Name = "newSwitch3";
             newSwitch3.PlaceholderText = "";
             newSwitch3.PrefixText = "";
@@ -1387,7 +1399,7 @@
             // 
             newSwitch2.Font = new Font("Microsoft YaHei UI", 7F);
             newSwitch2.Location = new Point(80, 232);
-            newSwitch2.Margin = new Padding(4, 4, 4, 4);
+            newSwitch2.Margin = new Padding(4);
             newSwitch2.Name = "newSwitch2";
             newSwitch2.PlaceholderText = "";
             newSwitch2.PrefixText = "";
@@ -1401,7 +1413,7 @@
             // 
             newSwitch1.Font = new Font("Microsoft YaHei UI", 7F);
             newSwitch1.Location = new Point(8, 232);
-            newSwitch1.Margin = new Padding(4, 4, 4, 4);
+            newSwitch1.Margin = new Padding(4);
             newSwitch1.Name = "newSwitch1";
             newSwitch1.PlaceholderText = "";
             newSwitch1.PrefixText = "";
@@ -1414,7 +1426,7 @@
             // pushBackwardBtn
             // 
             pushBackwardBtn.Location = new Point(404, 232);
-            pushBackwardBtn.Margin = new Padding(4, 4, 4, 4);
+            pushBackwardBtn.Margin = new Padding(4);
             pushBackwardBtn.Name = "pushBackwardBtn";
             pushBackwardBtn.Size = new Size(268, 49);
             pushBackwardBtn.TabIndex = 139;
@@ -1425,7 +1437,7 @@
             // pushForwardBtn
             // 
             pushForwardBtn.Location = new Point(404, 181);
-            pushForwardBtn.Margin = new Padding(4, 4, 4, 4);
+            pushForwardBtn.Margin = new Padding(4);
             pushForwardBtn.Name = "pushForwardBtn";
             pushForwardBtn.Size = new Size(268, 49);
             pushForwardBtn.TabIndex = 138;
@@ -1436,7 +1448,7 @@
             // input_ToBeReadRelayStatus
             // 
             input_ToBeReadRelayStatus.Location = new Point(176, 181);
-            input_ToBeReadRelayStatus.Margin = new Padding(4, 4, 4, 4);
+            input_ToBeReadRelayStatus.Margin = new Padding(4);
             input_ToBeReadRelayStatus.Name = "input_ToBeReadRelayStatus";
             input_ToBeReadRelayStatus.PlaceholderText = "test differ";
             input_ToBeReadRelayStatus.Size = new Size(220, 49);
@@ -1448,7 +1460,7 @@
             // readRelaySwitchSpecificStatusBtn
             // 
             readRelaySwitchSpecificStatusBtn.Location = new Point(8, 181);
-            readRelaySwitchSpecificStatusBtn.Margin = new Padding(4, 4, 4, 4);
+            readRelaySwitchSpecificStatusBtn.Margin = new Padding(4);
             readRelaySwitchSpecificStatusBtn.Name = "readRelaySwitchSpecificStatusBtn";
             readRelaySwitchSpecificStatusBtn.Size = new Size(172, 49);
             readRelaySwitchSpecificStatusBtn.TabIndex = 95;
@@ -1460,7 +1472,7 @@
             // 
             input_elecIP5.Font = new Font("Microsoft YaHei UI", 7F);
             input_elecIP5.Location = new Point(484, 129);
-            input_elecIP5.Margin = new Padding(4, 4, 4, 4);
+            input_elecIP5.Margin = new Padding(4);
             input_elecIP5.Name = "input_elecIP5";
             input_elecIP5.PlaceholderText = "请输入测试设备IP地址：";
             input_elecIP5.Size = new Size(118, 49);
@@ -1473,7 +1485,7 @@
             // 
             input_elecIP4.Font = new Font("Microsoft YaHei UI", 7F);
             input_elecIP4.Location = new Point(360, 129);
-            input_elecIP4.Margin = new Padding(4, 4, 4, 4);
+            input_elecIP4.Margin = new Padding(4);
             input_elecIP4.Name = "input_elecIP4";
             input_elecIP4.PlaceholderText = "请输入测试设备IP地址：";
             input_elecIP4.Size = new Size(118, 49);
@@ -1486,7 +1498,7 @@
             // 
             input_elecIP3.Font = new Font("Microsoft YaHei UI", 7F);
             input_elecIP3.Location = new Point(244, 129);
-            input_elecIP3.Margin = new Padding(4, 4, 4, 4);
+            input_elecIP3.Margin = new Padding(4);
             input_elecIP3.Name = "input_elecIP3";
             input_elecIP3.PlaceholderText = "请输入测试设备IP地址：";
             input_elecIP3.Size = new Size(118, 49);
@@ -1499,7 +1511,7 @@
             // 
             input_elecIP2.Font = new Font("Microsoft YaHei UI", 7F);
             input_elecIP2.Location = new Point(128, 129);
-            input_elecIP2.Margin = new Padding(4, 4, 4, 4);
+            input_elecIP2.Margin = new Padding(4);
             input_elecIP2.Name = "input_elecIP2";
             input_elecIP2.PlaceholderText = "请输入测试设备IP地址：";
             input_elecIP2.Size = new Size(118, 49);
@@ -1512,7 +1524,7 @@
             // 
             input_elecIP1.Font = new Font("Microsoft YaHei UI", 7F);
             input_elecIP1.Location = new Point(6, 129);
-            input_elecIP1.Margin = new Padding(4, 4, 4, 4);
+            input_elecIP1.Margin = new Padding(4);
             input_elecIP1.Name = "input_elecIP1";
             input_elecIP1.PlaceholderText = "请输入测试设备IP地址：";
             input_elecIP1.Size = new Size(118, 49);
@@ -1524,7 +1536,7 @@
             // electricAllOffBtn
             // 
             electricAllOffBtn.Location = new Point(602, 106);
-            electricAllOffBtn.Margin = new Padding(4, 4, 4, 4);
+            electricAllOffBtn.Margin = new Padding(4);
             electricAllOffBtn.Name = "electricAllOffBtn";
             electricAllOffBtn.Size = new Size(92, 49);
             electricAllOffBtn.TabIndex = 89;
@@ -1536,7 +1548,7 @@
             // 
             electricAllOnBtn.Enabled = false;
             electricAllOnBtn.Location = new Point(602, 58);
-            electricAllOnBtn.Margin = new Padding(4, 4, 4, 4);
+            electricAllOnBtn.Margin = new Padding(4);
             electricAllOnBtn.Name = "electricAllOnBtn";
             electricAllOnBtn.Size = new Size(92, 49);
             electricAllOnBtn.TabIndex = 88;
@@ -1667,7 +1679,7 @@
             // connectRelayBtn
             // 
             connectRelayBtn.Location = new Point(560, 5);
-            connectRelayBtn.Margin = new Padding(4, 4, 4, 4);
+            connectRelayBtn.Margin = new Padding(4);
             connectRelayBtn.Name = "connectRelayBtn";
             connectRelayBtn.Size = new Size(136, 49);
             connectRelayBtn.TabIndex = 77;
@@ -1686,7 +1698,7 @@
             testSwitchGroup.Controls.Add(checkbox_switch4);
             testSwitchGroup.Controls.Add(checkbox_switch5);
             testSwitchGroup.Location = new Point(8, 9);
-            testSwitchGroup.Margin = new Padding(4, 4, 4, 4);
+            testSwitchGroup.Margin = new Padding(4);
             testSwitchGroup.Name = "testSwitchGroup";
             testSwitchGroup.Size = new Size(550, 42);
             testSwitchGroup.TabIndex = 2;
@@ -1695,7 +1707,7 @@
             // 
             checkbox_switch1.Font = new Font("等线", 4F);
             checkbox_switch1.Location = new Point(4, 4);
-            checkbox_switch1.Margin = new Padding(4, 4, 4, 4);
+            checkbox_switch1.Margin = new Padding(4);
             checkbox_switch1.Name = "checkbox_switch1";
             checkbox_switch1.Size = new Size(100, 29);
             checkbox_switch1.TabIndex = 5;
@@ -1705,7 +1717,7 @@
             // 
             checkbox_switch2.Font = new Font("等线", 4F);
             checkbox_switch2.Location = new Point(112, 4);
-            checkbox_switch2.Margin = new Padding(4, 4, 4, 4);
+            checkbox_switch2.Margin = new Padding(4);
             checkbox_switch2.Name = "checkbox_switch2";
             checkbox_switch2.Size = new Size(100, 29);
             checkbox_switch2.TabIndex = 0;
@@ -1715,7 +1727,7 @@
             // 
             checkbox_switch3.Font = new Font("等线", 4F);
             checkbox_switch3.Location = new Point(220, 4);
-            checkbox_switch3.Margin = new Padding(4, 4, 4, 4);
+            checkbox_switch3.Margin = new Padding(4);
             checkbox_switch3.Name = "checkbox_switch3";
             checkbox_switch3.Size = new Size(100, 29);
             checkbox_switch3.TabIndex = 2;
@@ -1725,7 +1737,7 @@
             // 
             checkbox_switch4.Font = new Font("等线", 4F);
             checkbox_switch4.Location = new Point(328, 4);
-            checkbox_switch4.Margin = new Padding(4, 4, 4, 4);
+            checkbox_switch4.Margin = new Padding(4);
             checkbox_switch4.Name = "checkbox_switch4";
             checkbox_switch4.Size = new Size(100, 29);
             checkbox_switch4.TabIndex = 3;
@@ -1735,7 +1747,7 @@
             // 
             checkbox_switch5.Font = new Font("等线", 4F);
             checkbox_switch5.Location = new Point(436, 4);
-            checkbox_switch5.Margin = new Padding(4, 4, 4, 4);
+            checkbox_switch5.Margin = new Padding(4);
             checkbox_switch5.Name = "checkbox_switch5";
             checkbox_switch5.Size = new Size(100, 29);
             checkbox_switch5.TabIndex = 4;
@@ -1758,9 +1770,9 @@
             tabPage4.Controls.Add(setPresetIdBtn);
             tabPage4.Controls.Add(ptzGoHomeBtn);
             tabPage4.Location = new Point(8, 34);
-            tabPage4.Margin = new Padding(4, 4, 4, 4);
+            tabPage4.Margin = new Padding(4);
             tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(4, 4, 4, 4);
+            tabPage4.Padding = new Padding(4);
             tabPage4.Size = new Size(704, 180);
             tabPage4.TabIndex = 1;
             tabPage4.Text = "云台控制";
@@ -1769,7 +1781,7 @@
             // 
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.BackColor = Color.Lime;
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.Location = new Point(608, 71);
-            checkbox_mimimumAdjustupDownLeftRightPTZCircle.Margin = new Padding(4, 4, 4, 4);
+            checkbox_mimimumAdjustupDownLeftRightPTZCircle.Margin = new Padding(4);
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.Name = "checkbox_mimimumAdjustupDownLeftRightPTZCircle";
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.Size = new Size(344, 46);
             checkbox_mimimumAdjustupDownLeftRightPTZCircle.TabIndex = 180;
@@ -1780,7 +1792,7 @@
             // 
             checkbox_upDownLeftRightPTZCircle.BackColor = Color.Lime;
             checkbox_upDownLeftRightPTZCircle.Location = new Point(608, 15);
-            checkbox_upDownLeftRightPTZCircle.Margin = new Padding(4, 4, 4, 4);
+            checkbox_upDownLeftRightPTZCircle.Margin = new Padding(4);
             checkbox_upDownLeftRightPTZCircle.Name = "checkbox_upDownLeftRightPTZCircle";
             checkbox_upDownLeftRightPTZCircle.Size = new Size(268, 46);
             checkbox_upDownLeftRightPTZCircle.TabIndex = 179;
@@ -1790,7 +1802,7 @@
             // checkbox_ptzCruiseReverse35Test
             // 
             checkbox_ptzCruiseReverse35Test.Location = new Point(466, 119);
-            checkbox_ptzCruiseReverse35Test.Margin = new Padding(4, 4, 4, 4);
+            checkbox_ptzCruiseReverse35Test.Margin = new Padding(4);
             checkbox_ptzCruiseReverse35Test.Name = "checkbox_ptzCruiseReverse35Test";
             checkbox_ptzCruiseReverse35Test.Size = new Size(176, 46);
             checkbox_ptzCruiseReverse35Test.TabIndex = 178;
@@ -1800,7 +1812,7 @@
             // checkbox_ptzCruise90Test
             // 
             checkbox_ptzCruise90Test.Location = new Point(276, 119);
-            checkbox_ptzCruise90Test.Margin = new Padding(4, 4, 4, 4);
+            checkbox_ptzCruise90Test.Margin = new Padding(4);
             checkbox_ptzCruise90Test.Name = "checkbox_ptzCruise90Test";
             checkbox_ptzCruise90Test.Size = new Size(176, 46);
             checkbox_ptzCruise90Test.TabIndex = 177;
@@ -1810,7 +1822,7 @@
             // checkbox_ptzCruise170Test
             // 
             checkbox_ptzCruise170Test.Location = new Point(200, 66);
-            checkbox_ptzCruise170Test.Margin = new Padding(4, 4, 4, 4);
+            checkbox_ptzCruise170Test.Margin = new Padding(4);
             checkbox_ptzCruise170Test.Name = "checkbox_ptzCruise170Test";
             checkbox_ptzCruise170Test.Size = new Size(252, 46);
             checkbox_ptzCruise170Test.TabIndex = 176;
@@ -1820,7 +1832,7 @@
             // checkbox_ptzCruiseReverse170Test
             // 
             checkbox_ptzCruiseReverse170Test.Location = new Point(16, 119);
-            checkbox_ptzCruiseReverse170Test.Margin = new Padding(4, 4, 4, 4);
+            checkbox_ptzCruiseReverse170Test.Margin = new Padding(4);
             checkbox_ptzCruiseReverse170Test.Name = "checkbox_ptzCruiseReverse170Test";
             checkbox_ptzCruiseReverse170Test.Size = new Size(252, 46);
             checkbox_ptzCruiseReverse170Test.TabIndex = 175;
@@ -1830,7 +1842,7 @@
             // checkbox_ptzCruiseTest
             // 
             checkbox_ptzCruiseTest.Location = new Point(16, 66);
-            checkbox_ptzCruiseTest.Margin = new Padding(4, 4, 4, 4);
+            checkbox_ptzCruiseTest.Margin = new Padding(4);
             checkbox_ptzCruiseTest.Name = "checkbox_ptzCruiseTest";
             checkbox_ptzCruiseTest.Size = new Size(176, 46);
             checkbox_ptzCruiseTest.TabIndex = 174;
@@ -1840,7 +1852,7 @@
             // deleteAllPresetIdBtn
             // 
             deleteAllPresetIdBtn.Location = new Point(466, 9);
-            deleteAllPresetIdBtn.Margin = new Padding(4, 4, 4, 4);
+            deleteAllPresetIdBtn.Margin = new Padding(4);
             deleteAllPresetIdBtn.Name = "deleteAllPresetIdBtn";
             deleteAllPresetIdBtn.Size = new Size(136, 49);
             deleteAllPresetIdBtn.TabIndex = 173;
@@ -1852,7 +1864,7 @@
             // 
             input_presetId.Font = new Font("Microsoft YaHei UI", 7F);
             input_presetId.Location = new Point(6, 9);
-            input_presetId.Margin = new Padding(4, 4, 4, 4);
+            input_presetId.Margin = new Padding(4);
             input_presetId.Name = "input_presetId";
             input_presetId.PlaceholderText = "请输入预置位：";
             input_presetId.Size = new Size(168, 49);
@@ -1864,7 +1876,7 @@
             // launchPresetIdBtn
             // 
             launchPresetIdBtn.Location = new Point(324, 9);
-            launchPresetIdBtn.Margin = new Padding(4, 4, 4, 4);
+            launchPresetIdBtn.Margin = new Padding(4);
             launchPresetIdBtn.Name = "launchPresetIdBtn";
             launchPresetIdBtn.Size = new Size(136, 49);
             launchPresetIdBtn.TabIndex = 172;
@@ -1875,7 +1887,7 @@
             // setPresetIdBtn
             // 
             setPresetIdBtn.Location = new Point(180, 9);
-            setPresetIdBtn.Margin = new Padding(4, 4, 4, 4);
+            setPresetIdBtn.Margin = new Padding(4);
             setPresetIdBtn.Name = "setPresetIdBtn";
             setPresetIdBtn.Size = new Size(136, 49);
             setPresetIdBtn.TabIndex = 171;
@@ -1886,7 +1898,7 @@
             // ptzGoHomeBtn
             // 
             ptzGoHomeBtn.Location = new Point(466, 66);
-            ptzGoHomeBtn.Margin = new Padding(4, 4, 4, 4);
+            ptzGoHomeBtn.Margin = new Padding(4);
             ptzGoHomeBtn.Name = "ptzGoHomeBtn";
             ptzGoHomeBtn.Size = new Size(136, 49);
             ptzGoHomeBtn.TabIndex = 150;
@@ -1900,7 +1912,7 @@
             divider4.Controls.Add(badge2);
             divider4.ForeColor = SystemColors.ControlText;
             divider4.Location = new Point(700, 345);
-            divider4.Margin = new Padding(4, 4, 4, 4);
+            divider4.Margin = new Padding(4);
             divider4.Name = "divider4";
             divider4.Orientation = AntdUI.TOrientation.Left;
             divider4.Size = new Size(720, 18);
@@ -1913,7 +1925,7 @@
             badge2.BackColor = Color.FromArgb(100, 215, 234);
             badge2.Font = new Font("等线", 6F);
             badge2.Location = new Point(208, -4);
-            badge2.Margin = new Padding(4, 4, 4, 4);
+            badge2.Margin = new Padding(4);
             badge2.Name = "badge2";
             badge2.Size = new Size(454, 26);
             badge2.State = AntdUI.TState.Processing;
@@ -1925,7 +1937,7 @@
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Location = new Point(12, 370);
-            tabControl1.Margin = new Padding(4, 4, 4, 4);
+            tabControl1.Margin = new Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(680, 222);
@@ -1936,9 +1948,9 @@
             // 
             tabPage1.Controls.Add(panel7);
             tabPage1.Location = new Point(8, 34);
-            tabPage1.Margin = new Padding(4, 4, 4, 4);
+            tabPage1.Margin = new Padding(4);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(4, 4, 4, 4);
+            tabPage1.Padding = new Padding(4);
             tabPage1.Size = new Size(664, 180);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "RTSP拉流区域";
@@ -1993,7 +2005,7 @@
             panel7.Controls.Add(ai1StreamSnapShotBtn);
             panel7.Controls.Add(ai2StreanOnBtn);
             panel7.Location = new Point(6, 5);
-            panel7.Margin = new Padding(4, 4, 4, 4);
+            panel7.Margin = new Padding(4);
             panel7.Name = "panel7";
             panel7.Size = new Size(652, 170);
             panel7.TabIndex = 153;
@@ -2002,7 +2014,7 @@
             // 
             pictureBox_rtmp_closeUpSub.BackColor = Color.Black;
             pictureBox_rtmp_closeUpSub.Location = new Point(2024, 4);
-            pictureBox_rtmp_closeUpSub.Margin = new Padding(4, 4, 4, 4);
+            pictureBox_rtmp_closeUpSub.Margin = new Padding(4);
             pictureBox_rtmp_closeUpSub.Name = "pictureBox_rtmp_closeUpSub";
             pictureBox_rtmp_closeUpSub.Size = new Size(196, 124);
             pictureBox_rtmp_closeUpSub.TabIndex = 133;
@@ -2012,7 +2024,7 @@
             // 
             pictureBox_rtmp_closeUpMain.BackColor = Color.Black;
             pictureBox_rtmp_closeUpMain.Location = new Point(1820, 4);
-            pictureBox_rtmp_closeUpMain.Margin = new Padding(4, 4, 4, 4);
+            pictureBox_rtmp_closeUpMain.Margin = new Padding(4);
             pictureBox_rtmp_closeUpMain.Name = "pictureBox_rtmp_closeUpMain";
             pictureBox_rtmp_closeUpMain.Size = new Size(196, 124);
             pictureBox_rtmp_closeUpMain.TabIndex = 132;
@@ -2022,7 +2034,7 @@
             // 
             pictureBox_rtmp_panoramicSub.BackColor = Color.Black;
             pictureBox_rtmp_panoramicSub.Location = new Point(1620, 4);
-            pictureBox_rtmp_panoramicSub.Margin = new Padding(4, 4, 4, 4);
+            pictureBox_rtmp_panoramicSub.Margin = new Padding(4);
             pictureBox_rtmp_panoramicSub.Name = "pictureBox_rtmp_panoramicSub";
             pictureBox_rtmp_panoramicSub.Size = new Size(196, 124);
             pictureBox_rtmp_panoramicSub.TabIndex = 131;
@@ -2032,7 +2044,7 @@
             // 
             pictureBox_rtmp_panoramicMain.BackColor = Color.Black;
             pictureBox_rtmp_panoramicMain.Location = new Point(1416, 4);
-            pictureBox_rtmp_panoramicMain.Margin = new Padding(4, 4, 4, 4);
+            pictureBox_rtmp_panoramicMain.Margin = new Padding(4);
             pictureBox_rtmp_panoramicMain.Name = "pictureBox_rtmp_panoramicMain";
             pictureBox_rtmp_panoramicMain.Size = new Size(196, 124);
             pictureBox_rtmp_panoramicMain.TabIndex = 130;
@@ -2043,7 +2055,7 @@
             panoramicMainRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             panoramicMainRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
             panoramicMainRtmpStreanOnBtn.Location = new Point(1414, 129);
-            panoramicMainRtmpStreanOnBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicMainRtmpStreanOnBtn.Margin = new Padding(4);
             panoramicMainRtmpStreanOnBtn.Name = "panoramicMainRtmpStreanOnBtn";
             panoramicMainRtmpStreanOnBtn.Size = new Size(200, 49);
             panoramicMainRtmpStreanOnBtn.TabIndex = 118;
@@ -2055,7 +2067,7 @@
             // 
             closeUpSubRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpSubRTMPStreamSnapShotBtn.Location = new Point(2116, 177);
-            closeUpSubRTMPStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpSubRTMPStreamSnapShotBtn.Margin = new Padding(4);
             closeUpSubRTMPStreamSnapShotBtn.Name = "closeUpSubRTMPStreamSnapShotBtn";
             closeUpSubRTMPStreamSnapShotBtn.Size = new Size(92, 49);
             closeUpSubRTMPStreamSnapShotBtn.TabIndex = 129;
@@ -2067,7 +2079,7 @@
             // 
             panoramicRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicRtmpStreanOffBtn.Location = new Point(1424, 177);
-            panoramicRtmpStreanOffBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicRtmpStreanOffBtn.Margin = new Padding(4);
             panoramicRtmpStreanOffBtn.Name = "panoramicRtmpStreanOffBtn";
             panoramicRtmpStreanOffBtn.Size = new Size(92, 49);
             panoramicRtmpStreanOffBtn.TabIndex = 119;
@@ -2079,7 +2091,7 @@
             // 
             closeUpSubRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpSubRtmpStreanOffBtn.Location = new Point(2030, 177);
-            closeUpSubRtmpStreanOffBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpSubRtmpStreanOffBtn.Margin = new Padding(4);
             closeUpSubRtmpStreanOffBtn.Name = "closeUpSubRtmpStreanOffBtn";
             closeUpSubRtmpStreanOffBtn.Size = new Size(92, 49);
             closeUpSubRtmpStreanOffBtn.TabIndex = 128;
@@ -2091,7 +2103,7 @@
             // 
             paranomicMainRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             paranomicMainRTMPStreamSnapShotBtn.Location = new Point(1512, 177);
-            paranomicMainRTMPStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            paranomicMainRTMPStreamSnapShotBtn.Margin = new Padding(4);
             paranomicMainRTMPStreamSnapShotBtn.Name = "paranomicMainRTMPStreamSnapShotBtn";
             paranomicMainRTMPStreamSnapShotBtn.Size = new Size(92, 49);
             paranomicMainRTMPStreamSnapShotBtn.TabIndex = 120;
@@ -2104,7 +2116,7 @@
             closeUpSubRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             closeUpSubRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
             closeUpSubRtmpStreanOnBtn.Location = new Point(2024, 129);
-            closeUpSubRtmpStreanOnBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpSubRtmpStreanOnBtn.Margin = new Padding(4);
             closeUpSubRtmpStreanOnBtn.Name = "closeUpSubRtmpStreanOnBtn";
             closeUpSubRtmpStreanOnBtn.Size = new Size(200, 49);
             closeUpSubRtmpStreanOnBtn.TabIndex = 127;
@@ -2117,7 +2129,7 @@
             panoramicSubRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             panoramicSubRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
             panoramicSubRtmpStreanOnBtn.Location = new Point(1616, 129);
-            panoramicSubRtmpStreanOnBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicSubRtmpStreanOnBtn.Margin = new Padding(4);
             panoramicSubRtmpStreanOnBtn.Name = "panoramicSubRtmpStreanOnBtn";
             panoramicSubRtmpStreanOnBtn.Size = new Size(200, 49);
             panoramicSubRtmpStreanOnBtn.TabIndex = 121;
@@ -2129,7 +2141,7 @@
             // 
             closeUpMainRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpMainRTMPStreamSnapShotBtn.Location = new Point(1916, 177);
-            closeUpMainRTMPStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpMainRTMPStreamSnapShotBtn.Margin = new Padding(4);
             closeUpMainRTMPStreamSnapShotBtn.Name = "closeUpMainRTMPStreamSnapShotBtn";
             closeUpMainRTMPStreamSnapShotBtn.Size = new Size(92, 49);
             closeUpMainRTMPStreamSnapShotBtn.TabIndex = 126;
@@ -2141,7 +2153,7 @@
             // 
             panoramicSubRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicSubRtmpStreanOffBtn.Location = new Point(1628, 177);
-            panoramicSubRtmpStreanOffBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicSubRtmpStreanOffBtn.Margin = new Padding(4);
             panoramicSubRtmpStreanOffBtn.Name = "panoramicSubRtmpStreanOffBtn";
             panoramicSubRtmpStreanOffBtn.Size = new Size(92, 49);
             panoramicSubRtmpStreanOffBtn.TabIndex = 122;
@@ -2153,7 +2165,7 @@
             // 
             closeUpMainRtmpStreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpMainRtmpStreanOffBtn.Location = new Point(1828, 177);
-            closeUpMainRtmpStreanOffBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpMainRtmpStreanOffBtn.Margin = new Padding(4);
             closeUpMainRtmpStreanOffBtn.Name = "closeUpMainRtmpStreanOffBtn";
             closeUpMainRtmpStreanOffBtn.Size = new Size(92, 49);
             closeUpMainRtmpStreanOffBtn.TabIndex = 125;
@@ -2165,7 +2177,7 @@
             // 
             paranomicSubRTMPStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             paranomicSubRTMPStreamSnapShotBtn.Location = new Point(1712, 177);
-            paranomicSubRTMPStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            paranomicSubRTMPStreamSnapShotBtn.Margin = new Padding(4);
             paranomicSubRTMPStreamSnapShotBtn.Name = "paranomicSubRTMPStreamSnapShotBtn";
             paranomicSubRTMPStreamSnapShotBtn.Size = new Size(92, 49);
             paranomicSubRTMPStreamSnapShotBtn.TabIndex = 123;
@@ -2178,7 +2190,7 @@
             closeUpMainRtmpStreanOnBtn.Font = new Font("Microsoft YaHei UI", 6F);
             closeUpMainRtmpStreanOnBtn.IconSvg = "PlayCircleFilled";
             closeUpMainRtmpStreanOnBtn.Location = new Point(1824, 129);
-            closeUpMainRtmpStreanOnBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpMainRtmpStreanOnBtn.Margin = new Padding(4);
             closeUpMainRtmpStreanOnBtn.Name = "closeUpMainRtmpStreanOnBtn";
             closeUpMainRtmpStreanOnBtn.Size = new Size(200, 49);
             closeUpMainRtmpStreanOnBtn.TabIndex = 124;
@@ -2190,7 +2202,7 @@
             // 
             pictureBox1_panoramicMain.BackColor = Color.Black;
             pictureBox1_panoramicMain.Location = new Point(4, 4);
-            pictureBox1_panoramicMain.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1_panoramicMain.Margin = new Padding(4);
             pictureBox1_panoramicMain.Name = "pictureBox1_panoramicMain";
             pictureBox1_panoramicMain.Size = new Size(196, 124);
             pictureBox1_panoramicMain.TabIndex = 111;
@@ -2203,7 +2215,7 @@
             panoramicMainStreamOnBtn.IconHoverSvg = "";
             panoramicMainStreamOnBtn.IconSvg = "PlayCircleFilled";
             panoramicMainStreamOnBtn.Location = new Point(10, 129);
-            panoramicMainStreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicMainStreamOnBtn.Margin = new Padding(4);
             panoramicMainStreamOnBtn.Name = "panoramicMainStreamOnBtn";
             panoramicMainStreamOnBtn.Size = new Size(178, 49);
             panoramicMainStreamOnBtn.TabIndex = 84;
@@ -2215,7 +2227,7 @@
             // 
             panoramicMainStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicMainStreamOffBtn.Location = new Point(10, 177);
-            panoramicMainStreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicMainStreamOffBtn.Margin = new Padding(4);
             panoramicMainStreamOffBtn.Name = "panoramicMainStreamOffBtn";
             panoramicMainStreamOffBtn.Size = new Size(92, 49);
             panoramicMainStreamOffBtn.TabIndex = 85;
@@ -2227,7 +2239,7 @@
             // 
             panoramicMainStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicMainStreamSnapShotBtn.Location = new Point(96, 177);
-            panoramicMainStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicMainStreamSnapShotBtn.Margin = new Padding(4);
             panoramicMainStreamSnapShotBtn.Name = "panoramicMainStreamSnapShotBtn";
             panoramicMainStreamSnapShotBtn.Size = new Size(92, 49);
             panoramicMainStreamSnapShotBtn.TabIndex = 86;
@@ -2239,7 +2251,7 @@
             // 
             pictureBox1_ai3.BackColor = Color.Black;
             pictureBox1_ai3.Location = new Point(1216, 4);
-            pictureBox1_ai3.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1_ai3.Margin = new Padding(4);
             pictureBox1_ai3.Name = "pictureBox1_ai3";
             pictureBox1_ai3.Size = new Size(196, 124);
             pictureBox1_ai3.TabIndex = 117;
@@ -2250,7 +2262,7 @@
             panoramicSubStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicSubStreamOnBtn.IconSvg = "PlayCircleFilled";
             panoramicSubStreamOnBtn.Location = new Point(212, 129);
-            panoramicSubStreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicSubStreamOnBtn.Margin = new Padding(4);
             panoramicSubStreamOnBtn.Name = "panoramicSubStreamOnBtn";
             panoramicSubStreamOnBtn.Size = new Size(178, 49);
             panoramicSubStreamOnBtn.TabIndex = 88;
@@ -2262,7 +2274,7 @@
             // 
             pictureBox1_ai2.BackColor = Color.Black;
             pictureBox1_ai2.Location = new Point(1012, 4);
-            pictureBox1_ai2.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1_ai2.Margin = new Padding(4);
             pictureBox1_ai2.Name = "pictureBox1_ai2";
             pictureBox1_ai2.Size = new Size(196, 124);
             pictureBox1_ai2.TabIndex = 116;
@@ -2272,7 +2284,7 @@
             // 
             panoramicSubStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicSubStreamOffBtn.Location = new Point(212, 177);
-            panoramicSubStreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicSubStreamOffBtn.Margin = new Padding(4);
             panoramicSubStreamOffBtn.Name = "panoramicSubStreamOffBtn";
             panoramicSubStreamOffBtn.Size = new Size(92, 49);
             panoramicSubStreamOffBtn.TabIndex = 89;
@@ -2284,7 +2296,7 @@
             // 
             pictureBox1_ai1.BackColor = Color.Black;
             pictureBox1_ai1.Location = new Point(812, 4);
-            pictureBox1_ai1.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1_ai1.Margin = new Padding(4);
             pictureBox1_ai1.Name = "pictureBox1_ai1";
             pictureBox1_ai1.Size = new Size(196, 124);
             pictureBox1_ai1.TabIndex = 115;
@@ -2294,7 +2306,7 @@
             // 
             panoramicSubStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             panoramicSubStreamSnapShotBtn.Location = new Point(300, 177);
-            panoramicSubStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            panoramicSubStreamSnapShotBtn.Margin = new Padding(4);
             panoramicSubStreamSnapShotBtn.Name = "panoramicSubStreamSnapShotBtn";
             panoramicSubStreamSnapShotBtn.Size = new Size(92, 49);
             panoramicSubStreamSnapShotBtn.TabIndex = 90;
@@ -2306,7 +2318,7 @@
             // 
             pictureBox1_CloseUpSub.BackColor = Color.Black;
             pictureBox1_CloseUpSub.Location = new Point(608, 4);
-            pictureBox1_CloseUpSub.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1_CloseUpSub.Margin = new Padding(4);
             pictureBox1_CloseUpSub.Name = "pictureBox1_CloseUpSub";
             pictureBox1_CloseUpSub.Size = new Size(196, 124);
             pictureBox1_CloseUpSub.TabIndex = 114;
@@ -2317,7 +2329,7 @@
             closeUpMainStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpMainStreamOnBtn.IconSvg = "PlayCircleFilled";
             closeUpMainStreamOnBtn.Location = new Point(414, 129);
-            closeUpMainStreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpMainStreamOnBtn.Margin = new Padding(4);
             closeUpMainStreamOnBtn.Name = "closeUpMainStreamOnBtn";
             closeUpMainStreamOnBtn.Size = new Size(178, 49);
             closeUpMainStreamOnBtn.TabIndex = 92;
@@ -2329,7 +2341,7 @@
             // 
             pictureBox1_CloseUpMain.BackColor = Color.Black;
             pictureBox1_CloseUpMain.Location = new Point(408, 4);
-            pictureBox1_CloseUpMain.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1_CloseUpMain.Margin = new Padding(4);
             pictureBox1_CloseUpMain.Name = "pictureBox1_CloseUpMain";
             pictureBox1_CloseUpMain.Size = new Size(196, 124);
             pictureBox1_CloseUpMain.TabIndex = 113;
@@ -2339,7 +2351,7 @@
             // 
             closeUpMainStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpMainStreamOffBtn.Location = new Point(414, 177);
-            closeUpMainStreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpMainStreamOffBtn.Margin = new Padding(4);
             closeUpMainStreamOffBtn.Name = "closeUpMainStreamOffBtn";
             closeUpMainStreamOffBtn.Size = new Size(92, 49);
             closeUpMainStreamOffBtn.TabIndex = 93;
@@ -2351,7 +2363,7 @@
             // 
             pictureBox1_panoramicSub.BackColor = Color.Black;
             pictureBox1_panoramicSub.Location = new Point(204, 4);
-            pictureBox1_panoramicSub.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1_panoramicSub.Margin = new Padding(4);
             pictureBox1_panoramicSub.Name = "pictureBox1_panoramicSub";
             pictureBox1_panoramicSub.Size = new Size(196, 124);
             pictureBox1_panoramicSub.TabIndex = 112;
@@ -2361,7 +2373,7 @@
             // 
             closeUpMainStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpMainStreamSnapShotBtn.Location = new Point(500, 177);
-            closeUpMainStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpMainStreamSnapShotBtn.Margin = new Padding(4);
             closeUpMainStreamSnapShotBtn.Name = "closeUpMainStreamSnapShotBtn";
             closeUpMainStreamSnapShotBtn.Size = new Size(92, 49);
             closeUpMainStreamSnapShotBtn.TabIndex = 94;
@@ -2374,7 +2386,7 @@
             closeUpSubStreamOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpSubStreamOnBtn.IconSvg = "PlayCircleFilled";
             closeUpSubStreamOnBtn.Location = new Point(616, 129);
-            closeUpSubStreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpSubStreamOnBtn.Margin = new Padding(4);
             closeUpSubStreamOnBtn.Name = "closeUpSubStreamOnBtn";
             closeUpSubStreamOnBtn.Size = new Size(178, 49);
             closeUpSubStreamOnBtn.TabIndex = 96;
@@ -2386,7 +2398,7 @@
             // 
             ai3StreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai3StreamSnapShotBtn.Location = new Point(1308, 177);
-            ai3StreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            ai3StreamSnapShotBtn.Margin = new Padding(4);
             ai3StreamSnapShotBtn.Name = "ai3StreamSnapShotBtn";
             ai3StreamSnapShotBtn.Size = new Size(92, 49);
             ai3StreamSnapShotBtn.TabIndex = 110;
@@ -2398,7 +2410,7 @@
             // 
             closeUpSubStreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpSubStreamOffBtn.Location = new Point(616, 177);
-            closeUpSubStreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpSubStreamOffBtn.Margin = new Padding(4);
             closeUpSubStreamOffBtn.Name = "closeUpSubStreamOffBtn";
             closeUpSubStreamOffBtn.Size = new Size(92, 49);
             closeUpSubStreamOffBtn.TabIndex = 97;
@@ -2410,7 +2422,7 @@
             // 
             ai3StreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai3StreanOffBtn.Location = new Point(1222, 177);
-            ai3StreanOffBtn.Margin = new Padding(4, 4, 4, 4);
+            ai3StreanOffBtn.Margin = new Padding(4);
             ai3StreanOffBtn.Name = "ai3StreanOffBtn";
             ai3StreanOffBtn.Size = new Size(92, 49);
             ai3StreanOffBtn.TabIndex = 109;
@@ -2422,7 +2434,7 @@
             // 
             closeUpSubStreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             closeUpSubStreamSnapShotBtn.Location = new Point(704, 177);
-            closeUpSubStreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpSubStreamSnapShotBtn.Margin = new Padding(4);
             closeUpSubStreamSnapShotBtn.Name = "closeUpSubStreamSnapShotBtn";
             closeUpSubStreamSnapShotBtn.Size = new Size(92, 49);
             closeUpSubStreamSnapShotBtn.TabIndex = 98;
@@ -2435,7 +2447,7 @@
             ai3StreanOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai3StreanOnBtn.IconSvg = "PlayCircleFilled";
             ai3StreanOnBtn.Location = new Point(1216, 129);
-            ai3StreanOnBtn.Margin = new Padding(4, 4, 4, 4);
+            ai3StreanOnBtn.Margin = new Padding(4);
             ai3StreanOnBtn.Name = "ai3StreanOnBtn";
             ai3StreanOnBtn.Size = new Size(200, 49);
             ai3StreanOnBtn.TabIndex = 108;
@@ -2448,7 +2460,7 @@
             ai1StreanOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai1StreanOnBtn.IconSvg = "PlayCircleFilled";
             ai1StreanOnBtn.Location = new Point(816, 129);
-            ai1StreanOnBtn.Margin = new Padding(4, 4, 4, 4);
+            ai1StreanOnBtn.Margin = new Padding(4);
             ai1StreanOnBtn.Name = "ai1StreanOnBtn";
             ai1StreanOnBtn.Size = new Size(188, 49);
             ai1StreanOnBtn.TabIndex = 100;
@@ -2460,7 +2472,7 @@
             // 
             ai2StreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai2StreamSnapShotBtn.Location = new Point(1108, 177);
-            ai2StreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            ai2StreamSnapShotBtn.Margin = new Padding(4);
             ai2StreamSnapShotBtn.Name = "ai2StreamSnapShotBtn";
             ai2StreamSnapShotBtn.Size = new Size(92, 49);
             ai2StreamSnapShotBtn.TabIndex = 106;
@@ -2472,7 +2484,7 @@
             // 
             ai1StreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai1StreanOffBtn.Location = new Point(818, 177);
-            ai1StreanOffBtn.Margin = new Padding(4, 4, 4, 4);
+            ai1StreanOffBtn.Margin = new Padding(4);
             ai1StreanOffBtn.Name = "ai1StreanOffBtn";
             ai1StreanOffBtn.Size = new Size(92, 49);
             ai1StreanOffBtn.TabIndex = 101;
@@ -2484,7 +2496,7 @@
             // 
             ai2StreanOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai2StreanOffBtn.Location = new Point(1020, 177);
-            ai2StreanOffBtn.Margin = new Padding(4, 4, 4, 4);
+            ai2StreanOffBtn.Margin = new Padding(4);
             ai2StreanOffBtn.Name = "ai2StreanOffBtn";
             ai2StreanOffBtn.Size = new Size(92, 49);
             ai2StreanOffBtn.TabIndex = 105;
@@ -2496,7 +2508,7 @@
             // 
             ai1StreamSnapShotBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai1StreamSnapShotBtn.Location = new Point(904, 177);
-            ai1StreamSnapShotBtn.Margin = new Padding(4, 4, 4, 4);
+            ai1StreamSnapShotBtn.Margin = new Padding(4);
             ai1StreamSnapShotBtn.Name = "ai1StreamSnapShotBtn";
             ai1StreamSnapShotBtn.Size = new Size(92, 49);
             ai1StreamSnapShotBtn.TabIndex = 102;
@@ -2509,7 +2521,7 @@
             ai2StreanOnBtn.Font = new Font("Microsoft YaHei UI", 7F);
             ai2StreanOnBtn.IconSvg = "PlayCircleFilled";
             ai2StreanOnBtn.Location = new Point(1014, 129);
-            ai2StreanOnBtn.Margin = new Padding(4, 4, 4, 4);
+            ai2StreanOnBtn.Margin = new Padding(4);
             ai2StreanOnBtn.Name = "ai2StreanOnBtn";
             ai2StreanOnBtn.Size = new Size(200, 49);
             ai2StreanOnBtn.TabIndex = 104;
@@ -2532,9 +2544,9 @@
             tabPage2.Controls.Add(input1_uvc_x);
             tabPage2.Controls.Add(uvc_streamOffBtn);
             tabPage2.Location = new Point(8, 34);
-            tabPage2.Margin = new Padding(4, 4, 4, 4);
+            tabPage2.Margin = new Padding(4);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(4, 4, 4, 4);
+            tabPage2.Padding = new Padding(4);
             tabPage2.Size = new Size(664, 180);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "UVC拉流区域";
@@ -2542,7 +2554,7 @@
             // input_Uvctype
             // 
             input_Uvctype.Location = new Point(380, 120);
-            input_Uvctype.Margin = new Padding(4, 4, 4, 4);
+            input_Uvctype.Margin = new Padding(4);
             input_Uvctype.Name = "input_Uvctype";
             input_Uvctype.PlaceholderText = "test differ";
             input_Uvctype.Size = new Size(136, 49);
@@ -2554,7 +2566,7 @@
             // getCurComputerUvcDevicePathBtn
             // 
             getCurComputerUvcDevicePathBtn.Location = new Point(638, 5);
-            getCurComputerUvcDevicePathBtn.Margin = new Padding(4, 4, 4, 4);
+            getCurComputerUvcDevicePathBtn.Margin = new Padding(4);
             getCurComputerUvcDevicePathBtn.Name = "getCurComputerUvcDevicePathBtn";
             getCurComputerUvcDevicePathBtn.Size = new Size(372, 49);
             getCurComputerUvcDevicePathBtn.TabIndex = 172;
@@ -2566,7 +2578,7 @@
             // 
             input_curUvcDevicePath.Font = new Font("Microsoft YaHei UI", 7F);
             input_curUvcDevicePath.Location = new Point(692, 60);
-            input_curUvcDevicePath.Margin = new Padding(4, 4, 4, 4);
+            input_curUvcDevicePath.Margin = new Padding(4);
             input_curUvcDevicePath.Name = "input_curUvcDevicePath";
             input_curUvcDevicePath.PlaceholderText = "";
             input_curUvcDevicePath.Size = new Size(438, 49);
@@ -2577,7 +2589,7 @@
             // uvcStreamOnSpecificDevicePathBtn
             // 
             uvcStreamOnSpecificDevicePathBtn.Location = new Point(496, 64);
-            uvcStreamOnSpecificDevicePathBtn.Margin = new Padding(4, 4, 4, 4);
+            uvcStreamOnSpecificDevicePathBtn.Margin = new Padding(4);
             uvcStreamOnSpecificDevicePathBtn.Name = "uvcStreamOnSpecificDevicePathBtn";
             uvcStreamOnSpecificDevicePathBtn.Size = new Size(196, 49);
             uvcStreamOnSpecificDevicePathBtn.TabIndex = 142;
@@ -2588,7 +2600,7 @@
             // uvcStreamTakePicBtn
             // 
             uvcStreamTakePicBtn.Location = new Point(496, 5);
-            uvcStreamTakePicBtn.Margin = new Padding(4, 4, 4, 4);
+            uvcStreamTakePicBtn.Margin = new Padding(4);
             uvcStreamTakePicBtn.Name = "uvcStreamTakePicBtn";
             uvcStreamTakePicBtn.Size = new Size(136, 49);
             uvcStreamTakePicBtn.TabIndex = 141;
@@ -2600,7 +2612,7 @@
             // 
             pictureBox_uvcStream.BackColor = Color.Black;
             pictureBox_uvcStream.Location = new Point(8, 5);
-            pictureBox_uvcStream.Margin = new Padding(4, 4, 4, 4);
+            pictureBox_uvcStream.Margin = new Padding(4);
             pictureBox_uvcStream.Name = "pictureBox_uvcStream";
             pictureBox_uvcStream.Size = new Size(340, 179);
             pictureBox_uvcStream.TabIndex = 0;
@@ -2610,7 +2622,7 @@
             // input2_uvc_y
             // 
             input2_uvc_y.Location = new Point(650, 120);
-            input2_uvc_y.Margin = new Padding(4, 4, 4, 4);
+            input2_uvc_y.Margin = new Padding(4);
             input2_uvc_y.Name = "input2_uvc_y";
             input2_uvc_y.PlaceholderText = "test differ";
             input2_uvc_y.Size = new Size(136, 49);
@@ -2622,7 +2634,7 @@
             // uvc_streamOnBtn
             // 
             uvc_streamOnBtn.Location = new Point(356, 5);
-            uvc_streamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            uvc_streamOnBtn.Margin = new Padding(4);
             uvc_streamOnBtn.Name = "uvc_streamOnBtn";
             uvc_streamOnBtn.Size = new Size(136, 49);
             uvc_streamOnBtn.TabIndex = 77;
@@ -2633,7 +2645,7 @@
             // input1_uvc_x
             // 
             input1_uvc_x.Location = new Point(506, 120);
-            input1_uvc_x.Margin = new Padding(4, 4, 4, 4);
+            input1_uvc_x.Margin = new Padding(4);
             input1_uvc_x.Name = "input1_uvc_x";
             input1_uvc_x.PlaceholderText = "test differ";
             input1_uvc_x.Size = new Size(136, 49);
@@ -2645,7 +2657,7 @@
             // uvc_streamOffBtn
             // 
             uvc_streamOffBtn.Location = new Point(356, 64);
-            uvc_streamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            uvc_streamOffBtn.Margin = new Padding(4);
             uvc_streamOffBtn.Name = "uvc_streamOffBtn";
             uvc_streamOffBtn.Size = new Size(136, 49);
             uvc_streamOffBtn.TabIndex = 78;
@@ -2671,7 +2683,7 @@
             panel6.Controls.Add(stackPanel2);
             panel6.Controls.Add(stackPanel1);
             panel6.Location = new Point(6, 31);
-            panel6.Margin = new Padding(4, 4, 4, 4);
+            panel6.Margin = new Padding(4);
             panel6.Name = "panel6";
             panel6.Size = new Size(1414, 306);
             panel6.TabIndex = 154;
@@ -2679,7 +2691,7 @@
             // SKDL0503_CB
             // 
             SKDL0503_CB.Location = new Point(892, 9);
-            SKDL0503_CB.Margin = new Padding(4, 4, 4, 4);
+            SKDL0503_CB.Margin = new Padding(4);
             SKDL0503_CB.Name = "SKDL0503_CB";
             SKDL0503_CB.Size = new Size(132, 57);
             SKDL0503_CB.TabIndex = 160;
@@ -2689,7 +2701,7 @@
             // 
             autoIPCheckBox.Checked = true;
             autoIPCheckBox.Location = new Point(768, 9);
-            autoIPCheckBox.Margin = new Padding(4, 4, 4, 4);
+            autoIPCheckBox.Margin = new Padding(4);
             autoIPCheckBox.Name = "autoIPCheckBox";
             autoIPCheckBox.Size = new Size(128, 57);
             autoIPCheckBox.TabIndex = 159;
@@ -2698,7 +2710,7 @@
             // checkBoxDecodeTest
             // 
             checkBoxDecodeTest.Location = new Point(634, 9);
-            checkBoxDecodeTest.Margin = new Padding(4, 4, 4, 4);
+            checkBoxDecodeTest.Margin = new Padding(4);
             checkBoxDecodeTest.Name = "checkBoxDecodeTest";
             checkBoxDecodeTest.Size = new Size(128, 57);
             checkBoxDecodeTest.TabIndex = 158;
@@ -2709,7 +2721,7 @@
             stackPanel8.Controls.Add(checkbox_2streamRTSPOn);
             stackPanel8.Controls.Add(ptzStressTestBtn);
             stackPanel8.Location = new Point(1718, 323);
-            stackPanel8.Margin = new Padding(4, 4, 4, 4);
+            stackPanel8.Margin = new Padding(4);
             stackPanel8.Name = "stackPanel8";
             stackPanel8.Size = new Size(442, 57);
             stackPanel8.TabIndex = 157;
@@ -2718,7 +2730,7 @@
             // checkbox_2streamRTSPOn
             // 
             checkbox_2streamRTSPOn.Location = new Point(212, 4);
-            checkbox_2streamRTSPOn.Margin = new Padding(4, 4, 4, 4);
+            checkbox_2streamRTSPOn.Margin = new Padding(4);
             checkbox_2streamRTSPOn.Name = "checkbox_2streamRTSPOn";
             checkbox_2streamRTSPOn.Size = new Size(192, 49);
             checkbox_2streamRTSPOn.TabIndex = 169;
@@ -2728,7 +2740,7 @@
             // ptzStressTestBtn
             // 
             ptzStressTestBtn.Location = new Point(4, 4);
-            ptzStressTestBtn.Margin = new Padding(4, 4, 4, 4);
+            ptzStressTestBtn.Margin = new Padding(4);
             ptzStressTestBtn.Name = "ptzStressTestBtn";
             ptzStressTestBtn.Size = new Size(200, 49);
             ptzStressTestBtn.TabIndex = 168;
@@ -2751,7 +2763,7 @@
             stackPanel7.Controls.Add(getNetWorkConfigBtn);
             stackPanel7.Controls.Add(rebootDevBtn);
             stackPanel7.Location = new Point(4, 388);
-            stackPanel7.Margin = new Padding(4, 4, 4, 4);
+            stackPanel7.Margin = new Padding(4);
             stackPanel7.Name = "stackPanel7";
             stackPanel7.Size = new Size(2156, 57);
             stackPanel7.TabIndex = 156;
@@ -2760,7 +2772,7 @@
             // getDiskStatusBtn
             // 
             getDiskStatusBtn.Location = new Point(1934, 4);
-            getDiskStatusBtn.Margin = new Padding(4, 4, 4, 4);
+            getDiskStatusBtn.Margin = new Padding(4);
             getDiskStatusBtn.Name = "getDiskStatusBtn";
             getDiskStatusBtn.Size = new Size(158, 49);
             getDiskStatusBtn.TabIndex = 168;
@@ -2771,7 +2783,7 @@
             // getSysVersionBtn
             // 
             getSysVersionBtn.Location = new Point(1768, 4);
-            getSysVersionBtn.Margin = new Padding(4, 4, 4, 4);
+            getSysVersionBtn.Margin = new Padding(4);
             getSysVersionBtn.Name = "getSysVersionBtn";
             getSysVersionBtn.Size = new Size(158, 49);
             getSysVersionBtn.TabIndex = 167;
@@ -2782,7 +2794,7 @@
             // uploadOtaPacketToDevBtn
             // 
             uploadOtaPacketToDevBtn.Location = new Point(1628, 4);
-            uploadOtaPacketToDevBtn.Margin = new Padding(4, 4, 4, 4);
+            uploadOtaPacketToDevBtn.Margin = new Padding(4);
             uploadOtaPacketToDevBtn.Name = "uploadOtaPacketToDevBtn";
             uploadOtaPacketToDevBtn.Size = new Size(132, 49);
             uploadOtaPacketToDevBtn.TabIndex = 166;
@@ -2793,7 +2805,7 @@
             // checkUpgradeStatusBtn
             // 
             checkUpgradeStatusBtn.Location = new Point(1464, 4);
-            checkUpgradeStatusBtn.Margin = new Padding(4, 4, 4, 4);
+            checkUpgradeStatusBtn.Margin = new Padding(4);
             checkUpgradeStatusBtn.Name = "checkUpgradeStatusBtn";
             checkUpgradeStatusBtn.Size = new Size(156, 49);
             checkUpgradeStatusBtn.TabIndex = 165;
@@ -2804,7 +2816,7 @@
             // otaStartBtn
             // 
             otaStartBtn.Location = new Point(1324, 4);
-            otaStartBtn.Margin = new Padding(4, 4, 4, 4);
+            otaStartBtn.Margin = new Padding(4);
             otaStartBtn.Name = "otaStartBtn";
             otaStartBtn.Size = new Size(132, 49);
             otaStartBtn.TabIndex = 164;
@@ -2815,7 +2827,7 @@
             // chooseOta2PacketBtn
             // 
             chooseOta2PacketBtn.Location = new Point(1136, 4);
-            chooseOta2PacketBtn.Margin = new Padding(4, 4, 4, 4);
+            chooseOta2PacketBtn.Margin = new Padding(4);
             chooseOta2PacketBtn.Name = "chooseOta2PacketBtn";
             chooseOta2PacketBtn.Size = new Size(180, 49);
             chooseOta2PacketBtn.TabIndex = 163;
@@ -2826,7 +2838,7 @@
             // chooseOta1PacketBtn
             // 
             chooseOta1PacketBtn.Location = new Point(948, 4);
-            chooseOta1PacketBtn.Margin = new Padding(4, 4, 4, 4);
+            chooseOta1PacketBtn.Margin = new Padding(4);
             chooseOta1PacketBtn.Name = "chooseOta1PacketBtn";
             chooseOta1PacketBtn.Size = new Size(180, 49);
             chooseOta1PacketBtn.TabIndex = 160;
@@ -2837,7 +2849,7 @@
             // input_otaPacketPath2
             // 
             input_otaPacketPath2.Location = new Point(712, 4);
-            input_otaPacketPath2.Margin = new Padding(4, 4, 4, 4);
+            input_otaPacketPath2.Margin = new Padding(4);
             input_otaPacketPath2.Name = "input_otaPacketPath2";
             input_otaPacketPath2.PlaceholderText = "";
             input_otaPacketPath2.Size = new Size(228, 49);
@@ -2848,7 +2860,7 @@
             // input_otaPacketPath1
             // 
             input_otaPacketPath1.Location = new Point(476, 4);
-            input_otaPacketPath1.Margin = new Padding(4, 4, 4, 4);
+            input_otaPacketPath1.Margin = new Padding(4);
             input_otaPacketPath1.Name = "input_otaPacketPath1";
             input_otaPacketPath1.PlaceholderText = "";
             input_otaPacketPath1.Size = new Size(228, 49);
@@ -2859,7 +2871,7 @@
             // setUdhcpcBtn
             // 
             setUdhcpcBtn.Location = new Point(304, 4);
-            setUdhcpcBtn.Margin = new Padding(4, 4, 4, 4);
+            setUdhcpcBtn.Margin = new Padding(4);
             setUdhcpcBtn.Name = "setUdhcpcBtn";
             setUdhcpcBtn.Size = new Size(164, 49);
             setUdhcpcBtn.TabIndex = 158;
@@ -2870,7 +2882,7 @@
             // getNetWorkConfigBtn
             // 
             getNetWorkConfigBtn.Location = new Point(148, 4);
-            getNetWorkConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            getNetWorkConfigBtn.Margin = new Padding(4);
             getNetWorkConfigBtn.Name = "getNetWorkConfigBtn";
             getNetWorkConfigBtn.Size = new Size(148, 49);
             getNetWorkConfigBtn.TabIndex = 157;
@@ -2881,7 +2893,7 @@
             // rebootDevBtn
             // 
             rebootDevBtn.Location = new Point(4, 4);
-            rebootDevBtn.Margin = new Padding(4, 4, 4, 4);
+            rebootDevBtn.Margin = new Padding(4);
             rebootDevBtn.Name = "rebootDevBtn";
             rebootDevBtn.Size = new Size(136, 49);
             rebootDevBtn.TabIndex = 148;
@@ -2900,7 +2912,7 @@
             flowLayoutPanel2.Controls.Add(ptzMachineControlBtn);
             flowLayoutPanel2.Controls.Add(eptzControlBtn);
             flowLayoutPanel2.Location = new Point(4, 323);
-            flowLayoutPanel2.Margin = new Padding(4, 4, 4, 4);
+            flowLayoutPanel2.Margin = new Padding(4);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Size = new Size(1708, 57);
             flowLayoutPanel2.TabIndex = 155;
@@ -2908,7 +2920,7 @@
             // checkbox_7streamRTSPOn
             // 
             checkbox_7streamRTSPOn.Location = new Point(4, 4);
-            checkbox_7streamRTSPOn.Margin = new Padding(4, 4, 4, 4);
+            checkbox_7streamRTSPOn.Margin = new Padding(4);
             checkbox_7streamRTSPOn.Name = "checkbox_7streamRTSPOn";
             checkbox_7streamRTSPOn.Size = new Size(174, 46);
             checkbox_7streamRTSPOn.TabIndex = 0;
@@ -2918,7 +2930,7 @@
             // checkbox_zoomCircleTest
             // 
             checkbox_zoomCircleTest.Location = new Point(186, 4);
-            checkbox_zoomCircleTest.Margin = new Padding(4, 4, 4, 4);
+            checkbox_zoomCircleTest.Margin = new Padding(4);
             checkbox_zoomCircleTest.Name = "checkbox_zoomCircleTest";
             checkbox_zoomCircleTest.Size = new Size(196, 46);
             checkbox_zoomCircleTest.TabIndex = 3;
@@ -2928,7 +2940,7 @@
             // checkbox_eptzCircleTest
             // 
             checkbox_eptzCircleTest.Location = new Point(390, 4);
-            checkbox_eptzCircleTest.Margin = new Padding(4, 4, 4, 4);
+            checkbox_eptzCircleTest.Margin = new Padding(4);
             checkbox_eptzCircleTest.Name = "checkbox_eptzCircleTest";
             checkbox_eptzCircleTest.Size = new Size(196, 46);
             checkbox_eptzCircleTest.TabIndex = 1;
@@ -2938,7 +2950,7 @@
             // checkbox_ptzCircleTest
             // 
             checkbox_ptzCircleTest.Location = new Point(594, 4);
-            checkbox_ptzCircleTest.Margin = new Padding(4, 4, 4, 4);
+            checkbox_ptzCircleTest.Margin = new Padding(4);
             checkbox_ptzCircleTest.Name = "checkbox_ptzCircleTest";
             checkbox_ptzCircleTest.Size = new Size(196, 46);
             checkbox_ptzCircleTest.TabIndex = 2;
@@ -2948,7 +2960,7 @@
             // paranomicZoomBtn
             // 
             paranomicZoomBtn.Location = new Point(798, 4);
-            paranomicZoomBtn.Margin = new Padding(4, 4, 4, 4);
+            paranomicZoomBtn.Margin = new Padding(4);
             paranomicZoomBtn.Name = "paranomicZoomBtn";
             paranomicZoomBtn.Size = new Size(136, 46);
             paranomicZoomBtn.TabIndex = 146;
@@ -2959,7 +2971,7 @@
             // closeUpZoomBtn
             // 
             closeUpZoomBtn.Location = new Point(942, 4);
-            closeUpZoomBtn.Margin = new Padding(4, 4, 4, 4);
+            closeUpZoomBtn.Margin = new Padding(4);
             closeUpZoomBtn.Name = "closeUpZoomBtn";
             closeUpZoomBtn.Size = new Size(136, 46);
             closeUpZoomBtn.TabIndex = 147;
@@ -2970,7 +2982,7 @@
             // ptzMachineControlBtn
             // 
             ptzMachineControlBtn.Location = new Point(1086, 4);
-            ptzMachineControlBtn.Margin = new Padding(4, 4, 4, 4);
+            ptzMachineControlBtn.Margin = new Padding(4);
             ptzMachineControlBtn.Name = "ptzMachineControlBtn";
             ptzMachineControlBtn.Size = new Size(236, 46);
             ptzMachineControlBtn.TabIndex = 148;
@@ -2981,7 +2993,7 @@
             // eptzControlBtn
             // 
             eptzControlBtn.Location = new Point(1330, 4);
-            eptzControlBtn.Margin = new Padding(4, 4, 4, 4);
+            eptzControlBtn.Margin = new Padding(4);
             eptzControlBtn.Name = "eptzControlBtn";
             eptzControlBtn.Size = new Size(236, 46);
             eptzControlBtn.TabIndex = 149;
@@ -2996,7 +3008,7 @@
             flowLayoutPanel1.Controls.Add(input_rtmp_closeUpMain);
             flowLayoutPanel1.Controls.Add(input_rtmp_closeUpSub);
             flowLayoutPanel1.Location = new Point(476, 140);
-            flowLayoutPanel1.Margin = new Padding(4, 4, 4, 4);
+            flowLayoutPanel1.Margin = new Padding(4);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(820, 106);
             flowLayoutPanel1.TabIndex = 154;
@@ -3005,7 +3017,7 @@
             // 
             input_rtmp_panoramicMain.Font = new Font("Microsoft YaHei UI", 7F);
             input_rtmp_panoramicMain.Location = new Point(4, 4);
-            input_rtmp_panoramicMain.Margin = new Padding(4, 4, 4, 4);
+            input_rtmp_panoramicMain.Margin = new Padding(4);
             input_rtmp_panoramicMain.Name = "input_rtmp_panoramicMain";
             input_rtmp_panoramicMain.PlaceholderText = "请输入测试设备IP地址：";
             input_rtmp_panoramicMain.Size = new Size(402, 46);
@@ -3019,7 +3031,7 @@
             // 
             input_rtmp_panoramicSub.Font = new Font("Microsoft YaHei UI", 7F);
             input_rtmp_panoramicSub.Location = new Point(414, 4);
-            input_rtmp_panoramicSub.Margin = new Padding(4, 4, 4, 4);
+            input_rtmp_panoramicSub.Margin = new Padding(4);
             input_rtmp_panoramicSub.Name = "input_rtmp_panoramicSub";
             input_rtmp_panoramicSub.PlaceholderText = "请输入测试设备IP地址：";
             input_rtmp_panoramicSub.Size = new Size(402, 46);
@@ -3032,7 +3044,7 @@
             // 
             input_rtmp_closeUpMain.Font = new Font("Microsoft YaHei UI", 7F);
             input_rtmp_closeUpMain.Location = new Point(4, 58);
-            input_rtmp_closeUpMain.Margin = new Padding(4, 4, 4, 4);
+            input_rtmp_closeUpMain.Margin = new Padding(4);
             input_rtmp_closeUpMain.Name = "input_rtmp_closeUpMain";
             input_rtmp_closeUpMain.PlaceholderText = "请输入测试设备IP地址：";
             input_rtmp_closeUpMain.Size = new Size(402, 46);
@@ -3045,7 +3057,7 @@
             // 
             input_rtmp_closeUpSub.Font = new Font("Microsoft YaHei UI", 7F);
             input_rtmp_closeUpSub.Location = new Point(414, 58);
-            input_rtmp_closeUpSub.Margin = new Padding(4, 4, 4, 4);
+            input_rtmp_closeUpSub.Margin = new Padding(4);
             input_rtmp_closeUpSub.Name = "input_rtmp_closeUpSub";
             input_rtmp_closeUpSub.PlaceholderText = "请输入测试设备IP地址：";
             input_rtmp_closeUpSub.Size = new Size(402, 46);
@@ -3060,7 +3072,7 @@
             stackPanel3.Controls.Add(clumsyStopLimitSpeedBtn);
             stackPanel3.Controls.Add(input1_clumsyLimit);
             stackPanel3.Location = new Point(4, 199);
-            stackPanel3.Margin = new Padding(4, 4, 4, 4);
+            stackPanel3.Margin = new Padding(4);
             stackPanel3.Name = "stackPanel3";
             stackPanel3.RightToLeft = RightToLeft.Yes;
             stackPanel3.Size = new Size(452, 57);
@@ -3070,7 +3082,7 @@
             // clumsyLimitSpeedBtn
             // 
             clumsyLimitSpeedBtn.Location = new Point(-4, 4);
-            clumsyLimitSpeedBtn.Margin = new Padding(4, 4, 4, 4);
+            clumsyLimitSpeedBtn.Margin = new Padding(4);
             clumsyLimitSpeedBtn.Name = "clumsyLimitSpeedBtn";
             clumsyLimitSpeedBtn.Size = new Size(136, 49);
             clumsyLimitSpeedBtn.TabIndex = 134;
@@ -3081,7 +3093,7 @@
             // clumsyStopLimitSpeedBtn
             // 
             clumsyStopLimitSpeedBtn.Location = new Point(140, 4);
-            clumsyStopLimitSpeedBtn.Margin = new Padding(4, 4, 4, 4);
+            clumsyStopLimitSpeedBtn.Margin = new Padding(4);
             clumsyStopLimitSpeedBtn.Name = "clumsyStopLimitSpeedBtn";
             clumsyStopLimitSpeedBtn.Size = new Size(168, 49);
             clumsyStopLimitSpeedBtn.TabIndex = 135;
@@ -3092,7 +3104,7 @@
             // input1_clumsyLimit
             // 
             input1_clumsyLimit.Location = new Point(316, 4);
-            input1_clumsyLimit.Margin = new Padding(4, 4, 4, 4);
+            input1_clumsyLimit.Margin = new Padding(4);
             input1_clumsyLimit.Name = "input1_clumsyLimit";
             input1_clumsyLimit.PlaceholderText = "test differ";
             input1_clumsyLimit.Size = new Size(132, 49);
@@ -3114,7 +3126,7 @@
             stackPanel4.Controls.Add(extreme2StreamOnBtn);
             stackPanel4.Controls.Add(extreme2StreamOffBtn);
             stackPanel4.Location = new Point(4, 263);
-            stackPanel4.Margin = new Padding(4, 4, 4, 4);
+            stackPanel4.Margin = new Padding(4);
             stackPanel4.Name = "stackPanel4";
             stackPanel4.RightToLeft = RightToLeft.Yes;
             stackPanel4.Size = new Size(1392, 53);
@@ -3124,7 +3136,7 @@
             // setUvcPanoramicBtn
             // 
             setUvcPanoramicBtn.Location = new Point(4, 4);
-            setUvcPanoramicBtn.Margin = new Padding(4, 4, 4, 4);
+            setUvcPanoramicBtn.Margin = new Padding(4);
             setUvcPanoramicBtn.Name = "setUvcPanoramicBtn";
             setUvcPanoramicBtn.Size = new Size(136, 45);
             setUvcPanoramicBtn.TabIndex = 146;
@@ -3135,7 +3147,7 @@
             // setUvcCloseUpBtn
             // 
             setUvcCloseUpBtn.Location = new Point(148, 4);
-            setUvcCloseUpBtn.Margin = new Padding(4, 4, 4, 4);
+            setUvcCloseUpBtn.Margin = new Padding(4);
             setUvcCloseUpBtn.Name = "setUvcCloseUpBtn";
             setUvcCloseUpBtn.Size = new Size(136, 45);
             setUvcCloseUpBtn.TabIndex = 147;
@@ -3146,7 +3158,7 @@
             // hiResModeBtn
             // 
             hiResModeBtn.Location = new Point(292, 4);
-            hiResModeBtn.Margin = new Padding(4, 4, 4, 4);
+            hiResModeBtn.Margin = new Padding(4);
             hiResModeBtn.Name = "hiResModeBtn";
             hiResModeBtn.Size = new Size(136, 45);
             hiResModeBtn.TabIndex = 143;
@@ -3157,7 +3169,7 @@
             // hiFpsModeBtn
             // 
             hiFpsModeBtn.Location = new Point(436, 4);
-            hiFpsModeBtn.Margin = new Padding(4, 4, 4, 4);
+            hiFpsModeBtn.Margin = new Padding(4);
             hiFpsModeBtn.Name = "hiFpsModeBtn";
             hiFpsModeBtn.Size = new Size(136, 45);
             hiFpsModeBtn.TabIndex = 144;
@@ -3168,7 +3180,7 @@
             // extremeModeBtn
             // 
             extremeModeBtn.Location = new Point(580, 4);
-            extremeModeBtn.Margin = new Padding(4, 4, 4, 4);
+            extremeModeBtn.Margin = new Padding(4);
             extremeModeBtn.Name = "extremeModeBtn";
             extremeModeBtn.Size = new Size(136, 45);
             extremeModeBtn.TabIndex = 145;
@@ -3180,7 +3192,7 @@
             // 
             extreme1StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             extreme1StreamOffBtn.Location = new Point(724, 4);
-            extreme1StreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            extreme1StreamOffBtn.Margin = new Padding(4);
             extreme1StreamOffBtn.Name = "extreme1StreamOffBtn";
             extreme1StreamOffBtn.Size = new Size(136, 45);
             extreme1StreamOffBtn.TabIndex = 140;
@@ -3195,7 +3207,7 @@
             extreme1StreamOnBtn.IconHoverSvg = "";
             extreme1StreamOnBtn.IconSvg = "PlayCircleFilled";
             extreme1StreamOnBtn.Location = new Point(868, 4);
-            extreme1StreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            extreme1StreamOnBtn.Margin = new Padding(4);
             extreme1StreamOnBtn.Name = "extreme1StreamOnBtn";
             extreme1StreamOnBtn.Size = new Size(206, 45);
             extreme1StreamOnBtn.TabIndex = 139;
@@ -3210,7 +3222,7 @@
             extreme2StreamOnBtn.IconHoverSvg = "";
             extreme2StreamOnBtn.IconSvg = "PlayCircleFilled";
             extreme2StreamOnBtn.Location = new Point(1082, 4);
-            extreme2StreamOnBtn.Margin = new Padding(4, 4, 4, 4);
+            extreme2StreamOnBtn.Margin = new Padding(4);
             extreme2StreamOnBtn.Name = "extreme2StreamOnBtn";
             extreme2StreamOnBtn.Size = new Size(206, 45);
             extreme2StreamOnBtn.TabIndex = 141;
@@ -3222,7 +3234,7 @@
             // 
             extreme2StreamOffBtn.Font = new Font("Microsoft YaHei UI", 7F);
             extreme2StreamOffBtn.Location = new Point(1296, 4);
-            extreme2StreamOffBtn.Margin = new Padding(4, 4, 4, 4);
+            extreme2StreamOffBtn.Margin = new Padding(4);
             extreme2StreamOffBtn.Name = "extreme2StreamOffBtn";
             extreme2StreamOffBtn.Size = new Size(92, 45);
             extreme2StreamOffBtn.TabIndex = 142;
@@ -3237,7 +3249,7 @@
             stackPanel6.Controls.Add(panel4);
             stackPanel6.Controls.Add(panel5);
             stackPanel6.Location = new Point(1406, 13);
-            stackPanel6.Margin = new Padding(4, 4, 4, 4);
+            stackPanel6.Margin = new Padding(4);
             stackPanel6.Name = "stackPanel6";
             stackPanel6.RightToLeft = RightToLeft.Yes;
             stackPanel6.Size = new Size(820, 257);
@@ -3252,7 +3264,7 @@
             panel2.Controls.Add(label1);
             panel2.Controls.Add(panel_panoramicMain_resolution);
             panel2.Location = new Point(-8, 4);
-            panel2.Margin = new Padding(4, 4, 4, 4);
+            panel2.Margin = new Padding(4);
             panel2.Name = "panel2";
             panel2.Size = new Size(200, 249);
             panel2.TabIndex = 124;
@@ -3265,7 +3277,7 @@
             label1.Font = new Font("等线", 6F);
             label1.ForeColor = Color.Red;
             label1.Location = new Point(6, 6);
-            label1.Margin = new Padding(4, 4, 4, 4);
+            label1.Margin = new Padding(4);
             label1.Name = "label1";
             label1.Size = new Size(188, 35);
             label1.SuffixSvg = "YoutubeFilled";
@@ -3292,7 +3304,7 @@
             panel3.Controls.Add(label2);
             panel3.Controls.Add(panel_panoramicSub_resolution);
             panel3.Location = new Point(200, 4);
-            panel3.Margin = new Padding(4, 4, 4, 4);
+            panel3.Margin = new Padding(4);
             panel3.Name = "panel3";
             panel3.Size = new Size(200, 249);
             panel3.TabIndex = 125;
@@ -3305,7 +3317,7 @@
             label2.Font = new Font("等线", 6F);
             label2.ForeColor = Color.Red;
             label2.Location = new Point(6, 6);
-            label2.Margin = new Padding(4, 4, 4, 4);
+            label2.Margin = new Padding(4);
             label2.Name = "label2";
             label2.Size = new Size(188, 35);
             label2.SuffixSvg = "YoutubeFilled";
@@ -3332,7 +3344,7 @@
             panel4.Controls.Add(label3);
             panel4.Controls.Add(panel_closeUpMain_resolution);
             panel4.Location = new Point(408, 4);
-            panel4.Margin = new Padding(4, 4, 4, 4);
+            panel4.Margin = new Padding(4);
             panel4.Name = "panel4";
             panel4.Size = new Size(200, 249);
             panel4.TabIndex = 126;
@@ -3345,7 +3357,7 @@
             label3.Font = new Font("等线", 6F);
             label3.ForeColor = Color.Red;
             label3.Location = new Point(6, 6);
-            label3.Margin = new Padding(4, 4, 4, 4);
+            label3.Margin = new Padding(4);
             label3.Name = "label3";
             label3.Size = new Size(188, 35);
             label3.SuffixSvg = "YoutubeFilled";
@@ -3372,7 +3384,7 @@
             panel5.Controls.Add(label4);
             panel5.Controls.Add(panel_closeUpSub_resolution);
             panel5.Location = new Point(616, 4);
-            panel5.Margin = new Padding(4, 4, 4, 4);
+            panel5.Margin = new Padding(4);
             panel5.Name = "panel5";
             panel5.Size = new Size(200, 249);
             panel5.TabIndex = 127;
@@ -3385,7 +3397,7 @@
             label4.Font = new Font("等线", 6F);
             label4.ForeColor = Color.Red;
             label4.Location = new Point(6, 6);
-            label4.Margin = new Padding(4, 4, 4, 4);
+            label4.Margin = new Padding(4);
             label4.Name = "label4";
             label4.Size = new Size(188, 35);
             label4.SuffixSvg = "YoutubeFilled";
@@ -3409,7 +3421,7 @@
             stackPanel5.Controls.Add(input1_testdiffer);
             stackPanel5.Controls.Add(input1_allStreamBitrate);
             stackPanel5.Location = new Point(4, 137);
-            stackPanel5.Margin = new Padding(4, 4, 4, 4);
+            stackPanel5.Margin = new Padding(4);
             stackPanel5.Name = "stackPanel5";
             stackPanel5.RightToLeft = RightToLeft.Yes;
             stackPanel5.Size = new Size(468, 57);
@@ -3419,7 +3431,7 @@
             // input1_testdiffer
             // 
             input1_testdiffer.Location = new Point(-2, 4);
-            input1_testdiffer.Margin = new Padding(4, 4, 4, 4);
+            input1_testdiffer.Margin = new Padding(4);
             input1_testdiffer.Name = "input1_testdiffer";
             input1_testdiffer.PlaceholderText = "test differ";
             input1_testdiffer.Size = new Size(252, 49);
@@ -3431,7 +3443,7 @@
             // input1_allStreamBitrate
             // 
             input1_allStreamBitrate.Location = new Point(258, 4);
-            input1_allStreamBitrate.Margin = new Padding(4, 4, 4, 4);
+            input1_allStreamBitrate.Margin = new Padding(4);
             input1_allStreamBitrate.Name = "input1_allStreamBitrate";
             input1_allStreamBitrate.PlaceholderText = "test differ";
             input1_allStreamBitrate.Size = new Size(206, 49);
@@ -3449,7 +3461,7 @@
             stackPanel2.Controls.Add(changeAllStreamCurConfigBtn);
             stackPanel2.Controls.Add(resetAllStreamDefaultConfigBtn);
             stackPanel2.Location = new Point(4, 75);
-            stackPanel2.Margin = new Padding(4, 4, 4, 4);
+            stackPanel2.Margin = new Padding(4);
             stackPanel2.Name = "stackPanel2";
             stackPanel2.RightToLeft = RightToLeft.Yes;
             stackPanel2.Size = new Size(1396, 57);
@@ -3459,7 +3471,7 @@
             // getAllResolutionBtn
             // 
             getAllResolutionBtn.Location = new Point(-8, 4);
-            getAllResolutionBtn.Margin = new Padding(4, 4, 4, 4);
+            getAllResolutionBtn.Margin = new Padding(4);
             getAllResolutionBtn.Name = "getAllResolutionBtn";
             getAllResolutionBtn.Size = new Size(172, 49);
             getAllResolutionBtn.TabIndex = 118;
@@ -3470,7 +3482,7 @@
             // readAllStreamCurConfigBtn
             // 
             readAllStreamCurConfigBtn.Location = new Point(172, 4);
-            readAllStreamCurConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            readAllStreamCurConfigBtn.Margin = new Padding(4);
             readAllStreamCurConfigBtn.Name = "readAllStreamCurConfigBtn";
             readAllStreamCurConfigBtn.Size = new Size(228, 49);
             readAllStreamCurConfigBtn.TabIndex = 130;
@@ -3481,7 +3493,7 @@
             // changeResolutionOrderBtn
             // 
             changeResolutionOrderBtn.Location = new Point(408, 4);
-            changeResolutionOrderBtn.Margin = new Padding(4, 4, 4, 4);
+            changeResolutionOrderBtn.Margin = new Padding(4);
             changeResolutionOrderBtn.Name = "changeResolutionOrderBtn";
             changeResolutionOrderBtn.Size = new Size(228, 49);
             changeResolutionOrderBtn.TabIndex = 132;
@@ -3492,7 +3504,7 @@
             // changeAllStreamBitrateBtn
             // 
             changeAllStreamBitrateBtn.Location = new Point(644, 4);
-            changeAllStreamBitrateBtn.Margin = new Padding(4, 4, 4, 4);
+            changeAllStreamBitrateBtn.Margin = new Padding(4);
             changeAllStreamBitrateBtn.Name = "changeAllStreamBitrateBtn";
             changeAllStreamBitrateBtn.Size = new Size(260, 49);
             changeAllStreamBitrateBtn.TabIndex = 137;
@@ -3503,7 +3515,7 @@
             // changeAllStreamCurConfigBtn
             // 
             changeAllStreamCurConfigBtn.Location = new Point(912, 4);
-            changeAllStreamCurConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            changeAllStreamCurConfigBtn.Margin = new Padding(4);
             changeAllStreamCurConfigBtn.Name = "changeAllStreamCurConfigBtn";
             changeAllStreamCurConfigBtn.Size = new Size(228, 49);
             changeAllStreamCurConfigBtn.TabIndex = 131;
@@ -3514,7 +3526,7 @@
             // resetAllStreamDefaultConfigBtn
             // 
             resetAllStreamDefaultConfigBtn.Location = new Point(1148, 4);
-            resetAllStreamDefaultConfigBtn.Margin = new Padding(4, 4, 4, 4);
+            resetAllStreamDefaultConfigBtn.Margin = new Padding(4);
             resetAllStreamDefaultConfigBtn.Name = "resetAllStreamDefaultConfigBtn";
             resetAllStreamDefaultConfigBtn.Size = new Size(244, 49);
             resetAllStreamDefaultConfigBtn.TabIndex = 133;
@@ -3528,7 +3540,7 @@
             stackPanel1.Controls.Add(buttonGetToken);
             stackPanel1.Controls.Add(token_input);
             stackPanel1.Location = new Point(4, 9);
-            stackPanel1.Margin = new Padding(4, 4, 4, 4);
+            stackPanel1.Margin = new Padding(4);
             stackPanel1.Name = "stackPanel1";
             stackPanel1.RightToLeft = RightToLeft.Yes;
             stackPanel1.Size = new Size(624, 57);
@@ -3539,7 +3551,7 @@
             // 
             textBox_ip.Font = new Font("Microsoft YaHei UI", 7F);
             textBox_ip.Location = new Point(0, 4);
-            textBox_ip.Margin = new Padding(4, 4, 4, 4);
+            textBox_ip.Margin = new Padding(4);
             textBox_ip.Name = "textBox_ip";
             textBox_ip.PlaceholderText = "请输入测试设备IP地址：";
             textBox_ip.Size = new Size(172, 49);
@@ -3550,7 +3562,7 @@
             // buttonGetToken
             // 
             buttonGetToken.Location = new Point(180, 4);
-            buttonGetToken.Margin = new Padding(4, 4, 4, 4);
+            buttonGetToken.Margin = new Padding(4);
             buttonGetToken.Name = "buttonGetToken";
             buttonGetToken.Size = new Size(136, 49);
             buttonGetToken.TabIndex = 76;
@@ -3561,7 +3573,7 @@
             // token_input
             // 
             token_input.Location = new Point(324, 4);
-            token_input.Margin = new Padding(4, 4, 4, 4);
+            token_input.Margin = new Padding(4);
             token_input.Name = "token_input";
             token_input.PlaceholderText = "token here";
             token_input.Size = new Size(296, 49);
@@ -3576,7 +3588,7 @@
             oneKeyStopTestBtn.IconRatio = 0.8F;
             oneKeyStopTestBtn.IconSvg = "StopFilled";
             oneKeyStopTestBtn.Location = new Point(1716, 545);
-            oneKeyStopTestBtn.Margin = new Padding(4, 4, 4, 4);
+            oneKeyStopTestBtn.Margin = new Padding(4);
             oneKeyStopTestBtn.Name = "oneKeyStopTestBtn";
             oneKeyStopTestBtn.OriginalBackColor = Color.FromArgb(100, 215, 234);
             oneKeyStopTestBtn.Size = new Size(192, 49);
@@ -3591,7 +3603,7 @@
             divider3.Controls.Add(badge1);
             divider3.ForeColor = SystemColors.ControlText;
             divider3.Location = new Point(6, 345);
-            divider3.Margin = new Padding(4, 4, 4, 4);
+            divider3.Margin = new Padding(4);
             divider3.Name = "divider3";
             divider3.Orientation = AntdUI.TOrientation.Left;
             divider3.Size = new Size(688, 18);
@@ -3604,7 +3616,7 @@
             badge1.BackColor = Color.FromArgb(100, 215, 234);
             badge1.Font = new Font("等线", 6F);
             badge1.Location = new Point(208, -4);
-            badge1.Margin = new Padding(4, 4, 4, 4);
+            badge1.Margin = new Padding(4);
             badge1.Name = "badge1";
             badge1.Size = new Size(454, 26);
             badge1.State = AntdUI.TState.Processing;
@@ -3616,7 +3628,7 @@
             divider2.BackColor = Color.FromArgb(100, 215, 234);
             divider2.ForeColor = Color.Black;
             divider2.Location = new Point(1428, 5);
-            divider2.Margin = new Padding(4, 4, 4, 4);
+            divider2.Margin = new Padding(4);
             divider2.Name = "divider2";
             divider2.Orientation = AntdUI.TOrientation.Left;
             divider2.Size = new Size(484, 18);
@@ -3629,7 +3641,7 @@
             txtBoxRcv.BackColor = Color.FromArgb(100, 215, 234);
             txtBoxRcv.Font = new Font("等线", 5F);
             txtBoxRcv.Location = new Point(1428, 31);
-            txtBoxRcv.Margin = new Padding(4, 4, 4, 4);
+            txtBoxRcv.Margin = new Padding(4);
             txtBoxRcv.Name = "txtBoxRcv";
             txtBoxRcv.Size = new Size(484, 563);
             txtBoxRcv.TabIndex = 80;
@@ -3639,13 +3651,24 @@
             // 
             divider1.BackColor = Color.FromArgb(100, 215, 234);
             divider1.Location = new Point(6, 5);
-            divider1.Margin = new Padding(4, 4, 4, 4);
+            divider1.Margin = new Padding(4);
             divider1.Name = "divider1";
             divider1.Orientation = AntdUI.TOrientation.Left;
             divider1.Size = new Size(1414, 18);
             divider1.TabIndex = 75;
             divider1.Text = "通用设置";
             divider1.Thickness = 6F;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.ForeColor = Color.Red;
+            label6.Location = new Point(796, 370);
+            label6.Margin = new Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(384, 184);
+            label6.TabIndex = 202;
+            label6.Text = "该测试内容，需手动填写好黄色内容待\r\n测配置数据\r\n后再进行测试\r\n顺序：\r\n1、选择读写表格\r\n2、锁定测试表名\r\n3、如需测试GB281，需要填写GB281\r\n的拉流地址\r\n";
             // 
             // Form1
             // 
@@ -3656,7 +3679,7 @@
             Controls.Add(pageHeader1);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "2026-SKDL整合压测工具";
@@ -3666,6 +3689,7 @@
             panel1.ResumeLayout(false);
             tabControl3.ResumeLayout(false);
             tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             stackPanel9.ResumeLayout(false);
@@ -3921,7 +3945,6 @@
         private AntdUI.Button networkStreamOnBtn;
         private AntdUI.Button networkStreamOffBtn;
         private GroupBox groupBox7;
-        private AntdUI.Input excelSheetInput;
         private AntdUI.Input rowNumberInput;
         private AntdUI.Input columnContentInput;
         private AntdUI.Input readWriteContentInput;
@@ -3982,5 +4005,7 @@
         private AntdUI.Input newSwitch2;
         private AntdUI.Button getDiskStatusBtn;
         private AntdUI.Input input_Uvctype;
+        private AntdUI.Dropdown excelSheetNameDropdown;
+        private Label label6;
     }
 }
