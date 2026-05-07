@@ -490,7 +490,7 @@ namespace skdl_new_2025_test_tool
 
                 //Console.WriteLine(fullPath);
 
-                LogSaveOutput($"正在截图 {name}...");
+                LogSaveOutput($"正在截图 {name}...{fullPath}");
 
                 // 最多尝试 5 次，每次间隔 500ms，防止死循环
                 for (int i = 0; i < 50; i++)

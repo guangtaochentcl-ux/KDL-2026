@@ -35,6 +35,7 @@
             panel1 = new AntdUI.Panel();
             tabControl3 = new TabControl();
             tabPage7 = new TabPage();
+            label6 = new Label();
             input_gb2818_4 = new AntdUI.Input();
             input_gb2818_3 = new AntdUI.Input();
             input_gb2818_2 = new AntdUI.Input();
@@ -291,7 +292,6 @@
             divider2 = new AntdUI.Divider();
             txtBoxRcv = new AntdUI.Chat.ChatList();
             divider1 = new AntdUI.Divider();
-            label6 = new Label();
             pageHeader1.SuspendLayout();
             panel1.SuspendLayout();
             tabControl3.SuspendLayout();
@@ -457,6 +457,17 @@
             tabPage7.Size = new Size(1888, 372);
             tabPage7.TabIndex = 2;
             tabPage7.Text = "视频配置组合测试";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.ForeColor = Color.Red;
+            label6.Location = new Point(796, 370);
+            label6.Margin = new Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(384, 184);
+            label6.TabIndex = 202;
+            label6.Text = "该测试内容，需手动填写好黄色内容待\r\n测配置数据\r\n后再进行测试\r\n顺序：\r\n1、选择读写表格\r\n2、锁定测试表名\r\n3、如需测试GB281，需要填写GB281\r\n的拉流地址\r\n";
             // 
             // input_gb2818_4
             // 
@@ -878,7 +889,7 @@
             // 
             excelSheetNameDropdown.BorderWidth = 1F;
             excelSheetNameDropdown.DefaultBorderColor = SystemColors.ActiveCaptionText;
-            excelSheetNameDropdown.Items.AddRange(new object[] { "高分辨率模式视频配置组合表", "高帧模式视频配置组合表 ", "性能模式视频配置组合表" });
+            excelSheetNameDropdown.Items.AddRange(new object[] { "高分辨率模式视频配置组合表", "高帧模式视频配置组合表", "性能模式视频配置组合表" });
             excelSheetNameDropdown.Location = new Point(293, 88);
             excelSheetNameDropdown.Margin = new Padding(0);
             excelSheetNameDropdown.Name = "excelSheetNameDropdown";
@@ -3658,17 +3669,6 @@
             divider1.TabIndex = 75;
             divider1.Text = "通用设置";
             divider1.Thickness = 6F;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.ForeColor = Color.Red;
-            label6.Location = new Point(796, 370);
-            label6.Margin = new Padding(4, 0, 4, 0);
-            label6.Name = "label6";
-            label6.Size = new Size(384, 184);
-            label6.TabIndex = 202;
-            label6.Text = "该测试内容，需手动填写好黄色内容待\r\n测配置数据\r\n后再进行测试\r\n顺序：\r\n1、选择读写表格\r\n2、锁定测试表名\r\n3、如需测试GB281，需要填写GB281\r\n的拉流地址\r\n";
             // 
             // Form1
             // 
