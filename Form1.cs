@@ -2875,16 +2875,16 @@ namespace skdl_new_2025_test_tool
 
                         string format = "H264";
                         input_Uvctype.Text = format;
-                        string devicePath = null;
+                        string selectedInstanceId = null;
 
 
                         // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                         if (GetCameras("Seewo Lubo").Count > 1)
                         {
-                            devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
+                            selectedInstanceId = input_curUvcDevicePath.Text; // 使用当前选中的设备实例路径
                         }
                         //如果devicepath是空,会运行默认摄像头
-                        bool uvcStarted = await StartUVC(width, height, format, devicePath);
+                        bool uvcStarted = await StartUVC(width, height, format, selectedInstanceId);
                         if (!uvcStarted)
                         {
                             LogSaveOutput("UVC 启动失败，停止测试");
@@ -3145,14 +3145,14 @@ namespace skdl_new_2025_test_tool
                             input2_uvc_y.Text = height.ToString();
                             string format = "H264";
                             input_Uvctype.Text = format;
-                            string devicePath = null;
+                            string selectedInstanceId = null;
                             // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
                             if (GetCameras("Seewo Lubo").Count > 1)
                             {
-                                devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
+                                selectedInstanceId = input_curUvcDevicePath.Text; // 使用当前选中的设备实例路径
                             }
                             //没有输入path,默认null,会自动使用默认摄像头
-                            bool uvcStarted = await StartUVC(width, height, format, devicePath);
+                            bool uvcStarted = await StartUVC(width, height, format, selectedInstanceId);
                             if (!uvcStarted)
                             {
                                 LogSaveOutput("UVC 启动失败，停止测试");
@@ -6732,8 +6732,8 @@ END_TEST:
                                 if (GetCameras("Seewo Lubo").Count > 1)
                                 {
                                     // 多设备情况下，使用当前选中的设备路径（如果有）
-                                    string devicePath = input_curUvcDevicePath.Text;
-                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                    string selectedInstanceId = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, selectedInstanceId);
                                 }
                                 else
                                 {
@@ -6856,8 +6856,8 @@ END_TEST:
                                 if (GetCameras("Seewo Lubo").Count > 1)
                                 {
                                     // 多设备情况下，使用当前选中的设备路径（如果有）
-                                    string devicePath = input_curUvcDevicePath.Text;
-                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                    string selectedInstanceId = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, selectedInstanceId);
                                 }
                                 else
                                 {
@@ -6979,8 +6979,8 @@ END_TEST:
                                 if (GetCameras("Seewo Lubo").Count > 1)
                                 {
                                     // 多设备情况下，使用当前选中的设备路径（如果有）
-                                    string devicePath = input_curUvcDevicePath.Text;
-                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                    string selectedInstanceId = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, selectedInstanceId);
                                 }
                                 else
                                 {
@@ -7105,8 +7105,8 @@ END_TEST:
                                 if (GetCameras("Seewo Lubo").Count > 1)
                                 {
                                     // 多设备情况下，使用当前选中的设备路径（如果有）
-                                    string devicePath = input_curUvcDevicePath.Text;
-                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                    string selectedInstanceId = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, selectedInstanceId);
                                 }
                                 else
                                 {
@@ -9655,7 +9655,7 @@ END_TEST:
             {
                 if (cameraInfos[i].Name == cameraNameNeed)
                 {
-                    Console.WriteLine($"Found Camera: {cameraInfos[i].Name} -- {cameraInfos[i].DevicePath}");
+                    Console.WriteLine($"Found Camera: {cameraInfos[i].Name} -- DevicePath: {cameraInfos[i].DevicePath} -- InstanceId: {cameraInfos[i].InstanceId}");
                     cameras.Add(cameraInfos[i]);
                 }
             }
@@ -12158,13 +12158,13 @@ END_TEST:
                         input_Uvctype.Text = format;
 
                         // 每一路拉流，并比对结果,如果多台设备，就指定devicepath压测，单台就0
-                        string devicePath = null;
+                        string selectedInstanceId = null;
                         if (GetCameras("Seewo Lubo").Count > 1)
                         {
-                            devicePath = input_curUvcDevicePath.Text; // 使用当前选中的设备路径
+                            selectedInstanceId = input_curUvcDevicePath.Text; // 使用当前选中的设备实例路径
                         }
 
-                        bool uvcStarted = await StartUVC(width, height, format, devicePath);
+                        bool uvcStarted = await StartUVC(width, height, format, selectedInstanceId);
                         if (!uvcStarted)
                         {
                             LogSaveOutput("UVC 启动失败，停止测试");
@@ -14491,8 +14491,8 @@ END_TEST:
                                 if (GetCameras("Seewo Lubo").Count > 1)
                                 {
                                     // 多设备情况下，使用当前选中的设备路径（如果有）
-                                    string devicePath = input_curUvcDevicePath.Text;
-                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                    string selectedInstanceId = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, selectedInstanceId);
                                 }
                                 else
                                 {
@@ -14614,8 +14614,8 @@ END_TEST:
                                 if (GetCameras("Seewo Lubo").Count > 1)
                                 {
                                     // 多设备情况下，使用当前选中的设备路径（如果有）
-                                    string devicePath = input_curUvcDevicePath.Text;
-                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, devicePath);
+                                    string selectedInstanceId = input_curUvcDevicePath.Text;
+                                    startOk = await StartUVC(int.Parse(uvc_x), int.Parse(uvc_y), format, selectedInstanceId);
                                 }
                                 else
                                 {
@@ -17048,7 +17048,12 @@ END_TEST:
             try
             {
                 List<CameraInfo> cameras = GetCameras("Seewo Lubo");
-                input_curUvcDevicePath.Text = cameras[0].DevicePath;
+                if (cameras.Count > 0)
+                {
+                    input_curUvcDevicePath.Text = string.IsNullOrWhiteSpace(cameras[0].InstanceId)
+                        ? cameras[0].DevicePath
+                        : cameras[0].InstanceId;
+                }
             }
             catch (Exception)
             {
@@ -17078,7 +17083,7 @@ END_TEST:
             catch { /* 忽略写入错误 */ }
         }
         // 改动 :添加的私有方法,启动 UVC 流,适用手动拉流和指定path拉流
-        private async Task<bool> StartUVC(int width, int height, string format, string devicePath = null)
+        private async Task<bool> StartUVC(int width, int height, string format, string? selectedInstanceId = null)
         {
 
             // 1. 4K 分辨率 (3840x2160 及以上) 只支持 H264
@@ -17161,18 +17166,51 @@ END_TEST:
                 return false;
             }
 
+            string selectedId = selectedInstanceId?.Trim();
             int index = 0;
-            if (!string.IsNullOrEmpty(devicePath))
+            if (!string.IsNullOrWhiteSpace(selectedId))
             {
+                LogSaveOutput($"指定设备标识输入: {selectedId}");
+
                 for (int i = 0; i < cameras.Count; i++)
                 {
-                    if (cameras[i].DevicePath == devicePath)
+                    LogSaveOutput($"候选设备[{i}] Name={cameras[i].Name}, InstanceId={cameras[i].InstanceId}, DevicePath={cameras[i].DevicePath}");
+                }
+
+                index = -1;
+                for (int i = 0; i < cameras.Count; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(cameras[i].InstanceId) &&
+                        cameras[i].InstanceId.Equals(selectedId, StringComparison.OrdinalIgnoreCase))
                     {
                         index = i;
                         break;
                     }
                 }
+
+                if (index < 0)
+                {
+                    for (int i = 0; i < cameras.Count; i++)
+                    {
+                        if (!string.IsNullOrWhiteSpace(cameras[i].DevicePath) &&
+                            cameras[i].DevicePath.Equals(selectedId, StringComparison.OrdinalIgnoreCase))
+                        {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (index < 0)
+                {
+                    Stop_uvc = true;
+                    newCamera?.Dispose();
+                    LogSaveOutput("指定设备未匹配到任何候选摄像头，已取消拉流（不再回退到默认设备）。");
+                    return false;
+                }
             }
+
+            LogSaveOutput($"最终选择设备[{index}] Name={cameras[index].Name}, InstanceId={cameras[index].InstanceId}, DevicePath={cameras[index].DevicePath}");
 
             // 启动捕获
             bool success = await newCamera.StartupCapture(cameras[index], index, format, checkBoxDecodeTest.Checked);
@@ -17204,8 +17242,8 @@ END_TEST:
                 int w = int.Parse(input1_uvc_x.Text);
                 int h = int.Parse(input2_uvc_y.Text);
                 string format = input_Uvctype.Text;
-                string devicePath = input_curUvcDevicePath.Text;
-                await StartUVC(w, h, format, devicePath);
+                string selectedInstanceId = input_curUvcDevicePath.Text;
+                await StartUVC(w, h, format, selectedInstanceId);
 
             }
             catch (Exception ex)
@@ -17544,7 +17582,7 @@ END_TEST:
                     "测试前提醒！",
                     "ufo浏览器请务必将测试设备对着ufo浏览器进行测试，保证画面内容符合测试要求！！！",
                     AntdUI.TType.Warn));
-
+                LogSaveOutput($"Modal返回值: {result}");
                 if (result != DialogResult.Yes && result != DialogResult.OK)
                 {
                     // 用户点了取消，取消关闭，恢复Loading状态
