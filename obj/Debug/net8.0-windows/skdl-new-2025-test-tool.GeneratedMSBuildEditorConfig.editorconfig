@@ -14,6 +14,7 @@ build_property.ProjectTypeGuids =
 build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
+build_property.EntryPointFilePath = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = skdl_new_2025_test_tool
 build_property.ProjectDir = D:\GitWork\KDL\SKDL-new-2025-0402\skdl-new-2025-test-tool\KDL-2026\
